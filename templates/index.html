@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Модели в Django</title>
+    <title>Все записи</title>
 </head>
 <body class="container">
     <form method="POST" action="create/">
@@ -17,16 +17,16 @@
         </p>
         <input type="submit" value="Сохранить" >
     </form>
-    {% if people.count > 0 %}
+    {% if records.count > 0 %}
     <h2>Список пользователей</h2>
     <table>
         <thead><th>Id</th><th>Имя</th><th>Возраст</th><th></th></thead>
-        {% for person in people %}
+        {% for record in records %}
         <tr>
-            <td>{{ person.id }}</td>
-            <td>{{ person.name }}</td>
-            <td>{{ person.age }}</td>
-            <td><a href="edit/{{person.id}}">Изменить</a> | <a href="delete/{{person.id}}">Удалить</a></td>
+            <td>{{ record.id }}</td>
+            <td>{{ record.name }}</td>
+            <td>{{ record.age }}</td>
+            <td><a href="edit/{{record.id}}">Изменить</a> | <a href="delete/{{record.id}}">Удалить</a></td>
         </tr>
         {% endfor %}
     </table>

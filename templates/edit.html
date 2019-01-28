@@ -9,11 +9,11 @@
         {% csrf_token %}
         <p>
             <label>Введите имя</label><br>
-            <input type="text" name="name" value="{{person.name}}" />
+            <input type="text" name="name" value="{{record.name}}" />
         </p>
         <p>
             <label>Введите возраст</label><br>
-            <input type="number" name="age" value="{{person.age}}" />
+            <input type="number" name="age" value="{{record.age}}" />
         </p>
         <input type="submit" value="Сохранить" >
     </form>

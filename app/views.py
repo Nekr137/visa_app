@@ -8,8 +8,8 @@ from .models import Data
 
 # получение данных из бд
 def index(request):
-    people = Data.objects.all()
-    return render(request, "index.html", {"people": people})
+    records = Data.objects.all()
+    return render(request, "index.html", {"records": records})
 
 # сохранение данных в бд
 def create(request):
@@ -24,15 +24,16 @@ def create(request):
 # изменение данных в бд
 def edit(request, id):
     try:
-        person = Data.objects.get(id=id)
+        record = Data.objects.get(id=id)
 
         if request.method == "POST":
-            person.name = request.POST.get("name")
-            person.age = request.POST.get("age")
-            person.save()
+            print("POST")
+            record.name = request.POST.get("name")
+            record.age = request.POST.get("age")
+            record.save()
             return HttpResponseRedirect("/")
         else:
-            return render(request, "edit.html", {"person": person})
+            return render(request, "edit.html", {"record": record})
     except Data.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
@@ -40,9 +41,9 @@ def edit(request, id):
 # удаление данных из бд
 def delete(request, id):
     try:
-        person = Person.objects.get(id=id)
+        person = Data.objects.get(id=id)
         person.delete()
         return HttpResponseRedirect("/")
-    except Person.DoesNotExist:
+    except Data.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
