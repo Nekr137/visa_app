@@ -8,17 +8,22 @@
     <!--<link rel="stylesheet" href="/static/bootstrap.min.css" type="text/css" media="screen">-->
 </head>
 <body class="container">
-    <form method="POST" action="create/">
+    <form method="POST" action="create/" class="form-horizontal">
         {% csrf_token %}
         <p>
             <label>Введите имя</label><br>
-            <input type="text" name="name" />
+            <input type="text" class="" name="name" />
         </p>
         <p>
             <label>Введите возраст</label><br>
             <input type="number" name="age" />
         </p>
-        <input type="submit" value="Сохранить" >
+        <div class="input-group">
+            <input type="text" aria-label="First name" class="form-control-sm" name="name">
+            <input type="text" aria-label="Last name" class="form-control-sm" name="age">
+            <input type="submit" class="btn btn-outline-dark btn-sm" value="Сохранить" >
+        </div>
+
     </form>
     {% if records.count > 0 %}
     <h2>Список пользователей</h2>
