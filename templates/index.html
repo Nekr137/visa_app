@@ -25,6 +25,46 @@
         </div>
 
     </form>
+
+    <p></p><p></p><p></p>
+
+    <form>
+        <div class="form-row">
+            <div class="form-group col-md-6 ">
+                <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Email">
+            </div>
+            <div class="form-group col-md-6">
+                <input type="password" class="form-control form-control-sm" id="inputPassword4" placeholder="Password">
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control form-control-sm" id="inputAddress" placeholder="1234 Main St">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control form-control-sm" id="inputAddress2" placeholder="Apartment, studio, or floor">
+        </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control form-control-sm" id="inputCity">
+                </div>
+                <div class="form-group col-md-4">
+                    <select id="inputState" class="form-control form-control-sm">
+                        <option selected>Choose...</option>
+                        <option>...</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="text" class="form-control form-control-sm" id="inputZip">
+                </div>
+            </div>
+        <div class="form-group">
+        </div>
+            <button type="submit" class="btn btn-secondary btn-sm"> Сохранить </button>
+    </form>
+
+
+    <p></p><p></p><p></p>
+
     {% if records.count > 0 %}
     <h2>Список пользователей</h2>
     <table>
