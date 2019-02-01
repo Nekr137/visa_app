@@ -7,19 +7,20 @@
     <link rel="stylesheet" href="{% static '/css/bootstrap.min.css'%}" type="text/css">
 </head>
 <body class="container">
-    <form method="POST" action="create/" class="form-horizontal">
-        {% csrf_token %}
-        <div class="input-group">
-            <input type="text" aria-label="First name" class="form-control-sm" name="name">
-            <input type="text" aria-label="Last name" class="form-control-sm" name="age">
-            <input type="submit" class="btn btn-outline-dark btn-sm" value="Сохранить" >
-        </div>
+    <!--<form method="POST" action="create/" class="form-horizontal">-->
+        <!---->
+        <!--<div class="input-group">-->
+            <!--<input type="text" aria-label="First name" class="form-control-sm" name="name">-->
+            <!--<input type="text" aria-label="Last name" class="form-control-sm" name="age">-->
+            <!--<input type="submit" class="btn btn-outline-dark btn-sm" value="Сохранить" >-->
+        <!--</div>-->
 
-    </form>
+    <!--</form>-->
 
-    <p></p><p></p><p></p>
+
 
     <form>
+        {% csrf_token %}
         <div class="form-row">
             <div class="form-group col-md-6 ">
                 <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Email">
