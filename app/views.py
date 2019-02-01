@@ -15,8 +15,8 @@ def index(request):
 def create(request):
     if request.method == "POST":
         tom = Data()
-        tom.name = request.POST.get("name")
-        tom.age = request.POST.get("age")
+        tom.grazhdanstvo = request.POST.get("grazhdanstvo")
+        tom.kratnost = request.POST.get("kratnost")
         tom.save()
     return HttpResponseRedirect("/")
 
