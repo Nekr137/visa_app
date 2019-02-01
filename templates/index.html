@@ -8,48 +8,53 @@
 </head>
 <body class="container">
 
+    <p></p>
     <form action="\create" method="post">
         {% csrf_token %}
         <div class="form-row">
-            <div class="form-group col-md-6 ">
-                <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Email">
+            <div class="form-group col-md-3">
+                <input required type="text" class="form-control form-control-sm" name="familiya" placeholder="Фамилия">
             </div>
-            <div class="form-group col-md-6">
-                <input type="password" class="form-control form-control-sm" id="inputPassword4" placeholder="Password">
-            </div>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-sm" id="inputAddress" placeholder="1234 Main St">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-sm" id="inputAddress2" placeholder="Apartment, studio, or floor">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <input type="text" class="form-control form-control-sm" id="inputCity">
-            </div>
-            <div class="form-group col-md-4">
-                <select id="inputState" class="form-control form-control-sm">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
+            <div class="form-group col-md-3">
+                <input required type="text" class="form-control form-control-sm" name="imya" placeholder="Имя">
             </div>
             <div class="form-group col-md-2">
-                <input type="text" class="form-control form-control-sm" id="inputZip">
+                <input required type="date" class="form-control form-control-sm" name="data_rozh" placeholder="Дата рождения">
+            </div>
+            <div class="form-group col-md-2">
+                <input required type="number" class="form-control form-control-sm" name="nomer_pass" placeholder="Номер пасспорта">
+            </div>
+            <div class="form-group col-md-2">
+                <input required type="text" class="form-control form-control-sm" name="grazhdanstvo2" placeholder="Гражданство">
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input required type="text" class="form-control form-control-sm" name="grazhdanstvo" placeholder="Гражданство">
+            </div>
+            <div class="form-group col-md-6">
+                <input required type="text" class="form-control form-control-sm" name="kratnost" placeholder="Кратность">
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <input required type="text" class="form-control form-control-sm" name="prin_organiz" placeholder="Принимающая организация, её адрес, № референса">
             </div>
         </div>
 
         <div class="form-row">
-            <div class="form-group col-md-6">
-                <input type="text" class="form-control form-control-sm" name="grazhdanstvo" placeholder="Гражданство">
-            </div>
-            <div class="form-group col-md-6">
-                <input type="text" class="form-control form-control-sm" name="kratnost" placeholder="Кратность">
+            <div class="form-group col-md-12">
+                <input required type="text" class="form-control form-control-sm" name="dop_svedeniya" placeholder="Дополнительные сведения">
             </div>
         </div>
+
         <div class="form-group">
+                <button type="submit" class="btn btn-secondary btn-sm"> Сохранить в б.д. и открыть xlsx </button>
         </div>
-            <button type="submit" class="btn btn-secondary btn-sm"> Сохранить и открыть xlsx </button>
     </form>
 </body>
 </html>

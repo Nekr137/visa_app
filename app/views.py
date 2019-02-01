@@ -14,10 +14,17 @@ def index(request):
 # сохранение данных в бд
 def create(request):
     if request.method == "POST":
-        tom = Data()
-        tom.grazhdanstvo = request.POST.get("grazhdanstvo")
-        tom.kratnost = request.POST.get("kratnost")
-        tom.save()
+        rec = Data()
+        rec.grazhdanstvo = request.POST.get("grazhdanstvo")
+        rec.kratnost = request.POST.get("kratnost")
+        rec.grazhdanstvo2 = request.POST.get("grazhdanstvo2")
+        rec.data_rozh = request.POST.get("data_rozh")
+        rec.familiya = request.POST.get("familiya")
+        rec.imya = request.POST.get("imya")
+        rec.nomer_pass = request.POST.get("nomer_pass")
+        rec.prin_organiz = request.POST.get("prin_organiz")
+        rec.dop_svedeniya = request.POST.get("dop_svedeniya")
+        rec.save()
     return HttpResponseRedirect("/")
 
 

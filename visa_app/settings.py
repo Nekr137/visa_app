@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'visa_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'testdb',
         'USER':'postgres',
         'PASSWORD':'denekra',
         'HOST':'127.0.0.1',
