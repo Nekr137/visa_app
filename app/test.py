@@ -24,3 +24,11 @@ for t in txt:
 
 s = [k[0] for k in sorted(d.items(), key=lambda x: x[1])[0:8]]
 print(s)
+
+people = [
+    {'name': 'alex', 'age': 20},
+    {'name': 'peter', 'age': 40},
+    {'name': 'moby', 'age': 18}
+]
+people.sort(key=lambda x: -x['age'])
+

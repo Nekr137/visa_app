@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect,HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
 from .models import Data
-
+from .models import Xlsx
 
 # получение данных из бд
 def index(request):
@@ -26,6 +26,15 @@ def create(request):
         rec.dop_svedeniya = request.POST.get("dop_svedeniya")
         rec.save()
     return HttpResponseRedirect("/")
+
+
+def SaveXlsx(request):
+    if request.method == "POST":
+        print('request')
+        X = Xlsx('file1.xlsx')
+        X.WriteCell('A2','test')
+        X.Close()
+
 
 
 # изменение данных в бд

@@ -1,5 +1,8 @@
 from django.db import models
 import datetime
+import openpyxl
+import re
+from pprint import pprint
 
 # таблица app_data
 class Data(models.Model):
@@ -12,6 +15,32 @@ class Data(models.Model):
     nomer_pass = models.IntegerField(default=1111111111)
     prin_organiz = models.CharField(default="",max_length=10000)
     dop_svedeniya = models.CharField(default="",max_length=10000)
+
+
+
+
+class Xlsx:
+    def __init__(self,fname):
+        self.wb = openpyxl.Workbook()
+        self.fname = 'data.xlsx'
+
+
+    def open(self):
+        try:
+            self.wb = openpyxl.load_workbook(filename=self.fname)
+        except:
+            pass
+        self.ws1 = self.wb.active
+
+
+    def WriteCell(self,cell,d):
+        self.ws1[cell]=d
+
+    def Close(self):
+        self.wb.save(filename=self.fname)
+
+
+        #
 
 
 

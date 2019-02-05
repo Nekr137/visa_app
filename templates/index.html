@@ -12,30 +12,85 @@
     <form action="\create" method="post">
         {% csrf_token %}
         <div class="form-row">
-            <div class="form-group col-md-3">
-                <input required type="text" class="form-control form-control-sm" name="familiya" placeholder="Фамилия">
-            </div>
-            <div class="form-group col-md-3">
-                <input required type="text" class="form-control form-control-sm" name="imya" placeholder="Имя">
+            <div class="form-group col-md-2">
+                <label for="familiya">Фамилия</label>
+                <input required type="text" class="form-control form-control-sm" id="familiya" name="familiya" placeholder="Фамилия">
             </div>
             <div class="form-group col-md-2">
-                <input required type="date" class="form-control form-control-sm" name="data_rozh" placeholder="Дата рождения">
+                <label for="familiya2">First name</label>
+                <input required type="text" class="form-control form-control-sm" id="familiya2" name="familiya2" placeholder="First name">
             </div>
             <div class="form-group col-md-2">
-                <input required type="number" class="form-control form-control-sm" name="nomer_pass" placeholder="Номер пасспорта">
+                <label for="imya">Имя</label>
+                <input required type="text" class="form-control form-control-sm" id="imya" name="imya" placeholder="Имя">
             </div>
             <div class="form-group col-md-2">
-                <input required type="text" class="form-control form-control-sm" name="grazhdanstvo2" placeholder="Гражданство">
+                <label for="name">Last name</label>
+                <input required type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Last name">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="sex">Пол</label>
+                <input required type="text" class="form-control form-control-sm" id="sex" name="sex" placeholder="Пол">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="goal">Цель поездки</label>
+                <input required type="text" class="form-control form-control-sm" name="goal" id="goal" placeholder="Цель поездки">
             </div>
         </div>
 
 
+
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="inputEmail4">Дата рождения</label>
+          <input type="date" class="form-control form-control-sm" id="inputEmail4" placeholder="Дата рождения">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="inputPassword4">Номер паспорта</label>
+          <input type="text" class="form-control form-control-sm" id="inputPassword4" placeholder="Номер паспорта">
+        </div>
+       <div class="form-group col-md-3">
+          <label for="Vezd">Въезд с</label>
+          <input type="date" class="form-control form-control-sm" id="Vezd" placeholder="Въезд с">
+        </div>
+       <div class="form-group col-md-3">
+          <label for="Viezd">Выезд до</label>
+          <input type="date" class="form-control form-control-sm" id="Viezd" placeholder="Выезд до">
+        </div>
+      </div>
+
+
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="grazh">Гражданство</label>
+          <input type="text" class="form-control form-control-sm" id="grazh" placeholder="Гражданство">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="kratn">Кратность визы</label>
+          <input type="text" class="form-control form-control-sm" id="kratn" placeholder="Кратность визы">
+        </div>
+       <div class="form-group col-md-3">
+          <label for="podtv">Подтверждение №</label>
+          <input type="text" class="form-control form-control-sm" id="podtv" placeholder="Подтверждение №">
+        </div>
+       <div class="form-group col-md-3">
+          <label for="podtv">Дата документа</label>
+          <input type="date" class="form-control form-control-sm" id="data">
+        </div>
+
+      </div>
+
+        <p></p>
+
         <div class="form-row">
-            <div class="form-group col-md-6">
-                <input required type="text" class="form-control form-control-sm" name="grazhdanstvo" placeholder="Гражданство">
+            <div class="form-group col-md-12">
+                <input required type="text" class="form-control form-control-sm" name="kratnost" placeholder="Размещение">
             </div>
-            <div class="form-group col-md-6">
-                <input required type="text" class="form-control form-control-sm" name="kratnost" placeholder="Кратность">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <input required type="text" class="form-control form-control-sm" name="grazhdanstvo" placeholder="Маршрут и места размещения город">
             </div>
         </div>
 
@@ -52,9 +107,17 @@
             </div>
         </div>
 
-        <div class="form-group">
-                <button type="submit" class="btn btn-secondary btn-sm"> Сохранить в б.д. и открыть xlsx </button>
+        <div class="form-row align-items-center">
+        <div class="col-auto">
+                <button type="submit" class="btn btn-secondary btn-sm">Сохранить</button>
+                <button type="submit" class="btn btn-secondary btn-sm">Открыть</button>
         </div>
+        </div>
+
+    </form>
+
+    <form action="\SaveXlsx" method="post">
+        {% csrf_token %}
     </form>
 </body>
 </html>
