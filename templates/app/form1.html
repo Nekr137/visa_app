@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Все записи</title>
-    {% load staticfiles %}
-    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css'%}" type="text/css">
-</head>
+{% extends 'app/base.html' %}
+{% block content%}
+{% load staticfiles %}
 
-
-<div>
-    <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-</div>
-
-
-
-<body class="container">
+<div class="container">
     <p></p>
     <form action="\create" method="post">
         {% csrf_token %}
@@ -118,28 +85,28 @@
 
         <div class="form-row">
             <div class="form-group col-md-12">
-                <textarea required type="text" rows="2" class="form-control form-control-sm" name="grazhdanstvo" placeholder="Маршрут и места размещения город"></textarea>
+                <textarea required rows="2" class="form-control form-control-sm" name="grazhdanstvo" placeholder="Маршрут и места размещения город"></textarea>
             </div>
         </div>
 
 
         <div class="form-row">
             <div class="form-group col-md-12">
-                <textarea required type="text" rows="3" class="form-control form-control-sm" name="prin_organiz" placeholder="Принимающая организация, её адрес, № референса"></textarea>
+                <textarea required rows="3" class="form-control form-control-sm" name="prin_organiz" placeholder="Принимающая организация, её адрес, № референса"></textarea>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-12">
-                <textarea required type="text" rows="3" class="form-control form-control-sm" name="dop_svedeniya" placeholder="Дополнительные сведения"></textarea>
+                <textarea required rows="3" class="form-control form-control-sm" name="dop_svedeniya" placeholder="Дополнительные сведения"></textarea>
             </div>
         </div>
 
         <div class="form-row align-items-center">
-        <div class="col-auto">
-                <button type="submit" class="btn btn-secondary btn-sm">Сохранить</button>
-                <button type="submit" class="btn btn-secondary btn-sm">Открыть</button>
-        </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Сохранить</button>
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Открыть</button>
+            </div>
         </div>
 
     </form>
@@ -147,5 +114,5 @@
     <form action="\SaveXlsx" method="post">
         {% csrf_token %}
     </form>
-</body>
-</html>
+</div>
+{% endblock%}

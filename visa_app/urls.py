@@ -22,6 +22,7 @@ urlpatterns = [
     re_path(r'^create',views.create),
     path('edit/<int:id>/', views.edit),
     path('delete/<int:id>/', views.delete),
+    re_path(r'form/(?P<type>\d+)', views.form),
     #re_path(r'^about/contact/', views.contact),
     #re_path(r'^about', views.about),
     path('', views.index),

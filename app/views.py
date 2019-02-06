@@ -6,6 +6,10 @@ from django.http import HttpResponseNotFound
 from .models import Data
 from .models import Xlsx
 
+
+def form(request,type):
+    return render(request, "app/form1.html", {"type": type})
+
 # получение данных из бд
 def index(request):
     records = Data.objects.all()
