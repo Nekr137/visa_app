@@ -10,11 +10,14 @@ from pprint import pprint
 
 def form1(request):
     if request.method == "POST":
-        print('Post reqeust from form1')
+        print('\n\nPost reqeust from form1')
         f1 = request.POST.dict()
         pprint(f1)
+        X = Xlsx('static/xlsx/1.xlsx')
+        X.WriteForm1()
+        X.Save()
 
-        return render(request, "app/form1.html", {"type": 1})
+        return render(request, "app/index.html", {"type": 1})
     else:
         return render(request, "app/form1.html", {"type": 1})
 

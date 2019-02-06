@@ -4,12 +4,22 @@ import openpyxl
 
 class Xlsx:
     def __init__(self,fname):
+        print('XLSX init')
         self.wb = openpyxl.Workbook()
         self.fname = fname
+        self.open()
+
+    def WriteForm1(self):
+        sheet1 = self.wb.get_sheet_by_name("Лист1")
+        sheet1['B2'] = 'dfjsdjfsjfd'
+
+
 
     def open(self):
+        print('XLSX OPEN')
         try:
             self.wb = openpyxl.load_workbook(filename=self.fname)
+            print('FileOpened!')
             #self.ws1 = self.wb.active
             return 1
         except:
@@ -35,7 +45,7 @@ class Xlsx:
         ws1.append(product_list)
 
     def Save(self):
-        self.wb.save(filename=self.fname)
+        self.wb.save(filename='test.xlsx')
 
 class Xlsx2:
     def __init__(self,fname):
