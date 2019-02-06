@@ -3,48 +3,34 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
-from .models import Data
-from .models import Xlsx
+from .models import Form1
+from .Xlsx import Xlsx
+from pprint import pprint
 
 
-def form(request,type):
-    return render(request, "app/form1.html", {"type": type})
+def form1(request):
+    if request.method == "POST":
+        print('Post reqeust from form1')
+        f1 = request.POST.dict()
+        pprint(f1)
+
+        return render(request, "app/form1.html", {"type": 1})
+    else:
+        return render(request, "app/form1.html", {"type": 1})
+
 
 # получение данных из бд
 def index(request):
-    records = Data.objects.all()
-    return render(request, "index.html", {"records": records})
+    records = Form1.objects.all()
+    return render(request, "app/index.html", {"records": records})
 
-# сохранение данных в бд
-def create(request):
-    if request.method == "POST":
-        rec = Data()
-        rec.grazhdanstvo = request.POST.get("grazhdanstvo")
-        rec.kratnost = request.POST.get("kratnost")
-        rec.grazhdanstvo2 = request.POST.get("grazhdanstvo2")
-        rec.data_rozh = request.POST.get("data_rozh")
-        rec.familiya = request.POST.get("familiya")
-        rec.imya = request.POST.get("imya")
-        rec.nomer_pass = request.POST.get("nomer_pass")
-        rec.prin_organiz = request.POST.get("prin_organiz")
-        rec.dop_svedeniya = request.POST.get("dop_svedeniya")
-        rec.save()
-    return HttpResponseRedirect("/")
-
-
-def SaveXlsx(request):
-    if request.method == "POST":
-        print('request')
-        X = Xlsx('file1.xlsx')
-        X.WriteCell('A2','test')
-        X.Close()
 
 
 
 # изменение данных в бд
 def edit(request, id):
     try:
-        record = Data.objects.get(id=id)
+        record = Form1.objects.get(id=id)
 
         if request.method == "POST":
             print("POST")
@@ -54,7 +40,7 @@ def edit(request, id):
             return HttpResponseRedirect("/")
         else:
             return render(request, "edit.html", {"record": record})
-    except Data.DoesNotExist:
+    except Form.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
 
