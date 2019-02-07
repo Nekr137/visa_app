@@ -3,20 +3,39 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
-from .models import Form1
+from .Forms import Form1
 from .Xlsx import Xlsx
 from pprint import pprint
+from django.db import models
 
 
 def form1(request):
     if request.method == "POST":
         print('\n\nPost reqeust from form1')
-        f1 = request.POST.dict()
-        pprint(f1)
-        X = Xlsx('static/xlsx/1.xlsx')
-        X.WriteForm1()
-        X.Save()
-
+        f = request.POST.dict()
+        pprint(f)
+        #X = Xlsx('static/xlsx/1.xlsx')
+        #X.WriteForm1(f1)
+        #X.Save()
+        F = Form1.objects.create(
+            confirmation = f.get('confirmation'),
+            multiplicity = f.get('multiplicity'),
+            nationality = f.get('nationality'),
+            entry = f.get('entry'),
+            departure = f.get('departure'),
+            lastname = f.get('lastname'),
+            familyname = f.get('familyname'),
+            firstname = f.get('firstname'),
+            name = f.get('name'),
+            birthday = f.get('birthday'),
+            sex = f.get('sex'),
+            passport = f.get('passport'),
+            goal = f.get('goal'),
+            date = f.get('date'),
+            placement = f.get('placement'),
+            rout = f.get('rout'),
+            hostorganization = f.get('hostorganization')
+        )
         return render(request, "app/index.html", {"type": 1})
     else:
         return render(request, "app/form1.html", {"type": 1})
@@ -24,8 +43,8 @@ def form1(request):
 
 # получение данных из бд
 def index(request):
-    records = Form1.objects.all()
-    return render(request, "app/index.html", {"records": records})
+    F = Form1()
+    return render(request, "app/index.html", {"form1": F})
 
 
 

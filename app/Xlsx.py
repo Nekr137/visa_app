@@ -1,6 +1,5 @@
 
-import openpyxl
-
+import openpyxl,re
 
 class Xlsx:
     def __init__(self,fname):
@@ -9,10 +8,28 @@ class Xlsx:
         self.fname = fname
         self.open()
 
-    def WriteForm1(self):
+    def WriteForm1(self,f1):
         sheet1 = self.wb.get_sheet_by_name("Лист1")
-        sheet1['B2'] = 'dfjsdjfsjfd'
 
+        sheet1['F2'] = f1.get('confirmation')
+        sheet1['D5'] = f1.get('multiplicity')
+        sheet1['D7'] = f1.get('nationality')
+        sheet1['C9'] = f1.get('entry')
+        sheet1['F9'] = f1.get('departure')
+        sheet1['C11'] = f1.get('lastname')+'/'+f1.get('familyname')
+        sheet1['E13'] = f1.get('firstname')+'/'+f1.get('name')
+        sheet1['D15'] = self.date_format(f1.get('birthday'))
+        print(f1.get('birthday'))
+        sheet1['G15'] = f1.get('sex')
+        sheet1['D17'] = f1.get('passport')
+        sheet1['D19'] = f1.get('goal')
+        sheet1['D40'] = f1.get('date')
+        sheet1['M40'] = f1.get('date')
+
+    def date_format(self,d):
+        d = re.findall(r'\d+',d)
+        d.reverse()
+        return '.'.join(d)
 
 
     def open(self):
