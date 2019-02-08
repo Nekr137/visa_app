@@ -1,6 +1,6 @@
 
 
-from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple
+from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea
 from .models import Form1
 
 SHIP_CHOICES = [
@@ -20,8 +20,7 @@ class ModelForm1(ModelForm):
         exclude = ('order',)
         p = ['Фамилия','First name','Имя, Отчество (имена)','Last name','Пол','Цель поездки',
                    'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
-                   'Подтверждение №','Дата документа',
-                   'Тип']
+                   'Подтверждение №','Дата документа','Размещение','Маршрушт','Принимающая организация']
         widgets = {
             'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder":p[0]}),
             'firstname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[1]}),
@@ -36,9 +35,12 @@ class ModelForm1(ModelForm):
             'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
             'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
             'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
-            'date': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
-            'type': RadioSelect(choices=SHIP_CHOICES,attrs={}),
-            'type2': CheckboxSelectMultiple(choices = SHIP_CHOICES)
+            'date': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
+            'placement' : Textarea(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
+            'rout': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),
+            'hostorganization': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[16]})
+            #'type': RadioSelect(choices=SHIP_CHOICES,attrs={}),
+            #'type2': CheckboxSelectMultiple(choices = SHIP_CHOICES)
         }
         labels = {
             'familyname': p[0],
@@ -55,7 +57,10 @@ class ModelForm1(ModelForm):
             'multiplicity' : p[11],
             'confirmation' : p[12],
             'date' : p[13],
-            'type': p[14]
+            #'type': p[14]
+            'placement':p[14],
+            'rout':p[15],
+            'hostorganization':p[16]
         }
 
 
