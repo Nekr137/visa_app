@@ -26,17 +26,18 @@ def form1(request):
 
 # получение данных из бд
 def index(request):
+    print('INDEX REQUESTG')
     form = ModelForm1()
     #FS = formset_factory(ModelForm1)
     #article = Form1.objects.get(pk=1)
     #form = ModelForm1(instance=article)
     if request.method == "POST":
-        print('\n\nPost reqeust from form1')
-        f = request.POST.dict()
-        pprint(f)
+        print("POST REQUEST")
         #X = Xlsx('static/xlsx/1.xlsx')
         #X.WriteForm1(f1)
         #X.Save()
+        form = ModelForm1(request.POST)
+        form.save()
     return render(request, "app/index.html", {"form": form})
 
 
