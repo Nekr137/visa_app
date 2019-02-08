@@ -6,3 +6,11 @@ color: rgb(236, 233, 233);
 .btn:not(:disabled):not(.disabled) {
     border-color: #c0bfbf;
 }
+li {
+list-style-type: none; /* Убираем маркеры */
+}
+ul {
+margin-left: 0; /* Отступ слева в браузере IE и Opera */
+padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+}
+

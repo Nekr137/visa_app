@@ -3,13 +3,16 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
-from .Forms import Form1
+#from .Forms import Form1
 from .Xlsx import Xlsx
 from pprint import pprint
 from django.db import models
-
+from .modelform import ModelForm1
+from .models import Form1
+from django.forms.formsets import formset_factory
 
 def form1(request):
+    form = ModelForm1()
     if request.method == "POST":
         print('\n\nPost reqeust from form1')
         f = request.POST.dict()
@@ -17,34 +20,24 @@ def form1(request):
         #X = Xlsx('static/xlsx/1.xlsx')
         #X.WriteForm1(f1)
         #X.Save()
-        F = Form1.objects.create(
-            confirmation = f.get('confirmation'),
-            multiplicity = f.get('multiplicity'),
-            nationality = f.get('nationality'),
-            entry = f.get('entry'),
-            departure = f.get('departure'),
-            lastname = f.get('lastname'),
-            familyname = f.get('familyname'),
-            firstname = f.get('firstname'),
-            name = f.get('name'),
-            birthday = f.get('birthday'),
-            sex = f.get('sex'),
-            passport = f.get('passport'),
-            goal = f.get('goal'),
-            date = f.get('date'),
-            placement = f.get('placement'),
-            rout = f.get('rout'),
-            hostorganization = f.get('hostorganization')
-        )
-        return render(request, "app/index.html", {"type": 1})
-    else:
-        return render(request, "app/form1.html", {"type": 1})
+
+    return render(request, "app/form1.html", {"form": form})
 
 
 # получение данных из бд
 def index(request):
-    F = Form1()
-    return render(request, "app/index.html", {"form1": F})
+    form = ModelForm1()
+    #FS = formset_factory(ModelForm1)
+    #article = Form1.objects.get(pk=1)
+    #form = ModelForm1(instance=article)
+    if request.method == "POST":
+        print('\n\nPost reqeust from form1')
+        f = request.POST.dict()
+        pprint(f)
+        #X = Xlsx('static/xlsx/1.xlsx')
+        #X.WriteForm1(f1)
+        #X.Save()
+    return render(request, "app/index.html", {"form": form})
 
 
 

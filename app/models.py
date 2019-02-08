@@ -19,9 +19,10 @@ class Form1(models.Model):
     multiplicity = models.TextField()
     confirmation = models.TextField()
     date = models.DateField()
-    placement = models.TextField()
-    rout = models.TextField()
-    hostorganization = models.TextField()
+    type = models.TextField()
+    # placement = models.TextField()
+    # rout = models.TextField()
+    # hostorganization = models.TextField()
 
 
 
