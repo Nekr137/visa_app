@@ -20,9 +20,9 @@ class Form1(models.Model):
     confirmation = models.TextField()
     date = models.DateField()
     type = models.TextField()
-    # placement = models.TextField()
-    # rout = models.TextField()
-    # hostorganization = models.TextField()
+    placement = models.TextField()
+    rout = models.TextField()
+    hostorganization = models.TextField()
 
 
 
