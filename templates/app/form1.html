@@ -2,102 +2,42 @@
 {% block content%}
 {% load staticfiles %}
 
-<form action="\form1" method="post">
+
+<form method="post">
 {% csrf_token %}
-<div class="form-row">
-    <div class="form-group col-md-2">
-        <label for="familyname">Фамилия</label>
-        <input required type="text" class="form-control form-control-sm" id="familyname" name="familyname" placeholder="Фамилия">
-    </div>
-    <div class="form-group col-md-2">
-        <label for="firstname">First name</label>
-        <input required type="text" class="form-control form-control-sm" id="firstname" name="firstname" placeholder="First name">
-    </div>
-    <div class="form-group col-md-2">
-        <label for="name">Имя, Отчество (имена)</label>
-        <input required type="text" class="form-control form-control-sm" id="name" name="name" placeholder="Имя">
-    </div>
-    <div class="form-group col-md-2">
-        <label for="lastname">Last name</label>
-        <input required type="text" class="form-control form-control-sm" id="lastname" name="lastname" placeholder="Last name">
-    </div>
-    <div class="form-group col-md-2">
-        <label for="sex">Пол</label>
-        <input required type="text" class="form-control form-control-sm" id="sex" name="sex" placeholder="Пол">
-    </div>
-    <div class="form-group col-md-2">
-        <label for="goal">Цель поездки</label>
-        <input required type="text" class="form-control form-control-sm" name="goal" id="goal" placeholder="Цель поездки">
-    </div>
+
+<div class="form-row" style="margin-bottom: 1rem;">
+{% for field in form %}
+    {% if forloop.counter <= 6 %}
+        <div class="form-group col-md-2">
+        {{ field.label_tag}}
+        {{field}}
+        </div>
+    {%elif forloop.counter <= 14%}
+        <div class="form-group col-md-3">
+        {{ field.label_tag}}
+        {{field}}
+        </div>
+    {%endif%}
+{% endfor %}
 </div>
 
-
-
-<div class="form-row">
-    <div class="form-group col-md-3">
-        <label for="birthday">Дата рождения</label>
-        <input type="date" class="form-control form-control-sm" id="birthday" name="birthday" placeholder="Дата рождения">
-    </div>
-    <div class="form-group col-md-3">
-        <label for="passport">Номер паспорта</label>
-        <input type="text" class="form-control form-control-sm" id="passport" name="passport" placeholder="Номер паспорта">
-    </div>
-    <div class="form-group col-md-3">
-        <label for="entry">Въезд с</label>
-        <input type="date" class="form-control form-control-sm" id="entry" name="entry" placeholder="Въезд с">
-    </div>
-    <div class="form-group col-md-3">
-        <label for="departure">Выезд до</label>
-        <input type="date" class="form-control form-control-sm" id="departure" name="departure" placeholder="Выезд до">
-    </div>
-</div>
-
-
-<div class="form-row">
-    <div class="form-group col-md-3">
-        <label for="nationality">Гражданство</label>
-        <input type="text" class="form-control form-control-sm" id="nationality" name="nationality" placeholder="Гражданство">
-    </div>
-    <div class="form-group col-md-3">
-        <label for="multiplicity">Кратность визы</label>
-        <input type="text" class="form-control form-control-sm" id="multiplicity" name="multiplicity" placeholder="Кратность визы">
-    </div>
-    <div class="form-group col-md-3">
-        <label for="confirmation">Подтверждение №</label>
-        <input type="text" class="form-control form-control-sm" id="confirmation" name="confirmation" placeholder="Подтверждение №">
-    </div>
-    <div class="form-group col-md-3">
-        <label for="date">Дата документа</label>
-        <input type="date" class="form-control form-control-sm" name="date" id="date">
-    </div>
-</div>
-
-
-
+    {% include "app/choose_sheeps.html" %}
 <div class="form-row">
     <div class="form-group col-md-12">
-        <input required type="text" class="form-control form-control-sm" name="placement" placeholder="Размещение">
+    {{ form.label_tag.placement }}
+    {{ form.placement }}
     </div>
-</div>
-
-<div class="form-row">
     <div class="form-group col-md-12">
-        <textarea required rows="2" class="form-control form-control-sm" name="rout" placeholder="Маршрут и места размещения город"></textarea>
+    {{ form.label_tag.rout }}
+    {{ form.rout }}
     </div>
-</div>
-
-
-<div class="form-row">
     <div class="form-group col-md-12">
-        <textarea required rows="2" class="form-control form-control-sm" name="hostorganization" placeholder="Принимающая организация, её адрес, № референса"></textarea>
+    {{ form.label_tag.hostorganization }}
+    {{ form.hostorganization }}
     </div>
 </div>
 
-<div class="form-row">
-    <div class="form-group col-md-12">
-        <textarea required rows="2" class="form-control form-control-sm" name="additionalinfo" placeholder="Дополнительные сведения"></textarea>
-    </div>
-</div>
 
 <div class="form-row align-items-center">
     <div class="col-auto">
@@ -107,3 +47,4 @@
 </form>
 
 {% endblock%}
+

@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseNotFound
@@ -12,34 +12,24 @@ from .models import Form1
 from django.forms.formsets import formset_factory
 
 def form1(request):
-    form = ModelForm1()
     if request.method == "POST":
-        print('\n\nPost reqeust from form1')
-        f = request.POST.dict()
-        pprint(f)
-        #X = Xlsx('static/xlsx/1.xlsx')
-        #X.WriteForm1(f1)
-        #X.Save()
-
-    return render(request, "app/form1.html", {"form": form})
-
-
-# получение данных из бд
-def index(request):
-    print('INDEX REQUESTG')
-    form = ModelForm1()
-    #FS = formset_factory(ModelForm1)
-    #article = Form1.objects.get(pk=1)
-    #form = ModelForm1(instance=article)
-    if request.method == "POST":
-        print("POST REQUEST")
+        print("view/vorm1 post")
         #X = Xlsx('static/xlsx/1.xlsx')
         #X.WriteForm1(f1)
         #X.Save()
         form = ModelForm1(request.POST)
         form.save()
-    return render(request, "app/index.html", {"form": form})
+        return redirect('/')
+    else:
+        print('view/form1 request')
+        form = ModelForm1()
+        return render(request, "app/form1.html", {"form": form})
 
+
+
+# получение данных из бд
+def index(request):
+    return render(request,"app/index.html")
 
 
 
