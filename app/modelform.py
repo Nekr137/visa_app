@@ -1,6 +1,6 @@
 
 
-from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect
+from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple
 from .models import Form1
 
 SHIP_CHOICES = [
@@ -37,7 +37,8 @@ class ModelForm1(ModelForm):
             'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
             'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
             'date': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
-            'type': RadioSelect(choices=SHIP_CHOICES,attrs={})
+            'type': RadioSelect(choices=SHIP_CHOICES,attrs={}),
+            'type2': CheckboxSelectMultiple(choices = SHIP_CHOICES)
         }
         labels = {
             'familyname': p[0],
