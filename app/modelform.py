@@ -1,24 +1,11 @@
 
 
 from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea
-from .models import Form1,Form2
-from django import template
-
-
-
-SHIP_CHOICES = [
-    ('akun','Viking Akun - АКУН'),
-    ('truvor','Viking Truvor - ТРУВОР'),
-    ('rurik','Viking Rurik - РЮРИК'),
-    ('helgi','Vikig Helgi - ХЕЛЬГИ'),
-    ('ingvar','Viking Ingvar - ИНГВАР'),
-    ]
-
+from .models import Form1,Form2,GroupMembers
 
 class ModelForm1(ModelForm):
     class Meta:
         model = Form1
-        #fields = ['placement','firstname','lastname','name']
         bootstrap_class = 'form-control form-control-sm'
         exclude = ('order',)
         p = ['Фамилия','First name','Имя, Отчество (имена)','Last name','Пол','Цель поездки',
@@ -70,7 +57,6 @@ class ModelForm1(ModelForm):
 class ModelForm2(ModelForm):
     class Meta:
         model = Form2
-        #fields = ['placement','firstname','lastname','name']
         bootstrap_class = 'form-control form-control-sm'
         exclude = ('order',)
         p = ['Фамилия','First name','Имя, Отчество (имена)','Last name','Пол','Цель поездки',
@@ -94,8 +80,6 @@ class ModelForm2(ModelForm):
             'placement' : Textarea(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
             'rout': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),
             'hostorganization': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[16]})
-            #'type': RadioSelect(choices=SHIP_CHOICES,attrs={}),
-            #'type2': CheckboxSelectMultiple(choices = SHIP_CHOICES)
         }
         labels = {
             'familyname': p[0],
@@ -116,4 +100,31 @@ class ModelForm2(ModelForm):
             'rout':p[15],
             'hostorganization':p[16]
         }
+
+class MembersForm(ModelForm):
+    class Meta:
+        model = GroupMembers
+        bootstrap_class = 'form-control form-control-sm'
+        exclude = ('order',)
+        p = ['Фамилия', 'First name', 'Имя, Отчество (имена)', 'Last name',
+             'Дата рождения', 'Номер паспорта','Гражданство']
+        widgets = {
+            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
+            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
+            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
+            'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
+            'birthday': DateInput(format=('%d-%m-%Y'), attrs={'class': bootstrap_class, 'type': 'date'}),
+            'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
+            'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
+            }
+        labels = {
+            'familyname': p[0],
+            'firstname': p[1],
+            'name': p[2],
+            'lastname': p[3],
+            'birthday': p[4],
+            'passport': p[5],
+            'nationality': p[6],
+        }
+
 

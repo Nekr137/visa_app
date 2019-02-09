@@ -8,7 +8,7 @@ from .Xlsx import Xlsx
 from pprint import pprint
 from django.db import models
 from .modelform import ModelForm1, ModelForm2
-from .models import Form1, Form2
+from .models import Form1, Form2, GroupMembers
 from django.forms.formsets import formset_factory
 from django.forms.models import model_to_dict
 
@@ -40,6 +40,11 @@ def form2(request):
         print('view/form1 request')
         form = ModelForm2()
         return render(request, "app/form2.html", {"form": form,"title":"Форма для групповой визы"})
+
+def Members(request):
+    if request.method == "POST":
+
+
 
 def all_forms(request):
     data = Form1.objects.all()
