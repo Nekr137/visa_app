@@ -7,9 +7,10 @@ from django.http import HttpResponseNotFound
 from .Xlsx import Xlsx
 from pprint import pprint
 from django.db import models
-from .modelform import ModelForm1
-from .models import Form1
+from .modelform import ModelForm1, ModelForm2
+from .models import Form1, Form2
 from django.forms.formsets import formset_factory
+from django.forms.models import model_to_dict
 
 def form1(request):
     if request.method == "POST":
@@ -23,9 +24,29 @@ def form1(request):
     else:
         print('view/form1 request')
         form = ModelForm1()
-        return render(request, "app/form1.html", {"form": form})
+        return render(request, "app/form1.html", {"form": form,"title":"Форма для одиночной визы"})
 
 
+def form2(request):
+    if request.method == "POST":
+        print("view/form2 post")
+        #X = Xlsx('static/xlsx/1.xlsx')
+        #X.WriteForm1(f1)
+        #X.Save()
+        form = ModelForm2(request.POST)
+        form.save()
+        return redirect('/')
+    else:
+        print('view/form1 request')
+        form = ModelForm2()
+        return render(request, "app/form2.html", {"form": form,"title":"Форма для групповой визы"})
+
+def all_forms(request):
+    data = Form1.objects.all()
+    P = ['Фамилия', 'First name', 'Имя, Отчество (имена)', 'Last name', 'Пол', 'Цель поездки',
+         'Дата рождения', 'Номер паспорта', 'Въезд с', 'Выезд до', 'Гражданство', 'Кратность визы',
+         'Подтверждение №', 'Дата документа', 'Размещение', 'Маршрушт', 'Принимающая организация']
+    return render(request,"app/all_forms.html", {"data":data,"P":P})
 
 # получение данных из бд
 def index(request):

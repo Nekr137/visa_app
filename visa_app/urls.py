@@ -21,9 +21,11 @@ from app import views
 urlpatterns = [
     path('edit/<int:id>/', views.edit),
     path('delete/<int:id>/', views.delete),
-    re_path(r'form1', views.form1),
+    re_path(r'^form1', views.form1),
+    re_path(r'^form2', views.form2),
+    re_path(r'^all_forms', views.all_forms),
     #re_path(r'form2', views.form2),
     #re_path(r'^about/contact/', views.contact),
     #re_path(r'^about', views.about),
-    path('', views.index),
+    path(r'', views.index),
 ]

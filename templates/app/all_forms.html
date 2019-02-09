@@ -1,0 +1,42 @@
+{% extends 'app/base.html' %}
+{% block content%}
+
+
+<table class="table table-inverse table-sm" style="font-size: 70%;">
+  <thead class="">
+    <tr>
+      <th>#</th>
+        {% for p in P %}
+            <th>{{p}}</th>
+        {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for d in data %}
+    <tr>
+      <th scope="row">{{d.id}}</th>
+      <td>{{d.familyname}}</td>
+      <td>{{d.firstname}}</td>
+      <td>{{d.name}}</td>
+      <td>{{d.lastname}}</td>
+      <td>{{d.sex}}</td>
+      <td>{{d.goal}}</td>
+      <td>{{d.birthday}}</td>
+      <td>{{d.passport}}</td>
+      <td>{{d.entry}}</td>
+      <td>{{d.departure}}</td>
+      <td>{{d.nationality}}</td>
+      <td>{{d.multiplicity}}</td>
+      <td>{{d.confirmation}}</td>
+      <td>{{d.date}}</td>
+      <td>{{d.placement}}</td>
+      <td>{{d.rout}}</td>
+      <td>{{d.hostorganization}}</td>
+    </tr>
+    <tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+{% endblock %}
