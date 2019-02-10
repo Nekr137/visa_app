@@ -108,8 +108,8 @@ class ModelForm2(ModelForm):
 class MembersForm(ModelForm):
     def __init__(self,*args, **kwargs):
         super(MembersForm,self).__init__(*args,**kwargs)
-        for field in self.Meta.fields:
-            self.fields[field].required = False
+        #for field in self.Meta.fields:
+        #    self.fields[field].required = False
 
     class Meta:
         error_messages = {

@@ -38,6 +38,13 @@ def form2(request):
                 created_form.save()
                 formset.save()
                 return redirect('/')
+            else:
+                return HttpResponse("Invalid data")
+
+        else:
+            return HttpResponse("Invalid data")
+
+
     else:
         form = ModelForm2()
         members_set = MemberInlineFormset()
