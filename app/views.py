@@ -1,16 +1,13 @@
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect,HttpResponse
-from django.http import HttpResponseRedirect
-from django.http import HttpResponseNotFound
-#from .Forms import Form1
+from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
 from .Xlsx import Xlsx
 from pprint import pprint
 from django.db import models
-from .modelform import ModelForm1, ModelForm2
+from .modelform import ModelForm1, ModelForm2, MembersForm
 from .models import Form1, Form2, GroupMembers
 from django.forms.formsets import formset_factory
-from django.forms.models import model_to_dict
+from django.forms.models import model_to_dict, modelformset_factory
 
 def form1(request):
     if request.method == "POST":
@@ -30,25 +27,42 @@ def form1(request):
 def form2(request):
     if request.method == "POST":
         print("view/form2 post")
-        #X = Xlsx('static/xlsx/1.xlsx')
-        #X.WriteForm1(f1)
-        #X.Save()
-        form = ModelForm2(request.POST)
+        r = request.POST
+        form = ModelForm2(r)
+        print('________________________rrr__________')
+        pprint(r)
+        print('__________________________________')
         form.save()
         return redirect('/')
     else:
         print('view/form1 request')
         form = ModelForm2()
-        return render(request, "app/form2.html", {"form": form,"title":"Форма для групповой визы"})
+        members_form = []
+        p = ['Фамилия', 'First name', 'Имя, отчество', 'Last name',
+             'Дата р-я', '№ паспорта','Гражданство']
+        # for k in range(10):
+        #     members_form.append(MembersForm())
+        set = modelformset_factory(MembersForm,extra=2)
 
-def Members(request):
+        return render(request, "app/form2.html", {
+            "form": form,
+            "Members_form":set,
+            "title":"Форма для групповой визы",
+            "P":p
+        })
+
+def member_form(request):
     if request.method == "POST":
-
+        print('MEMBER FORM POST REQUEST')
+        r = request.POST
+        form = ModelForm2(r)
+        print('________________________rrr__________')
+        pprint(r)
 
 
 def all_forms(request):
     data = Form1.objects.all()
-    P = ['Фамилия', 'First name', 'Имя, Отчество (имена)', 'Last name', 'Пол', 'Цель поездки',
+    P = ['Фамилия', 'First name', 'Имя, Отчество', 'Last name', 'Пол', 'Цель поездки',
          'Дата рождения', 'Номер паспорта', 'Въезд с', 'Выезд до', 'Гражданство', 'Кратность визы',
          'Подтверждение №', 'Дата документа', 'Размещение', 'Маршрушт', 'Принимающая организация']
     return render(request,"app/all_forms.html", {"data":data,"P":P})

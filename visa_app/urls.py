@@ -24,6 +24,7 @@ urlpatterns = [
     re_path(r'^form1', views.form1),
     re_path(r'^form2', views.form2),
     re_path(r'^all_forms', views.all_forms),
+    re_path(r'^member_form', views.member_form),
     #re_path(r'form2', views.form2),
     #re_path(r'^about/contact/', views.contact),
     #re_path(r'^about', views.about),

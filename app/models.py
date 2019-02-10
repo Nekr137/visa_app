@@ -43,13 +43,13 @@ class Form2(models.Model):
 
 class GroupMembers(models.Model):
     form2 = models.ForeignKey(Form2,on_delete=models.CASCADE)
-    g_familyname = models.CharField(max_length=30)
-    g_firstname = models.CharField(max_length=30)
-    g_name = models.CharField(max_length=30)
-    g_lastname = models.CharField(max_length=30)
-    g_birthday = models.DateField()
-    g_passport = models.TextField()
-    g_nationality = models.TextField()
+    familyname = models.CharField(max_length=30,default='')
+    firstname = models.CharField(max_length=30,default='')
+    name = models.CharField(max_length=30,default='')
+    lastname = models.CharField(max_length=30,default='')
+    birthday = models.DateField(default='')
+    passport = models.TextField(default='')
+    nationality = models.TextField(default='')
 
 
 

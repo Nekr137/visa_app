@@ -52,15 +52,13 @@ class ModelForm1(ModelForm):
             'hostorganization':p[16]
         }
 
-
-
 class ModelForm2(ModelForm):
     class Meta:
         model = Form2
         bootstrap_class = 'form-control form-control-sm'
         exclude = ('order',)
-        p = ['Фамилия','First name','Имя, Отчество (имена)','Last name','Пол','Цель поездки',
-                   'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
+        p = ['Фамилия','First name','Имя, Отчество','Last name','Пол','Цель поездки',
+                   'Дата рождения','№ паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
                    'Подтверждение №','Дата документа','Размещение','Маршрушт','Принимающая организация']
         widgets = {
             'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder":p[0]}),
@@ -102,29 +100,46 @@ class ModelForm2(ModelForm):
         }
 
 class MembersForm(ModelForm):
+    def __init__(self,*args, **kwargs):
+        super(MembersForm,self).__init__(*args,**kwargs)
+        # for f in self.fields:
+        #     f.required = False
+
+        for field in self.Meta.fields:
+            self.fields[field].required = False
+
     class Meta:
         model = GroupMembers
-        bootstrap_class = 'form-control form-control-sm'
+        bootstrap_class = 'form-control form-control-sm input-xs'
         exclude = ('order',)
-        p = ['Фамилия', 'First name', 'Имя, Отчество (имена)', 'Last name',
-             'Дата рождения', 'Номер паспорта','Гражданство']
+        p = ['Фамилия', 'First name', 'Имя, отчество', 'Last name',
+             'Дата р-я', '№ паспорта','Гражданство']
         widgets = {
             'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
             'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
             'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
             'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
-            'birthday': DateInput(format=('%d-%m-%Y'), attrs={'class': bootstrap_class, 'type': 'date'}),
-            'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
-            'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
+            'birthday': DateInput(format=('%d-%m-%Y'), attrs={'class': bootstrap_class, 'type':'date'}),
+            'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[5]}),
+            'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[6]}),
             }
-        labels = {
-            'familyname': p[0],
-            'firstname': p[1],
-            'name': p[2],
-            'lastname': p[3],
-            'birthday': p[4],
-            'passport': p[5],
-            'nationality': p[6],
+        fields = {
+            'familyname',
+            'firstname',
+            'name',
+            'lastname',
+            'birthday',
+            'passport',
+            'nationality'
         }
+        # labels = {
+        #     'familyname': p[0],
+        #     'firstname': p[1],
+        #     'name': p[2],
+        #     'lastname': p[3],
+        #     'birthday': p[4],
+        #     'passport': p[5],
+        #     'nationality': p[6],
+        # }
 
 

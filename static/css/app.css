@@ -9,12 +9,20 @@ li {
     list-style-type: none; /* Убираем маркеры */
 }
 ul {
-    margin-left: 0; /* Отступ слева в браузере IE и Opera */
-    padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+    margin-left: 0;
+    padding-left: 0;
 }
 td{
     white-space: nowrap;
 }
 th{
     white-space: nowrap;
+}
+
+.input-xs {
+  height: 22px;
+  padding: 2px 5px;
+  font-size: 12px;
+  line-height: 1.5; /* If Placeholder of the input is moved up, rem/modify this. */
+  border-radius: 3px;
 }
