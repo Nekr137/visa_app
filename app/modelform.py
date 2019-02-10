@@ -102,9 +102,6 @@ class ModelForm2(ModelForm):
 class MembersForm(ModelForm):
     def __init__(self,*args, **kwargs):
         super(MembersForm,self).__init__(*args,**kwargs)
-        # for f in self.fields:
-        #     f.required = False
-
         for field in self.Meta.fields:
             self.fields[field].required = False
 
@@ -123,7 +120,7 @@ class MembersForm(ModelForm):
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[5]}),
             'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[6]}),
             }
-        fields = {
+        fields = (
             'familyname',
             'firstname',
             'name',
@@ -131,7 +128,7 @@ class MembersForm(ModelForm):
             'birthday',
             'passport',
             'nationality'
-        }
+        )
         # labels = {
         #     'familyname': p[0],
         #     'firstname': p[1],

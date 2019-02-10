@@ -41,11 +41,15 @@
 
     <div style="margin-bottom: 3rem">
     <h2>Список группы</h2>
-    {% for m in Members_form %}
-        <form action="all_forms" method="post">
-            {% include "app/members_form.html" %}
-        </form>
-    {% endfor %}
+        {% for member in members_set %}
+        <div class="form-row" style="font-size: 85%;">
+            {% for m in member %}
+                <div class="" style="">
+                    {{m}}
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
     </div>
 </div>
 

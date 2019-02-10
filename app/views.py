@@ -7,7 +7,7 @@ from django.db import models
 from .modelform import ModelForm1, ModelForm2, MembersForm
 from .models import Form1, Form2, GroupMembers
 from django.forms.formsets import formset_factory
-from django.forms.models import model_to_dict, modelformset_factory
+from django.forms.models import model_to_dict, modelformset_factory, inlineformset_factory
 
 def form1(request):
     if request.method == "POST":
@@ -37,18 +37,12 @@ def form2(request):
     else:
         print('view/form1 request')
         form = ModelForm2()
-        members_form = []
-        p = ['Фамилия', 'First name', 'Имя, отчество', 'Last name',
-             'Дата р-я', '№ паспорта','Гражданство']
-        # for k in range(10):
-        #     members_form.append(MembersForm())
-        set = modelformset_factory(MembersForm,extra=2)
+        members_set = modelformset_factory(GroupMembers, MembersForm, extra=10,labels=[''])
 
         return render(request, "app/form2.html", {
             "form": form,
-            "Members_form":set,
+            "members_set":members_set,
             "title":"Форма для групповой визы",
-            "P":p
         })
 
 def member_form(request):
