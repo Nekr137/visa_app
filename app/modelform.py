@@ -2,6 +2,7 @@
 
 from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea
 from .models import Form1,Form2,GroupMembers
+from django.core.exceptions import NON_FIELD_ERRORS
 
 class ModelForm1(ModelForm):
     class Meta:
@@ -54,6 +55,11 @@ class ModelForm1(ModelForm):
 
 class ModelForm2(ModelForm):
     class Meta:
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
+            },
+        }
         model = Form2
         bootstrap_class = 'form-control form-control-sm'
         exclude = ('order',)
@@ -106,6 +112,11 @@ class MembersForm(ModelForm):
             self.fields[field].required = False
 
     class Meta:
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "%(model_name)s's %(field_labels)s are not unique.",
+            }
+        }
         model = GroupMembers
         bootstrap_class = 'form-control form-control-sm input-xs'
         exclude = ('order',)

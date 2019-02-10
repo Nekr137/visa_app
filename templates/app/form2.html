@@ -37,10 +37,11 @@
                 <button type="submit" class="btn btn-outline-secondary btn-sm">Сохранить</button>
             </div>
         </div>
-    </form>
+
 
     <div style="margin-bottom: 3rem">
     <h2>Список группы</h2>
+        {{ members_set.management_form }}
         {% for member in members_set %}
         <div class="form-row" style="font-size: 85%;">
             {% for m in member %}
@@ -51,6 +52,7 @@
         </div>
         {% endfor %}
     </div>
+    </form>
 </div>
 
 

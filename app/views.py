@@ -25,34 +25,27 @@ def form1(request):
 
 
 def form2(request):
-    if request.method == "POST":
-        print("view/form2 post")
-        r = request.POST
-        form = ModelForm2(r)
-        print('________________________rrr__________')
-        pprint(r)
-        print('__________________________________')
-        form.save()
-        return redirect('/')
-    else:
-        print('view/form1 request')
-        form = ModelForm2()
-        members_set = modelformset_factory(GroupMembers, MembersForm, extra=10,labels=[''])
+    MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=10, can_delete=False)
 
+    if request.method == "POST":
+        form = ModelForm2(request.POST)
+
+        if form.is_valid():
+            created_form = form.save(commit=False)
+            formset = MemberInlineFormset(request.POST or None, instance=created_form)
+
+            if formset.is_valid():
+                created_form.save()
+                formset.save()
+                return redirect('/')
+    else:
+        form = ModelForm2()
+        members_set = MemberInlineFormset()
         return render(request, "app/form2.html", {
             "form": form,
             "members_set":members_set,
             "title":"Форма для групповой визы",
         })
-
-def member_form(request):
-    if request.method == "POST":
-        print('MEMBER FORM POST REQUEST')
-        r = request.POST
-        form = ModelForm2(r)
-        print('________________________rrr__________')
-        pprint(r)
-
 
 def all_forms(request):
     data = Form1.objects.all()
