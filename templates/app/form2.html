@@ -1,6 +1,7 @@
 {% extends 'app/base.html' %}
 {% block content%}
-
+<script src="/path/to/jquery.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <div class="container" style="margin-top: 10px;">
     <h1>{{title}}</h1>
     <form method="post" action="form2">
@@ -39,22 +40,75 @@
         </div>
 
 
+
+
     <div style="margin-bottom: 3rem">
     <h2>Список группы</h2>
         {{ members_set.management_form }}
         {% for member in members_set %}
+
+        <div id="members"></div>
+
+
         <div class="form-row" style="font-size: 85%;">
             {% for m in member %}
                 <div class="" style="">
-                    {{m}}
+                        {{m}}
                 </div>
             {% endfor %}
         </div>
         {% endfor %}
     </div>
+    <button type="button" id="add_member" class="btn btn-outline-secondary btn-sm">Добавить члена группы</button>
+
     </form>
 </div>
 
 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+NUM = 0
+$('#add_member').click(function(){
+    alert('add_member')
+    NUM++;
+    $.ajax({
+        url: '/add_member',
+        type: 'post',
+        data: {
+            'data':'dddd',
+            'name':'name',
+            'NUM':NUM,
+            'csrfmiddlewaretoken': '{{csrf_token}}'
+            },
+        success: function(resp){
+            alert(resp);
+        },
+        failure: function(data){
+            alert('error');
+            }
+     });
+});
+</script>
+
+<script>
+window.onload = function ()
+{
+
+    //получаем идентификатор элемента
+    <!--var a = document.getElementById('add_member');-->
+    <!--var m = document.getElementById('members');-->
+    <!--var n = 0;-->
+
+
+    <!--//вешаем на него событие-->
+    <!--a.onclick = function()-->
+    <!--{-->
+        <!--console.log('add_member');-->
+        <!--m.innerHTML += 'text';-->
+
+    <!--}-->
+}
+</script>
 
 {% endblock %}
+

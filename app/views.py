@@ -34,25 +34,35 @@ def form2(request):
             created_form = form.save(commit=False)
             formset = MemberInlineFormset(request.POST or None, instance=created_form)
 
-            if formset.is_valid():
-                created_form.save()
-                formset.save()
-                return redirect('/')
-            else:
-                return HttpResponse("Invalid data")
-
+            for f in formset:
+                if f.is_valid():
+                    created_form.save()
+                    f.save()
+            return redirect('/')
         else:
             return HttpResponse("Invalid data")
 
 
     else:
         form = ModelForm2()
-        members_set = MemberInlineFormset()
+        members_set = MemberInlineFormset(prefix=6)
         return render(request, "app/form2.html", {
             "form": form,
             "members_set":members_set,
             "title":"Форма для групповой визы",
         })
+
+
+def add_member(request):
+    if request.method == "POST" and request.is_ajax():
+        MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=10, can_delete=False)
+        NUM = request.POST['NUM']
+        print(NUM)
+        members_set = MemberInlineFormset(prefix=NUM)
+
+        return HttpResponse(members_set)
+    else:
+        print('NONE AJAX')
 
 def all_forms(request):
     data = Form1.objects.all()
