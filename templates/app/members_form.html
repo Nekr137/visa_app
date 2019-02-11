@@ -1,12 +1,9 @@
 
-{{ members_set.management_form }}
-{% for member in members_set %}
 <div id="member_id_{{NUM}}" class="form-row" style="font-size: 85%;">
-    {% for m in member %}
+    {% for field in member %}
         <div class="" style="">
-            {{m}}
+            {{field}}
         </div>
     {% endfor %}
     <button type="button" id="delete_btn_id_{{forloop.counter}}" class="btn btn-outline-secondary btn-sm input-xs" onclick="delete_m({{NUM}})">-</button>
 </div>
-{% endfor %}

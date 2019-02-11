@@ -51,11 +51,8 @@ def form2(request):
 def add_member(request):
     if request.method == "POST" and request.is_ajax():
         NUM = request.POST['NUM']
-        #MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=1, can_delete=False, fields='__all__')
-        #members_set = MemberInlineFormset(prefix=NUM)
-        members_set = MembersForm(prefix=NUM)
-        return HttpResponse(members_set)
-        #return render(request, "app/members_form.html", {"members_set": members_set, 'NUM':NUM})
+        member = MembersForm(prefix=NUM)
+        return render(request, "app/members_form.html", {"member": member, 'NUM':NUM})
 
 def all_forms(request):
     data = Form1.objects.all()

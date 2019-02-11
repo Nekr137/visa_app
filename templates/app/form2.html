@@ -61,7 +61,6 @@ function add_m()
         data: {'NUM':NUM,'csrfmiddlewaretoken': '{{csrf_token}}'},
         success: function(resp)
         {
-            console.log(resp)
             $("#members").append(resp);
             $('#NUM').val(NUM)
         },
