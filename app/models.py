@@ -21,6 +21,8 @@ class Form1(models.Model):
     placement = models.TextField()
     rout = models.TextField()
     hostorganization = models.TextField()
+    def __str__(self):
+        return self.familyname
 
 class Form2(models.Model):
     familyname = models.CharField(max_length=30)
@@ -41,6 +43,9 @@ class Form2(models.Model):
     rout = models.TextField()
     hostorganization = models.TextField()
 
+    def __str__(self):
+        return self.familyname
+
 class GroupMembers(models.Model):
     form2 = models.ForeignKey(Form2,on_delete=models.CASCADE)
     familyname = models.CharField(max_length=30,default='')
@@ -50,6 +55,9 @@ class GroupMembers(models.Model):
     birthday = models.DateField(default='')
     passport = models.TextField(default='')
     nationality = models.TextField(default='')
+
+    def __str__(self):
+        return self.familyname
 
 
 

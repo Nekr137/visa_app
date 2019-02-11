@@ -40,6 +40,18 @@
         </div>
 
     <div id="members" style="margin-top: 1rem;">
+        {{ members_set.management_form }}
+        {% for member in members_set %}
+            <div id="member_id_{{NUM}}" class="form-row" style="font-size: 85%;">
+                {% for m in member %}
+                    <div class="" style="">
+                        {{m}}
+                    </div>
+                {% endfor %}
+                <button type="button" id="delete_btn_id_{{forloop.counter}}" class="btn btn-outline-secondary btn-sm input-xs" onclick="delete_m({{NUM}})">-</button>
+            </div>
+        {% endfor %}
+
     </div>
     <button type="button" id="add_member" class="btn btn-outline-secondary btn-sm input-xs" onclick="add_m()">+</button>
     </form>
@@ -48,7 +60,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
-NUM = 0
+NUM = {{NUM}}
 var m = document.getElementById('members');
 function add_m()
 {
@@ -61,6 +73,7 @@ function add_m()
         success: function(resp)
         {
             $("#members").append(resp);
+            $('#id_groupmembers_set-TOTAL_FORMS').val(NUM)
         },
     });
 }
@@ -69,7 +82,7 @@ function delete_m(NUM)
 {
     console.log('del')
     $("#member_id_"+NUM).remove()
-
+    $('#id_groupmembers_set-TOTAL_FORMS').val(NUM)
 }
 </script>
 

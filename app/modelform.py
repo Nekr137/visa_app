@@ -3,6 +3,7 @@
 from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea
 from .models import Form1,Form2,GroupMembers
 from django.core.exceptions import NON_FIELD_ERRORS
+from django.forms.models import BaseInlineFormSet
 
 class ModelForm1(ModelForm):
     class Meta:
@@ -110,6 +111,8 @@ class MembersForm(ModelForm):
         super(MembersForm,self).__init__(*args,**kwargs)
         for field in self.Meta.fields:
             self.fields[field].required = True
+
+
 
     class Meta:
         model = GroupMembers
