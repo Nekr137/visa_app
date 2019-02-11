@@ -1,13 +1,13 @@
-<style>
 
-</style>
 
+
+
+{% for member in members_set2 %}
 <div class="form-row" style="font-size: 85%;">
-{% for field in m %}
-    {% if forloop.counter > 1 %}
-            <div class="" style="">
-            {{field}}
-            </div>
-    {%endif%}
-{% endfor %}
+    {% for m in member %}
+        <div class="" style="">
+            {{m}}
+        </div>
+    {% endfor %}
 </div>
+{% endfor %}

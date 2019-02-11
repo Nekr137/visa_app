@@ -25,19 +25,22 @@ def form1(request):
 
 
 def form2(request):
-    MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=10, can_delete=False)
+
 
     if request.method == "POST":
+        MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=5, can_delete=False, )
         form = ModelForm2(request.POST)
 
         if form.is_valid():
             created_form = form.save(commit=False)
+            print('RE',request.POST)
             formset = MemberInlineFormset(request.POST or None, instance=created_form)
 
-            for f in formset:
-                if f.is_valid():
-                    created_form.save()
-                    f.save()
+            #for f in formset:
+            #    if f.is_valid():
+            if formset.is_valid():
+                created_form.save()
+                formset.save()
             return redirect('/')
         else:
             return HttpResponse("Invalid data")
@@ -45,7 +48,8 @@ def form2(request):
 
     else:
         form = ModelForm2()
-        members_set = MemberInlineFormset(prefix=6)
+        MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=1   , can_delete=False, )
+        members_set = MemberInlineFormset()
         return render(request, "app/form2.html", {
             "form": form,
             "members_set":members_set,
@@ -55,12 +59,11 @@ def form2(request):
 
 def add_member(request):
     if request.method == "POST" and request.is_ajax():
-        MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=10, can_delete=False)
         NUM = request.POST['NUM']
-        print(NUM)
+        MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=int(NUM), can_delete=False)
         members_set = MemberInlineFormset(prefix=NUM)
-
-        return HttpResponse(members_set)
+        #return HttpResponse(members_set)
+        return render(request, "app/members_form.html", {"members_set2": members_set})
     else:
         print('NONE AJAX')
 
