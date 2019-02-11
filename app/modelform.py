@@ -107,13 +107,6 @@ class ModelForm2(ModelForm):
         }
 
 class MembersForm(ModelForm):
-    def __init__(self,*args, **kwargs):
-        super(MembersForm,self).__init__(*args,**kwargs)
-        for field in self.Meta.fields:
-            self.fields[field].required = True
-
-
-
     class Meta:
         model = GroupMembers
         bootstrap_class = 'form-control form-control-sm input-xs'
@@ -148,4 +141,12 @@ class MembersForm(ModelForm):
         #     'nationality': p[6],
         # }
 
+    def __init__(self,*args, **kwargs):
+        super(MembersForm,self).__init__(*args,**kwargs)
+        for field in self.fields:
+            self.fields[field].required = True
+        #
+        # self.fields['familyname'].required = True
+        # self.fields['firstname'].required = True
+        # self.fields['name'].required = True
 

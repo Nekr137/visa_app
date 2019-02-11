@@ -27,24 +27,21 @@ def form1(request):
 def form2(request):
     if request.method == "POST":
         NUM = int(request.POST.get('NUM'))
-        MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=1, can_delete=False, )
-        form = ModelForm2(request.POST)
+        form = ModelForm2(request.POST,prefix='0')
 
         if form.is_valid():
-            created_form = form.save(commit=False)
+            f = form.save()
+            f.save()
             for k in range(1,NUM+1):
-                formset = MemberInlineFormset(request.POST or None, instance=created_form,prefix=k)
-
-                if formset.is_valid():
-                    created_form.save()
-                    formset.save()
+                member_form = MembersForm(request.POST,prefix=str(k))
+                if member_form.is_valid():
+                    m = member_form.save(commit=False)
+                    m.form2_id = f.id
+                    m.save()
             return redirect('/')
-        else:
-            return HttpResponse("Invalid data")
-
 
     else:
-        form = ModelForm2()
+        form = ModelForm2(prefix='0')
         return render(request, "app/form2.html", {
             "form": form,
             "title":"Форма для групповой визы",
@@ -54,9 +51,11 @@ def form2(request):
 def add_member(request):
     if request.method == "POST" and request.is_ajax():
         NUM = request.POST['NUM']
-        MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=1, can_delete=False)
-        members_set = MemberInlineFormset(prefix=NUM)
-        return render(request, "app/members_form.html", {"members_set": members_set, 'NUM':NUM})
+        #MemberInlineFormset = inlineformset_factory(Form2, GroupMembers, MembersForm, extra=1, can_delete=False, fields='__all__')
+        #members_set = MemberInlineFormset(prefix=NUM)
+        members_set = MembersForm(prefix=NUM)
+        return HttpResponse(members_set)
+        #return render(request, "app/members_form.html", {"members_set": members_set, 'NUM':NUM})
 
 def all_forms(request):
     data = Form1.objects.all()
