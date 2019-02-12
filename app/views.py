@@ -2,7 +2,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
 from .Xlsx import Xlsx
-from pprint import pprint
 from django.db import models
 from .modelform import ModelForm1, ModelForm2, MembersForm
 from .models import Form1, Form2, GroupMembers
@@ -34,13 +33,31 @@ def form2(request):
                     m.form2_id = f.id
                     m.save()
             return redirect('/')
-
     else:
         form = ModelForm2(prefix='0')
         return render(request, "app/form2.html", {
             "form": form,
             "title":"Форма для групповой визы",
         })
+
+
+
+def form1_delete(request):
+    if request.method == "GET":
+        id = request.GET.get('id')
+        note = Form1.objects.get(id=id)
+        note.delete()
+        return HttpResponseRedirect("/")
+
+
+
+def form2_delete(request):
+    if request.method == "GET":
+        id = request.GET.get('id')
+        note = Form2.objects.get(id=id)
+        print('note = ',note)
+        note.delete()
+        return HttpResponseRedirect("/")
 
 
 def add_member(request):
@@ -89,15 +106,5 @@ def edit(request, id):
         else:
             return render(request, "edit.html", {"record": record})
     except Form.DoesNotExist:
-        return HttpResponseNotFound("<h2>Person not found</h2>")
-
-
-# удаление данных из бд
-def delete(request, id):
-    try:
-        person = Data.objects.get(id=id)
-        person.delete()
-        return HttpResponseRedirect("/")
-    except Data.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
 
