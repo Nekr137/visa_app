@@ -5,10 +5,29 @@ from .models import Form1,Form2,GroupMembers
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.forms.models import BaseInlineFormSet
 
+bootstrap_class = 'form-control form-control-sm'
+
+class ShipsForm(ModelForm):
+    class Meta:
+        fields = ('name','placement','rout')
+        widgets = {
+            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": 'Name'}),
+            'placement': Textarea(
+                attrs={'rows': 0, "class": "form-control form-control-sm", "placeholder": 'Размещение'}),
+                'rout': Textarea(attrs={'rows': 0, "class": "form-control form-control-sm", "placeholder": 'Маршрут'}),
+        }
+
+class DatesForm(ModelForm):
+    class Meta:
+        fields = ('ship','date')
+        widgets = {
+            'date': DateInput(format=('%d-%m-%Y'),
+                    attrs={'class': bootstrap_class, 'type': 'date'}),
+        }
+
 class ModelForm1(ModelForm):
     class Meta:
         model = Form1
-        bootstrap_class = 'form-control form-control-sm'
         exclude = ('order',)
         p = ['Фамилия','First name','Имя, Отчество (имена)','Last name','Пол','Цель поездки',
                    'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',

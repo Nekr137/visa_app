@@ -1,16 +1,33 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
-from .modelform import ModelForm1, ModelForm2, MembersForm
+from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm
 from .models import Form1, Form2, GroupMembers, Ships, Dates
 from django.core.paginator import Paginator
 from django.forms import modelformset_factory
 
 
+
 def lists(request):
-    ShipsFormSet = modelformset_factory(Ships,fields='__all__',extra=2)
-    formset = ShipsFormSet()
-    return render(request,'app/lists.html',{'formset':formset})
+    DatesFormSet = modelformset_factory(Dates, DatesForm, fields='__all__', extra=1)
+    ShipsFormSet = modelformset_factory(Ships, ShipsForm, fields='__all__',extra=1)
+    if request.method == "POST":
+        ships_formset = ShipsFormSet(request.POST or None, prefix='ship')
+        dates_formset = DatesFormSet(request.POST or None, prefix='date')
+        print('POSTPOSTPOST')
+        if ships_formset.is_valid():
+            ships_formset.save()
+        if dates_formset.is_valid():
+            print('VALIDVALIDVALID')
+            dates_formset.save()
+        return HttpResponseRedirect('/lists')
+    else:
+        dates_formset = DatesFormSet(prefix='date')
+        ships_formset = ShipsFormSet(prefix='ship')
+        return render(request,'app/lists.html',{
+            'dates_formset':dates_formset,
+            'ships_formset':ships_formset
+        })
 
 
 def form1_xlsx(request):

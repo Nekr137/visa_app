@@ -1,9 +1,25 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-<h1>Списки кораблей и дат</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <h2>Ships</h2>
+    {{ ships_formset.management_form }}
+    {% for ships in ships_formset %}
+        <div class="form-row" >
+        {% for s in ships %}
+            <div class="form-group col-md-4">
+            {{s}}
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
 
 
-{{formset}}
+    <h2>Dates</h2>
+    {{ dates_formset}}
 
+<button type="submit" class="my btn-block btn btn-outline-secondary btn-sm">Сохранить</button>
+</form>
 {% endblock %}
