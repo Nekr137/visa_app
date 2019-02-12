@@ -6,12 +6,13 @@ from .models import Form1, Form2, GroupMembers
 from django.core.paginator import Paginator
 
 
+
 def form1_xlsx(request):
     if request.method == "GET":
         id = request.GET.get('id')
-        note = Form2.objects.get(id=id)
-        note.GenerateXlsx()
-        return redirect('/')
+        note = Form1.objects.get(id=id)
+        response = note.GenerateXlsx(fin='static/xlsx/1.xlsx',fout='DATA.xlsx')
+        return response
 
 
 def form2_xlsx(request):

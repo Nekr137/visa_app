@@ -2,10 +2,11 @@ from django.db import models
 import datetime
 from .Xlsx import Xlsx
 import openpyxl,re
-
+from django.http import HttpResponseRedirect,HttpResponse, FileResponse
+from openpyxl.writer.excel import save_virtual_workbook
 
 def date_format(d):
-    d = re.findall(r'\d+', d)
+    d = re.findall(r'\d+', str(d))
     d.reverse()
     return '.'.join(d)
 
@@ -36,8 +37,8 @@ class Form1(models.Model):
     def __str__(self):
         return self.familyname
 
-    def GenerateXlsx(self):
-        self.fname = 'static/xlsx/1.xlsx'
+    def GenerateXlsx(self,fin,fout):
+        self.fname = fin
         self.wb = openpyxl.Workbook()
         self.wb = openpyxl.load_workbook(filename=self.fname)
 
@@ -56,8 +57,10 @@ class Form1(models.Model):
         sheet1['D40'] = self.date
         sheet1['M40'] = self.date
 
-        self.wb.save(filename='test.xlsx')
-
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename='+fout
+        self.wb.save(response)
+        return response
 
 
 
