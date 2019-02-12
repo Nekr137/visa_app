@@ -19,7 +19,6 @@ class Xlsx:
         sheet1['C11'] = f1.get('lastname')+'/'+f1.get('familyname')
         sheet1['E13'] = f1.get('firstname')+'/'+f1.get('name')
         sheet1['D15'] = self.date_format(f1.get('birthday'))
-        print(f1.get('birthday'))
         sheet1['G15'] = f1.get('sex')
         sheet1['D17'] = f1.get('passport')
         sheet1['D19'] = f1.get('goal')

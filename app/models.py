@@ -1,8 +1,15 @@
 from django.db import models
 import datetime
-import re
+from .Xlsx import Xlsx
+import openpyxl,re
 
-# таблица app_data
+
+def date_format(d):
+    d = re.findall(r'\d+', d)
+    d.reverse()
+    return '.'.join(d)
+
+
 class Form1(models.Model):
     familyname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
@@ -28,6 +35,30 @@ class Form1(models.Model):
 
     def __str__(self):
         return self.familyname
+
+    def GenerateXlsx(self):
+        self.fname = 'static/xlsx/1.xlsx'
+        self.wb = openpyxl.Workbook()
+        self.wb = openpyxl.load_workbook(filename=self.fname)
+
+        sheet1 = self.wb.get_sheet_by_name("Лист1")
+        sheet1['F2'] = self.confirmation
+        sheet1['D5'] = self.multiplicity
+        sheet1['D7'] = self.nationality
+        sheet1['C9'] = self.entry
+        sheet1['F9'] = self.departure
+        sheet1['C11'] = str(self.lastname) + '/' + str(self.familyname)
+        sheet1['E13'] = str(self.firstname) + '/' + str(self.name)
+        sheet1['D15'] = date_format(self.birthday)
+        sheet1['G15'] = self.sex
+        sheet1['D17'] = self.passport
+        sheet1['D19'] = self.goal
+        sheet1['D40'] = self.date
+        sheet1['M40'] = self.date
+
+        self.wb.save(filename='test.xlsx')
+
+
 
 
 class Form2(models.Model):

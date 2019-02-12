@@ -1,11 +1,26 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
-from .Xlsx import Xlsx
-from django.db import models
 from .modelform import ModelForm1, ModelForm2, MembersForm
 from .models import Form1, Form2, GroupMembers
 from django.core.paginator import Paginator
+
+
+def form1_xlsx(request):
+    if request.method == "GET":
+        id = request.GET.get('id')
+        note = Form2.objects.get(id=id)
+        note.GenerateXlsx()
+        return redirect('/')
+
+
+def form2_xlsx(request):
+    if request.method == "GET":
+        id = request.GET.get('id')
+        print(id)
+        note = Form2.objects.get(id=id)
+        note.GenerateXlsx()
+        return redirect('/')
 
 
 def form1(request):
