@@ -13,6 +13,7 @@ urlpatterns = [
     re_path(r'^form2_xlsx', views.form2_xlsx),
     re_path(r'^form1', views.form1),
     re_path(r'^form2', views.form2),
+    re_path(r'^lists',views.lists),
     re_path(r'^all_forms', views.all_forms),
     re_path(r'^add_member', views.add_member),
     path(r'', views.index),

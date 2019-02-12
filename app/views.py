@@ -2,9 +2,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
 from .modelform import ModelForm1, ModelForm2, MembersForm
-from .models import Form1, Form2, GroupMembers
+from .models import Form1, Form2, GroupMembers, Ships, Dates
 from django.core.paginator import Paginator
+from django.forms import modelformset_factory
 
+
+def lists(request):
+    ShipsFormSet = modelformset_factory(Ships,fields='__all__',extra=2)
+    formset = ShipsFormSet()
+    return render(request,'app/lists.html',{'formset':formset})
 
 
 def form1_xlsx(request):

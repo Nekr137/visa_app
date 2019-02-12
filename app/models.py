@@ -17,6 +17,20 @@ def SplitRout(r):
 def SplitOrganization(o):
     return o[:50],o[50:]
 
+class Ships(models.Model):
+    name = models.CharField(max_length=30)
+    placement = models.TextField()
+    rout = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Dates(models.Model):
+    ship = models.ForeignKey(Ships, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    def __str__(self):
+        return self.date
 
 
 class Form1(models.Model):
