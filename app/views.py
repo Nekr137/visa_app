@@ -6,20 +6,15 @@ from pprint import pprint
 from django.db import models
 from .modelform import ModelForm1, ModelForm2, MembersForm
 from .models import Form1, Form2, GroupMembers
-from django.forms.formsets import formset_factory
-from django.forms.models import model_to_dict, modelformset_factory, inlineformset_factory
+from django.core.paginator import Paginator
+
 
 def form1(request):
     if request.method == "POST":
-        print("view/vorm1 post")
-        #X = Xlsx('static/xlsx/1.xlsx')
-        #X.WriteForm1(f1)
-        #X.Save()
         form = ModelForm1(request.POST)
         form.save()
         return redirect('/')
     else:
-        print('view/form1 request')
         form = ModelForm1()
         return render(request, "app/form1.html", {"form": form,"title":"Форма для одиночной визы"})
 
@@ -55,13 +50,26 @@ def add_member(request):
         return render(request, "app/members_form.html", {"member": member, 'NUM':NUM})
 
 def all_forms(request):
-    data = Form1.objects.all()
-    P = ['Фамилия', 'First name', 'Имя, Отчество', 'Last name', 'Пол', 'Цель поездки',
-         'Дата рождения', 'Номер паспорта', 'Въезд с', 'Выезд до', 'Гражданство', 'Кратность визы',
-         'Подтверждение №', 'Дата документа', 'Размещение', 'Маршрушт', 'Принимающая организация']
-    return render(request,"app/all_forms.html", {"data":data,"P":P})
+    return render(request,"app/all_forms.html")
+    #return HttpResponse('app/all_forms.html')
 
-# получение данных из бд
+def form1_db(request):
+    list = Form1.objects.all()
+    paginator = Paginator(list, 2)
+    page = request.GET.get('page') if request.method == "GET" else 1
+    notes = paginator.get_page(page)
+    return render(request,"app/form1_db.html",{'notes': notes,'list':list})
+
+
+
+def form2_db(request):
+    list = Form2.objects.all()
+    paginator = Paginator(list, 2)
+    page = request.GET.get('page') if request.method == "GET" else 1
+    notes = paginator.get_page(page)
+    return render(request,"app/form2_db.html",{'notes': notes,'list':list})
+
+
 def index(request):
     return render(request,"app/index.html")
 

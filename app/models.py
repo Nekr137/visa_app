@@ -21,8 +21,14 @@ class Form1(models.Model):
     placement = models.TextField()
     rout = models.TextField()
     hostorganization = models.TextField()
+
+    P = ['Фамилия', 'First name', 'Имя, Отчество', 'Last name', 'Пол', 'Цель поездки',
+    'Дата рождения', 'Номер паспорта', 'Въезд с', 'Выезд до', 'Гражданство', 'Кратность визы',
+    'Подтверждение №', 'Дата документа', 'Размещение', 'Маршрушт', 'Принимающая организация']
+
     def __str__(self):
         return self.familyname
+
 
 class Form2(models.Model):
     familyname = models.CharField(max_length=30)
@@ -44,7 +50,8 @@ class Form2(models.Model):
     hostorganization = models.TextField()
 
     def __str__(self):
-        return self.familyname
+        return 'Familyname: ' + self.familyname + ' Name: ' + self.name + ' '
+
 
 class GroupMembers(models.Model):
     form2 = models.ForeignKey(Form2,on_delete=models.CASCADE)

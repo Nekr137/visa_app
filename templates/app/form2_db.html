@@ -1,0 +1,52 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+
+<table class="table table-inverse table-sm" style="font-size: 80%;">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Дата рождения</th>
+            <th>Национальность</th>
+            <th>Человек в группе</th>
+            <th>Изменить/Удалить</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for note in notes %}
+    <tr>
+        <th scope="row">{{note.id}}</th>
+        <td>{{note.familyname}}</td>
+        <td>{{note.name}}</td>
+        <td>{{note.birthday}}</td>
+        <td>{{note.nationality}}</td>
+        <td>3</td>
+        <td>Изменить  /  Удалить</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if notes.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ notes.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ notes.number }} of {{ notes.paginator.num_pages }}.
+        </span>
+
+        {% if notes.has_next %}
+            <a href="?page={{ notes.next_page_number }}">next</a>
+            <a href="?page={{ notes.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock %}
