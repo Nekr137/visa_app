@@ -1,14 +1,22 @@
 from django.db import models
 import datetime
-from .Xlsx import Xlsx
 import openpyxl,re
 from django.http import HttpResponseRedirect,HttpResponse, FileResponse
 from openpyxl.writer.excel import save_virtual_workbook
 
 def date_format(d):
+    """Дата в формате dd.mm.yyyy"""
     d = re.findall(r'\d+', str(d))
     d.reverse()
     return '.'.join(d)
+
+def SplitRout(r):
+    """Разбивает поле маршрут так, чтобы текст равномерно разместился в двух ячейках"""
+    return r[:25],r[25:]
+
+def SplitOrganization(o):
+    return o[:50],o[50:]
+
 
 
 class Form1(models.Model):
@@ -56,6 +64,9 @@ class Form1(models.Model):
         sheet1['D19'] = self.goal
         sheet1['D40'] = self.date
         sheet1['M40'] = self.date
+        sheet1['D24'] = self.placement
+        sheet1['B26'],sheet1['B27'] = SplitOrganization(self.hostorganization)
+        sheet1['F21'],sheet1['B22'] = SplitRout(self.rout)
 
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename='+fout
