@@ -38,11 +38,13 @@ class Ships(models.Model):
         return self.name
 
 
-
 class Dates(models.Model):
     ship = models.ForeignKey(Ships, on_delete=models.CASCADE)
     entry = models.DateField()
     departure = models.DateField()
+    def __str__(self):
+        return str(self.entry)
+
 
 
 class Form1(models.Model):

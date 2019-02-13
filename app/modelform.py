@@ -1,12 +1,19 @@
 
 
-from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea
+from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea, ModelChoiceField, Select, ChoiceField
 from .models import Form1,Form2,GroupMembers, Dates, Ships, Routs, Nationality, AdditionalInfo
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.forms.models import BaseInlineFormSet
 
 bootstrap_class = 'form-control form-control-sm'
 bootstrap_class_input_xs = 'form-control form-control-sm input-xs'
+
+class DatesChoises(ModelForm):
+    classname = ModelChoiceField(queryset= Dates.objects, empty_label="Выберите класс",
+                                       widget=Select(attrs={'class': 'dropdown'}), label="Класс")
+    class Meta:
+        model = Form1
+        exclude = ('order',)
 
 
 class NationalityForm(ModelForm):

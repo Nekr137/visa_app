@@ -1,12 +1,17 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
-from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm, AdditionalInfoForm, RoutsForm, NationalityForm
+from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm, AdditionalInfoForm, RoutsForm, NationalityForm, DatesChoises
 from .models import Form1, Form2, GroupMembers, Ships, Dates, AdditionalInfo, Nationality, Routs
 from django.core.paginator import Paginator
 from django.forms import modelformset_factory
 
-
+def test(request):
+    mf = DatesChoises()
+    print('MF = ',mf)
+    return render(request,'app/test.html',{
+        'mf':mf,
+    })
 
 def edit_form2(request,id):
     # model

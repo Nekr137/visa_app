@@ -5,6 +5,7 @@ from app import views
 
 urlpatterns = [
     #path('edit/<int:id>/', views.edit),
+    re_path(r'^test',views.test),
     re_path(r'^edit_form1/(?P<id>\d+)/', views.edit_form1),
     re_path(r'^edit_form2/(?P<id>\d+)/', views.edit_form2),
     re_path(r'^form1_db',views.form1_db),
