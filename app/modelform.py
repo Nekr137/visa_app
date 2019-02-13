@@ -1,24 +1,49 @@
 
 
 from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea
-from .models import Form1,Form2,GroupMembers
+from .models import Form1,Form2,GroupMembers, Dates, Ships, Routs, Nationality, AdditionalInfo
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.forms.models import BaseInlineFormSet
 
 bootstrap_class = 'form-control form-control-sm'
 
+
+class NationalityForm(ModelForm):
+    class Meta:
+        model = Nationality
+        fields = ('nationality',)
+        widgets = {
+            'nationality': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": "Добавить гражданство"}),
+        }
+
+
+class AdditionalInfoForm(ModelForm):
+    class Meta:
+        model = AdditionalInfo
+        fields = ('info',)
+        widgets = {
+            'info': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": "Добавить доп. информацию"}),
+        }
+
+class RoutsForm(ModelForm):
+    class Meta:
+        model = Routs
+        fields = ('rout',)
+        widgets = {
+            'rout': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": "Добавить маршрут"}),
+        }
+
 class ShipsForm(ModelForm):
     class Meta:
-        fields = ('name','placement','rout')
+        model = Ships
+        fields = ('name',)
         widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": 'Name'}),
-            'placement': Textarea(
-                attrs={'rows': 0, "class": "form-control form-control-sm", "placeholder": 'Размещение'}),
-                'rout': Textarea(attrs={'rows': 0, "class": "form-control form-control-sm", "placeholder": 'Маршрут'}),
+            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": 'Добавить название корабля'}),
         }
 
 class DatesForm(ModelForm):
     class Meta:
+        model = Dates
         fields = ('ship','date')
         widgets = {
             'date': DateInput(format=('%d-%m-%Y'),

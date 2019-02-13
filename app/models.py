@@ -14,13 +14,25 @@ def SplitRout(r):
     """Разбивает поле маршрут так, чтобы текст равномерно разместился в двух ячейках"""
     return r[:25],r[25:]
 
+
 def SplitOrganization(o):
     return o[:50],o[50:]
 
+
+class AdditionalInfo(models.Model):
+    info = models.TextField()
+
+class Nationality(models.Model):
+    nationality = models.CharField(max_length=100)
+
+
+class Routs(models.Model):
+    rout = models.TextField()
+    def __str__(self):
+        return self.rout
+
 class Ships(models.Model):
     name = models.CharField(max_length=30)
-    placement = models.TextField()
-    rout = models.TextField()
 
     def __str__(self):
         return self.name
@@ -29,8 +41,6 @@ class Dates(models.Model):
     ship = models.ForeignKey(Ships, on_delete=models.CASCADE)
     date = models.DateField()
 
-    def __str__(self):
-        return self.date
 
 
 class Form1(models.Model):

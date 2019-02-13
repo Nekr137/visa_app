@@ -1,33 +1,81 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
-from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm
-from .models import Form1, Form2, GroupMembers, Ships, Dates
+from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm, AdditionalInfoForm, RoutsForm, NationalityForm
+from .models import Form1, Form2, GroupMembers, Ships, Dates, AdditionalInfo, Nationality, Routs
 from django.core.paginator import Paginator
 from django.forms import modelformset_factory
 
 
+def del_item(request,type,id):
+    if request.method == "GET":
+        if type == 'ship':
+            item = Ships.objects.get(id=id)
+        elif type == 'date':
+            item = Dates.objects.get(id=id)
+        elif type == 'rout':
+            item = Routs.objects.get(id=id)
+        elif type == 'nationality':
+            item = Nationality.objects.get(id=id)
+        elif type == 'info':
+            item = AdditionalInfo.objects.get(id=id)
+        else:
+            return HttpResponse('error')
+        item.delete()
+    return HttpResponseRedirect('/lists')
+
+
+
+def add_item(request,type):
+    if request.method == "GET":
+        if type == 'ship':
+            form = ShipsForm(request.GET or None)
+        elif type == 'rout':
+            form = RoutsForm(request.GET or None)
+        elif type == 'nationality':
+            form = NationalityForm(request.GET or None)
+        elif type == 'info':
+            form = AdditionalInfoForm(request.GET or None)
+        elif type == 'date':
+            ship_id = request.GET.get('ship')
+            ship = Ships.objects.get(id=ship_id)
+            form = DatesForm(request.GET or None)
+            if form.is_valid():
+                f = form.save(commit=False)
+                f.ship = ship
+                f.save()
+        else:
+            return HttpResponse('error')
+        if form.is_valid():
+            form.save()
+    return HttpResponseRedirect('/lists')
+
 
 def lists(request):
-    DatesFormSet = modelformset_factory(Dates, DatesForm, fields='__all__', extra=1)
-    ShipsFormSet = modelformset_factory(Ships, ShipsForm, fields='__all__',extra=1)
-    if request.method == "POST":
-        ships_formset = ShipsFormSet(request.POST or None, prefix='ship')
-        dates_formset = DatesFormSet(request.POST or None, prefix='date')
-        print('POSTPOSTPOST')
-        if ships_formset.is_valid():
-            ships_formset.save()
-        if dates_formset.is_valid():
-            print('VALIDVALIDVALID')
-            dates_formset.save()
-        return HttpResponseRedirect('/lists')
-    else:
-        dates_formset = DatesFormSet(prefix='date')
-        ships_formset = ShipsFormSet(prefix='ship')
-        return render(request,'app/lists.html',{
-            'dates_formset':dates_formset,
-            'ships_formset':ships_formset
-        })
+    ships = Ships.objects.all()
+    ships_mf = ShipsForm()
+    infos = AdditionalInfo.objects.all()
+    infos_mf= AdditionalInfoForm()
+    routs = Routs.objects.all()
+    routs_mf = RoutsForm()
+    nationality = Nationality.objects.all()
+    nationality_mf = NationalityForm()
+    dates = Dates.objects.all()
+    dates_mf = DatesForm()
+    return render(request,"app/lists.html",{
+        'ships':ships,
+        'ships_mf':ships_mf,
+        'infos':infos,
+        'infos_mf':infos_mf,
+        'routs':routs,
+        'routs_mf':routs_mf,
+        'nationality':nationality,
+        'nationality_mf':nationality_mf,
+        'dates':dates,
+        'dates_mf':dates_mf,
+
+    })
+
 
 
 def form1_xlsx(request):
@@ -41,7 +89,6 @@ def form1_xlsx(request):
 def form2_xlsx(request):
     if request.method == "GET":
         id = request.GET.get('id')
-        print(id)
         note = Form2.objects.get(id=id)
         note.GenerateXlsx()
         return redirect('/')

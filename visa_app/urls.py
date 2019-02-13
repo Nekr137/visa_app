@@ -16,5 +16,7 @@ urlpatterns = [
     re_path(r'^lists',views.lists),
     re_path(r'^all_forms', views.all_forms),
     re_path(r'^add_member', views.add_member),
+    re_path(r'^add_item/(?P<type>\w+)/',views.add_item),
+    re_path(r'^del_item/(?P<type>\w+)/(?P<id>\d+)/',views.del_item),
     path(r'', views.index),
 ]

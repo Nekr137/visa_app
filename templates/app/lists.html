@@ -2,24 +2,100 @@
 
 {% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    <h2>Ships</h2>
-    {{ ships_formset.management_form }}
-    {% for ships in ships_formset %}
-        <div class="form-row" >
-        {% for s in ships %}
-            <div class="form-group col-md-4">
-            {{s}}
+<div class="container" style="font-size: 80%">
+    <h4>Корабли</h4>
+    <div class="container" style="margin-left: 4rem;">
+        {% for i in ships %}
+            {{i}} <a href="/del_item/ship/{{i.id}}">Удалить</a>
+            <div class="container" style="margin-left: 4rem">
+                {% for k in dates %}
+                    {% if i.id == k.ship_id %}
+                        <div class="">
+                            {{k.date}} <a href="/del_item/date/{{k.id}}">Удалить</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <form id="dateform{{i.id}}" method="get" action="add_item/date">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            {{ dates_mf.date }}
+                            <input type="hidden" id="ship_id" name="ship" value="{{i.id}}">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <button form="dateform{{i.id}}" type="submit" class="btn btn-outline-secondary btn-sm">Добавить дату</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         {% endfor %}
-        </div>
-    {% endfor %}
+        <form method="get" id="add_ship" action="add_item/ship">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ ships_mf.name }}
+                </div>
+                <div class="form-group col-md-3">
+                    <button form="add_ship" type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h4>Маршруты</h4>
+    <div class="container" style="margin-left: 4rem">
+        {% for i in routs %}
+            <div>
+                {{i}} <a href="/del_item/rout/{{i.id}}">Удалить</a>
+            </div>
+        {% endfor %}
+        <form method="get" id="add_rout" action="add_item/rout">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ routs_mf.rout }}
+                </div>
+            </div>
+            <button form="add_rout" type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+        </form>
+    </div>
 
 
-    <h2>Dates</h2>
-    {{ dates_formset}}
+    <h4>Гражданства</h4>
+    <div class="container" style="margin-left: 4rem">
+        {% for i in nationality %}
+            <div>
+                {{i.nationality}}   <a href="/del_item/nationality/{{i.id}}">Удалить</a>
+            </div>
+        {% endfor %}
+        <form method="get" id="add_nationality" action="add_item/nationality">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ nationality_mf.nationality }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+        </form>
+    </div>
 
-<button type="submit" class="my btn-block btn btn-outline-secondary btn-sm">Сохранить</button>
-</form>
+
+    <h4>Дополонительная информация (варианты)</h4>
+    <div class="container" style="margin-left: 4rem">
+        {% for i in infos %}
+            <div>
+                {{i.info}} <a href="/del_item/info/{{i.id}}">Удалить</a>
+            </div>
+        {% endfor %}
+        <form method="get" action="add_item/info" id="add_info">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ infos_mf.info }}
+                </div>
+            </div>
+            <button form="add_info" type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
