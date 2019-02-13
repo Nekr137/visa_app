@@ -5,7 +5,7 @@
 <script src="{% static '/js/jquery-3.3.1.min.js'%}" type="text/javascript"></script>
 <div class="container" style="margin-top: 10px;">
     <h1>{{title}}</h1>
-    <form method="post" action="form2" style="margin-bottom: 3rem;">
+    <form method="post" style="margin-bottom: 3rem;">
         {% csrf_token %}
         <div class="form-row" style="margin-bottom: 1rem; margin-top: 2rem">
         {% for field in form %}
@@ -40,16 +40,31 @@
             </div>
         </div>
 
-    <div id="members" style="margin-top: 1rem;">
-    </div>
-    <input type="hidden" name="NUM" value="1" id="NUM">
-    <button type="button" id="add_member" class="btn btn-outline-secondary btn-sm input-xs" onclick="add_m()">+</button>
+        <!-- Ниже - код для членов группы при редактировании...-->
+        <div style="margin-top: 2rem;">
+            {% for m in member %}
+            <div id="member_id_{{forloop.counter}}" class="form-row" style="font-size: 85%;">
+                ID = {{ m.id }}
+                {% for field in m %}
+                    <div class="" style="">
+                        {{field}}
+                    </div>
+                {% endfor %}
+                <button type="button" id="delete_btn_id_{{forloop.counter}}" class="btn btn-outline-secondary btn-sm input-xs" onclick="delete_m({{NUM}})">-</button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="members" style="">
+        </div>
+        <input type="hidden" name="NUM" value="1" id="NUM">
+        <button type="button" id="add_member" class="btn btn-outline-secondary btn-sm input-xs" onclick="add_m()">+</button>
     </form>
 </div>
 
 
 <script>
-NUM = 0
+NUM = {{NUM}}
 var m = document.getElementById('members');
 function add_m()
 {

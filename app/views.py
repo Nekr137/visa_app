@@ -7,6 +7,54 @@ from django.core.paginator import Paginator
 from django.forms import modelformset_factory
 
 
+
+def edit_form2(request,id):
+    print('EIDT 2')
+    model = Form2.objects.get(id=id)
+    if request.method == "POST":
+        NUM = int(request.POST.get('NUM'))
+        form = ModelForm2(request.POST,prefix='0',instance=model)
+
+        if form.is_valid():
+            f = form.save()
+            f.save()
+            for k in range(1,NUM+1):
+                member_form = MembersForm(request.POST,prefix=str(k))
+                if member_form.is_valid():
+                    m = member_form.save(commit=False)
+                    m.form2_id = f.id
+                    m.save()
+            return redirect('/')
+    else:
+        form = ModelForm2(prefix='0',instance=model)
+        instance = GroupMembers.objects.filter(form2=model.id)
+        NUM = len(instance)
+        members = [MembersForm(prefix=str(i+1),instance=m) for i,m in enumerate(instance)]
+        #return render(request, "app/members_form.html", {"member": member, 'NUM':NUM})
+
+        return render(request, "app/form2.html", {
+            "form": form,
+            'member':members,
+            'NUM':NUM,
+            "title":"Форма для групповой визы",
+        })
+
+def edit_form1(request,id):
+    print('EDIT 1')
+    model = Form1.objects.get(id=id)
+    if request.method == "POST":
+        form = ModelForm1(request.POST, instance=model)
+        form.save()
+        return redirect('/')
+    else:
+        form = ModelForm1(instance=model)
+        return render(request, "app/form1.html", {
+            "form": form,
+            "title":"Редактирование формы одиночной визы"
+        })
+
+
+
 def del_item(request,type,id):
     if request.method == "GET":
         if type == 'ship':
@@ -19,6 +67,14 @@ def del_item(request,type,id):
             item = Nationality.objects.get(id=id)
         elif type == 'info':
             item = AdditionalInfo.objects.get(id=id)
+        elif type == 'form1':
+            item = Form1.objects.get(id=id)
+            item.delete()
+            return HttpResponseRedirect('/form1_db')
+        elif type == 'form2':
+            item = Form2.objects.get(id=id)
+            item.delete()
+            return HttpResponseRedirect('/form2_db')
         else:
             return HttpResponse('error')
         item.delete()
@@ -108,7 +164,6 @@ def form2(request):
     if request.method == "POST":
         NUM = int(request.POST.get('NUM'))
         form = ModelForm2(request.POST,prefix='0')
-
         if form.is_valid():
             f = form.save()
             f.save()
@@ -119,32 +174,14 @@ def form2(request):
                     m.form2_id = f.id
                     m.save()
             return redirect('/')
+        else:
+            return HttpResponse('DATA INVALID')
     else:
         form = ModelForm2(prefix='0')
         return render(request, "app/form2.html", {
             "form": form,
             "title":"Форма для групповой визы",
         })
-
-
-
-def form1_delete(request):
-    if request.method == "GET":
-        id = request.GET.get('id')
-        note = Form1.objects.get(id=id)
-        note.delete()
-        return HttpResponseRedirect("/")
-
-
-
-def form2_delete(request):
-    if request.method == "GET":
-        id = request.GET.get('id')
-        note = Form2.objects.get(id=id)
-        print('note = ',note)
-        note.delete()
-        return HttpResponseRedirect("/")
-
 
 def add_member(request):
     if request.method == "POST" and request.is_ajax():
@@ -158,7 +195,7 @@ def all_forms(request):
 
 def form1_db(request):
     list = Form1.objects.all()
-    paginator = Paginator(list, 2)
+    paginator = Paginator(list, 10)
     page = request.GET.get('page') if request.method == "GET" else 1
     notes = paginator.get_page(page)
     return render(request,"app/form1_db.html",{'notes': notes,'list':list})
@@ -167,7 +204,7 @@ def form1_db(request):
 
 def form2_db(request):
     list = Form2.objects.all()
-    paginator = Paginator(list, 2)
+    paginator = Paginator(list, 10)
     page = request.GET.get('page') if request.method == "GET" else 1
     notes = paginator.get_page(page)
     return render(request,"app/form2_db.html",{'notes': notes,'list':list})

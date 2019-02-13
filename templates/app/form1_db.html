@@ -10,7 +10,7 @@
             <th>Имя</th>
             <th>Дата рождения</th>
             <th>Национальность</th>
-            <th>Изменить/Удалить</th>
+            <th>Действие</th>
         </tr>
     </thead>
     <tbody>
@@ -21,7 +21,12 @@
         <td>{{note.name}}</td>
         <td>{{note.birthday}}</td>
         <td>{{note.nationality}}</td>
-        <td><a href="form1_xlsx?id={{note.id}}">Xlsx</a> /  Изменить  /  <a href="form1_delete?id={{note.id}}">Удалить</a></td>
+        <td>
+            <a href="form1_xlsx?id={{note.id}}">Xlsx</a> /
+            <a href="form1_pdf?id={{note.id}}">Pdf</a> /
+            <a href="edit_form1/{{note.id}}">Изменить</a>  /
+            <a href="del_item/form1/{{note.id}}">Удалить</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
