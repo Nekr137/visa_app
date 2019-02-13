@@ -44,6 +44,8 @@ class Dates(models.Model):
     departure = models.DateField()
     def __str__(self):
         return str(self.entry)
+    def get_dep(self):
+        return str(self.departure)
 
 
 

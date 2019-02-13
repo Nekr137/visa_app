@@ -1,19 +1,21 @@
 
 
-from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea, ModelChoiceField, Select, ChoiceField
+from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, Textarea, ModelChoiceField, Select, ChoiceField, SelectDateWidget
 from .models import Form1,Form2,GroupMembers, Dates, Ships, Routs, Nationality, AdditionalInfo
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.forms.models import BaseInlineFormSet
 
 bootstrap_class = 'form-control form-control-sm'
 bootstrap_class_input_xs = 'form-control form-control-sm input-xs'
+BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')
+
 
 class DatesChoises(ModelForm):
-    classname = ModelChoiceField(queryset= Dates.objects, empty_label="Выберите класс",
-                                       widget=Select(attrs={'class': 'dropdown'}), label="Класс")
+    #classname = ModelChoiceField(queryset= Dates.objects, empty_label="Выберите класс",
+    #                                   widget=Select(attrs={'class': 'dropdown'}), label="Класс")
     class Meta:
-        model = Form1
-        exclude = ('order',)
+       model = Form1
+       exclude = ('order',)
 
 
 class NationalityForm(ModelForm):
@@ -54,11 +56,16 @@ class DatesForm(ModelForm):
         model = Dates
         fields = ('ship','entry','departure')
         widgets = {
-            'entry': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class_input_xs,'type':'date'}),
-            'departure': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class_input_xs,'type':'date'}),
+            'entry': DateInput(attrs={'class': bootstrap_class_input_xs,'type':'date'}),
+            'departure': DateInput(attrs={'class': bootstrap_class_input_xs,'type':'date'}),
         }
 
 class ModelForm1(ModelForm):
+    # birthday =  DateField(
+    #     #widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES),
+    #     #widget=Pi
+    #     input_formats=['%d-%m-%Y']
+    # )
     class Meta:
         model = Form1
         exclude = ('order',)
@@ -72,14 +79,14 @@ class ModelForm1(ModelForm):
             'lastname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[3]}),
             'sex' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[4]}),
             'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
-            'birthday': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
+            'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
-            'entry': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
-            'departure': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
+            'entry': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
+            'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
             'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
             'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
-            'date': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
+            'date': DateInput(attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
             'placement' : Textarea(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
             'rout': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),
             'hostorganization': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[16]})
@@ -126,14 +133,14 @@ class ModelForm2(ModelForm):
             'lastname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[3]}),
             'sex' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[4]}),
             'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
-            'birthday': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
+            'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
-            'entry': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
-            'departure': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date'}),
+            'entry': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
+            'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
             'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
             'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
-            'date': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
+            'date': DateInput(attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
             'placement' : Textarea(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
             'rout': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),
             'hostorganization': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[16]})
@@ -170,7 +177,7 @@ class MembersForm(ModelForm):
             'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
             'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
             'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
-            'birthday': DateInput(format=('%d-%m-%Y'), attrs={'class': bootstrap_class, 'type':'date'}),
+            'birthday': DateInput(attrs={'class': bootstrap_class, 'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[5]}),
             'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[6]}),
             }
