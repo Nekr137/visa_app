@@ -37,10 +37,12 @@ class Ships(models.Model):
     def __str__(self):
         return self.name
 
+
+
 class Dates(models.Model):
     ship = models.ForeignKey(Ships, on_delete=models.CASCADE)
-    date = models.DateField()
-
+    entry = models.DateField()
+    departure = models.DateField()
 
 
 class Form1(models.Model):

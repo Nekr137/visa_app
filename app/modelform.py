@@ -6,6 +6,7 @@ from django.core.exceptions import NON_FIELD_ERRORS
 from django.forms.models import BaseInlineFormSet
 
 bootstrap_class = 'form-control form-control-sm'
+bootstrap_class_input_xs = 'form-control form-control-sm input-xs'
 
 
 class NationalityForm(ModelForm):
@@ -13,7 +14,7 @@ class NationalityForm(ModelForm):
         model = Nationality
         fields = ('nationality',)
         widgets = {
-            'nationality': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": "Добавить гражданство"}),
+            'nationality': TextInput(attrs={"class": bootstrap_class_input_xs, "placeholder": "Добавить гражданство"}),
         }
 
 
@@ -22,7 +23,7 @@ class AdditionalInfoForm(ModelForm):
         model = AdditionalInfo
         fields = ('info',)
         widgets = {
-            'info': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": "Добавить доп. информацию"}),
+            'info': TextInput(attrs={"class": bootstrap_class_input_xs, "placeholder": "Добавить доп. информацию"}),
         }
 
 class RoutsForm(ModelForm):
@@ -30,7 +31,7 @@ class RoutsForm(ModelForm):
         model = Routs
         fields = ('rout',)
         widgets = {
-            'rout': Textarea(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": "Добавить маршрут"}),
+            'rout': TextInput(attrs={"class": bootstrap_class_input_xs, "placeholder": "Добавить маршрут"}),
         }
 
 class ShipsForm(ModelForm):
@@ -38,16 +39,16 @@ class ShipsForm(ModelForm):
         model = Ships
         fields = ('name',)
         widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": 'Добавить название корабля'}),
+            'name': TextInput(attrs={"class": bootstrap_class_input_xs, "placeholder": 'Добавить название корабля'}),
         }
 
 class DatesForm(ModelForm):
     class Meta:
         model = Dates
-        fields = ('ship','date')
+        fields = ('ship','entry','departure')
         widgets = {
-            'date': DateInput(format=('%d-%m-%Y'),
-                    attrs={'class': bootstrap_class, 'type': 'date'}),
+            'entry': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class_input_xs,'type':'date'}),
+            'departure': DateInput(format=('%d-%m-%Y'),attrs={'class': bootstrap_class_input_xs,'type':'date'}),
         }
 
 class ModelForm1(ModelForm):

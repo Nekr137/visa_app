@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container" style="font-size: 80%">
+<div class="container" style="font-size: 75%">
     <h4>Корабли</h4>
     <div class="container" style="margin-left: 4rem;">
         {% for i in ships %}
@@ -11,19 +11,18 @@
                 {% for k in dates %}
                     {% if i.id == k.ship_id %}
                         <div class="">
-                            {{k.date}} <a href="/del_item/date/{{k.id}}">Удалить</a>
+                            {{k.entry}} - {{k.departure}} <a href="/del_item/date/{{k.id}}">Удалить</a>
                         </div>
                     {% endif %}
                 {% endfor %}
-
                 <form id="dateform{{i.id}}" method="get" action="add_item/date">
                     <div class="form-row">
-                        <div class="form-group col-md-3">
-                            {{ dates_mf.date }}
-                            <input type="hidden" id="ship_id" name="ship" value="{{i.id}}">
+                        <input type="hidden" id="ship_id" name="ship" value="{{i.id}}">
+                        <div class="form-group col-md-3" style="display: flex">
+                            {{ dates_mf.entry }} - {{dates_mf.departure}}
                         </div>
                         <div class="form-group col-md-3">
-                            <button form="dateform{{i.id}}" type="submit" class="btn btn-outline-secondary btn-sm">Добавить дату</button>
+                            <button form="dateform{{i.id}}" type="submit" class="input-xs btn btn-outline-secondary btn-sm">Добавить дату</button>
                         </div>
                     </div>
                 </form>
@@ -32,11 +31,12 @@
         <form method="get" id="add_ship" action="add_item/ship">
             {% csrf_token %}
             <div class="form-row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-9">
                     {{ ships_mf.name }}
+
                 </div>
-                <div class="form-group col-md-3">
-                    <button form="add_ship" type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+                <div class="form-group col-md-1">
+                    <button form="add_ship" type="submit" class="input-xs btn btn-outline-secondary btn-sm">Добавить</button>
                 </div>
             </div>
         </form>
@@ -52,11 +52,14 @@
         <form method="get" id="add_rout" action="add_item/rout">
             {% csrf_token %}
             <div class="form-row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-9">
                     {{ routs_mf.rout }}
                 </div>
+                <div class="form-group col-md-1">
+                    <button form="add_rout" type="submit" class="input-xs btn btn-outline-secondary btn-sm">Добавить</button>
+                </div>
             </div>
-            <button form="add_rout" type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+
         </form>
     </div>
 
@@ -71,11 +74,14 @@
         <form method="get" id="add_nationality" action="add_item/nationality">
             {% csrf_token %}
             <div class="form-row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-9">
                     {{ nationality_mf.nationality }}
                 </div>
+               <div class="form-group col-md-1">
+                    <button type="submit" class=" input-xs btn btn-outline-secondary btn-sm">Добавить</button>
+               </div>
             </div>
-            <button type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+
         </form>
     </div>
 
@@ -90,11 +96,15 @@
         <form method="get" action="add_item/info" id="add_info">
             {% csrf_token %}
             <div class="form-row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-9">
                     {{ infos_mf.info }}
+
+                </div>
+                <div class="form-group col-md-1">
+                    <button form="add_info" type="submit" class=" input-xs btn btn-outline-secondary btn-sm">Добавить</button>
                 </div>
             </div>
-            <button form="add_info" type="submit" class="btn btn-outline-secondary btn-sm">Добавить</button>
+
         </form>
     </div>
 </div>
