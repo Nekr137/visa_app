@@ -9,12 +9,26 @@ from django.forms import modelformset_factory
 
 
 def edit_form2(request,id):
-    print('EIDT 2')
+    # model
     model = Form2.objects.get(id=id)
+    form = ModelForm2(prefix='0', instance=model)
+
+    # members
+    instance = GroupMembers.objects.filter(form2=model.id)
+
     if request.method == "POST":
         NUM = int(request.POST.get('NUM'))
         form = ModelForm2(request.POST,prefix='0',instance=model)
 
+        # Разбираемся со старыми записями
+        for i,inst in enumerate(instance):
+            fm = MembersForm(request.POST, instance=inst, prefix="MEMBERFORM"+str(i))
+            if fm.is_valid():
+                fm.save()           # Обновляем
+            else:
+                inst.delete()       # Если не прошла валидацию, значит была удалена, значит удаляем из базы
+
+        # Разбираемся со вновь добавленными записями (через ajax)
         if form.is_valid():
             f = form.save()
             f.save()
@@ -26,17 +40,12 @@ def edit_form2(request,id):
                     m.save()
             return redirect('/')
     else:
-        form = ModelForm2(prefix='0',instance=model)
-        instance = GroupMembers.objects.filter(form2=model.id)
-        NUM = len(instance)
-        members = [MembersForm(prefix=str(i+1),instance=m) for i,m in enumerate(instance)]
-        #return render(request, "app/members_form.html", {"member": member, 'NUM':NUM})
-
+        member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
         return render(request, "app/form2.html", {
             "form": form,
-            'member':members,
-            'NUM':NUM,
-            "title":"Форма для групповой визы",
+            "member_forms": member_forms,
+            'NUM':len(instance),
+            "title":"Редактирование формы групповой визы",
         })
 
 def edit_form1(request,id):

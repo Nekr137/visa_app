@@ -42,19 +42,19 @@
 
         <!-- Ниже - код для членов группы при редактировании...-->
         <div style="margin-top: 2rem;">
-            {% for m in member %}
+            {% for m in member_forms %}
             <div id="member_id_{{forloop.counter}}" class="form-row" style="font-size: 85%;">
-                ID = {{ m.id }}
                 {% for field in m %}
                     <div class="" style="">
                         {{field}}
                     </div>
                 {% endfor %}
-                <button type="button" id="delete_btn_id_{{forloop.counter}}" class="btn btn-outline-secondary btn-sm input-xs" onclick="delete_m({{NUM}})">-</button>
+                <button type="button" id="delete_btn_id_{{forloop.counter}}" class="btn btn-outline-secondary btn-sm input-xs" onclick="delete_m({{forloop.counter}})">-</button>
             </div>
             {% endfor %}
         </div>
 
+        <!-- Место для всявки членов группы-->
         <div id="members" style="">
         </div>
         <input type="hidden" name="NUM" value="1" id="NUM">
