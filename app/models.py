@@ -3,6 +3,7 @@ import datetime
 import openpyxl,re
 from django.http import HttpResponseRedirect,HttpResponse, FileResponse
 from openpyxl.writer.excel import save_virtual_workbook
+from django.forms import ModelChoiceField
 
 def date_format(d):
     """Дата в формате dd.mm.yyyy"""
@@ -21,9 +22,23 @@ def SplitOrganization(o):
 
 class AdditionalInfo(models.Model):
     info = models.TextField()
+    def __str__(self):
+        return self.info
+
+class Placements(models.Model):
+    placement = models.TextField()
+    def __str__(self):
+        return self.placement
+
+class Organizations(models.Model):
+    organization = models.TextField()
+    def __str__(self):
+        return self.organization
 
 class Nationality(models.Model):
     nationality = models.CharField(max_length=100)
+    def __str__(self):
+        return self.nationality
 
 
 class Routs(models.Model):
@@ -33,7 +48,6 @@ class Routs(models.Model):
 
 class Ships(models.Model):
     name = models.CharField(max_length=30)
-
     def __str__(self):
         return self.name
 
@@ -43,10 +57,7 @@ class Dates(models.Model):
     entry = models.DateField()
     departure = models.DateField()
     def __str__(self):
-        return str(self.entry)
-    def get_dep(self):
-        return str(self.departure)
-
+        return str(self.entry) + '/' + str(self.departure)
 
 
 class Form1(models.Model):
@@ -58,15 +69,16 @@ class Form1(models.Model):
     goal = models.CharField(max_length=30)
     birthday = models.DateField()
     passport = models.TextField()
+    multiplicity = models.TextField()
+    date = models.DateField()
+    confirmation = models.TextField()
+    nationality = models.TextField()
     entry = models.DateField()
     departure = models.DateField()
-    nationality = models.TextField()
-    multiplicity = models.TextField()
-    confirmation = models.TextField()
-    date = models.DateField()
     placement = models.TextField()
     rout = models.TextField()
     hostorganization = models.TextField()
+    additionalinfo = models.TextField()
 
     P = ['Фамилия', 'First name', 'Имя, Отчество', 'Last name', 'Пол', 'Цель поездки',
     'Дата рождения', 'Номер паспорта', 'Въезд с', 'Выезд до', 'Гражданство', 'Кратность визы',

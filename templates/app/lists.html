@@ -104,7 +104,49 @@
                     <button form="add_info" type="submit" class=" input-xs btn btn-outline-secondary btn-sm">Добавить</button>
                 </div>
             </div>
+        </form>
+    </div>
 
+    <h4>Размещения (варианты)</h4>
+    <div class="container" style="margin-left: 4rem">
+        {% for i in placements %}
+            <div>
+                {{i.placement}} <a href="/del_item/placement/{{i.id}}">Удалить</a>
+            </div>
+        {% endfor %}
+        <form method="get" action="add_item/placement" id="add_placement">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-9">
+                    {{ placements_mf.placement }}
+
+                </div>
+                <div class="form-group col-md-1">
+                    <button form="add_placement" type="submit" class=" input-xs btn btn-outline-secondary btn-sm">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <h4>Организации (варианты)</h4>
+    <div class="container" style="margin-left: 4rem">
+        {% for i in organizations %}
+            <div>
+                {{i.organization}} <a href="/del_item/organization/{{i.id}}">Удалить</a>
+            </div>
+        {% endfor %}
+        <form method="get" action="add_item/organization" id="add_organization">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-9">
+                    {{ organizations_mf.organization }}
+
+                </div>
+                <div class="form-group col-md-1">
+                    <button form="add_organization" type="submit" class=" input-xs btn btn-outline-secondary btn-sm">Добавить</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

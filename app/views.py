@@ -1,17 +1,12 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
-from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm, AdditionalInfoForm, RoutsForm, NationalityForm, DatesChoises
-from .models import Form1, Form2, GroupMembers, Ships, Dates, AdditionalInfo, Nationality, Routs
+from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm, AdditionalInfoForm, RoutsForm, NationalityForm, DatesChoisesForm, PlacementForm, OrganizationForm
+from .models import Form1, Form2, GroupMembers, Ships, Dates, AdditionalInfo, Nationality, Routs, Placements, Organizations
 from django.core.paginator import Paginator
+from django import forms
 from django.forms import modelformset_factory
 
-def test(request):
-    mf = DatesChoises()
-    print('MF = ',mf)
-    return render(request,'app/test.html',{
-        'mf':mf,
-    })
 
 def edit_form2(request,id):
     # model
@@ -81,6 +76,10 @@ def del_item(request,type,id):
             item = Nationality.objects.get(id=id)
         elif type == 'info':
             item = AdditionalInfo.objects.get(id=id)
+        elif type == 'placement':
+            item = Placements.objects.get(id=id)
+        elif type == 'organization':
+            item = Organizations.objects.get(id=id)
         elif type == 'form1':
             item = Form1.objects.get(id=id)
             item.delete()
@@ -106,6 +105,10 @@ def add_item(request,type):
             form = NationalityForm(request.GET or None)
         elif type == 'info':
             form = AdditionalInfoForm(request.GET or None)
+        elif type == 'placement':
+            form = PlacementForm(request.GET or None)
+        elif type == 'organization':
+            form = OrganizationForm(request.GET or None)
         elif type == 'date':
             ship_id = request.GET.get('ship')
             ship = Ships.objects.get(id=ship_id)
@@ -122,28 +125,21 @@ def add_item(request,type):
 
 
 def lists(request):
-    ships = Ships.objects.all()
-    ships_mf = ShipsForm()
-    infos = AdditionalInfo.objects.all()
-    infos_mf= AdditionalInfoForm()
-    routs = Routs.objects.all()
-    routs_mf = RoutsForm()
-    nationality = Nationality.objects.all()
-    nationality_mf = NationalityForm()
-    dates = Dates.objects.all()
-    dates_mf = DatesForm()
     return render(request,"app/lists.html",{
-        'ships':ships,
-        'ships_mf':ships_mf,
-        'infos':infos,
-        'infos_mf':infos_mf,
-        'routs':routs,
-        'routs_mf':routs_mf,
-        'nationality':nationality,
-        'nationality_mf':nationality_mf,
-        'dates':dates,
-        'dates_mf':dates_mf,
-
+        'ships':Ships.objects.all(),
+        'ships_mf':ShipsForm(),
+        'infos':AdditionalInfo.objects.all(),
+        'infos_mf':AdditionalInfoForm(),
+        'routs':Routs.objects.all(),
+        'routs_mf':RoutsForm(),
+        'nationality':Nationality.objects.all(),
+        'nationality_mf':NationalityForm(),
+        'dates':Dates.objects.all(),
+        'dates_mf':DatesForm(),
+        'placements':Placements.objects.all(),
+        'placements_mf':PlacementForm(),
+        'organizations':Organizations.objects.all(),
+        'organizations_mf':OrganizationForm()
     })
 
 
@@ -170,8 +166,24 @@ def form1(request):
         form.save()
         return redirect('/')
     else:
-        form = ModelForm1()
-        return render(request, "app/form1.html", {"form": form,"title":"Форма для одиночной визы"})
+        return render(request, "app/form1.html", {
+            "form": ModelForm1(),
+            "title":"Форма для одиночной визы",
+            'Ships':Ships.objects.all(),
+            'Routs' : Routs.objects.all(),
+            'Nationality' : Nationality.objects.all(),
+        })
+
+def rewrite_dates_in_form(request):
+    if request.method == "POST" and request.is_ajax():
+        ship_id = request.POST.get('ship_id')
+        dates_choice = DatesChoisesForm()
+        dates_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=ship_id)
+        #dates_choice.fields['date_choice'].disabled = True
+        #return HttpResponse(dates_choice)
+        return render(request,'app/date_choice.html',{
+            'dates_choice':dates_choice,
+        })
 
 
 def form2(request):
