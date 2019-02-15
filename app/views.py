@@ -64,6 +64,49 @@ def edit_form1(request,id):
 
 
 
+def default(request,type,id):
+    if request.method == "GET":
+        if type == 'ship':
+            for i in Ships.objects.filter(default=True):
+                i.default = False
+                i.save()
+            item = Ships.objects.get(id=id)
+        elif type == 'date':
+            for i in Dates.objects.filter(default=True):
+                i.default = False
+                i.save()
+            item = Dates.objects.get(id=id)
+        elif type == 'rout':
+            for i in Routs.objects.filter(default=True):
+                i.default = False
+                i.save()
+            item = Routs.objects.get(id=id)
+        elif type == 'nationality':
+            for i in Nationality.objects.filter(default=True):
+                i.default = False
+                i.save()
+            item = Nationality.objects.get(id=id)
+        elif type == 'info':
+            for i in AdditionalInfo.objects.filter(default=True):
+                i.default = False
+                i.save()
+            item = AdditionalInfo.objects.get(id=id)
+        elif type == 'placement':
+            for i in Placements.objects.filter(default=True):
+                i.default = False
+                i.save()
+            item = Placements.objects.get(id=id)
+        elif type == 'organization':
+            for i in Organizations.objects.filter(default=True):
+                i.default = False
+                i.save()
+            item = Organizations.objects.get(id=id)
+        else:
+            return HttpResponse('error')
+        item.default = True
+        item.save()
+    return HttpResponseRedirect('/lists')
+
 def del_item(request,type,id):
     if request.method == "GET":
         if type == 'ship':

@@ -17,37 +17,44 @@ def SplitRout(r):
 
 
 def SplitOrganization(o):
+    """Разбивает поле организации так, чтобы текст равномерно разместился в двух ячейках"""
     return o[:50],o[50:]
 
 
 class AdditionalInfo(models.Model):
     info = models.TextField()
+    default = models.BooleanField(default=False)
     def __str__(self):
         return self.info
 
 class Placements(models.Model):
     placement = models.TextField()
+    default = models.BooleanField(default=False)
     def __str__(self):
         return self.placement
 
 class Organizations(models.Model):
     organization = models.TextField()
+    default = models.BooleanField(default=False)
     def __str__(self):
         return self.organization
 
 class Nationality(models.Model):
     nationality = models.CharField(max_length=100)
+    default = models.BooleanField(default=False)
     def __str__(self):
         return self.nationality
 
 
 class Routs(models.Model):
     rout = models.TextField()
+    default = models.BooleanField(default=False)
     def __str__(self):
         return self.rout
 
 class Ships(models.Model):
     name = models.CharField(max_length=30)
+    default = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 
@@ -56,6 +63,7 @@ class Dates(models.Model):
     ship = models.ForeignKey(Ships, on_delete=models.CASCADE)
     entry = models.DateField()
     departure = models.DateField()
+    default = models.BooleanField(default=False)
     def __str__(self):
         return str(self.entry) + '/' + str(self.departure)
 
