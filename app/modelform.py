@@ -9,20 +9,90 @@ from django.forms.models import BaseInlineFormSet
 
 bootstrap_class = 'form-control form-control-sm'
 bootstrap_class_input_xs = 'form-control form-control-sm input-xs'
-BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')
+
+class InfoChoiceForm(ModelForm):
+    info_choice = ModelChoiceField(queryset=AdditionalInfo.objects.all(),
+                                   empty_label="Выбрать из списка",
+                                   label='',
+                                   widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                                   required=False,
+                                   disabled=False)
+    class Meta:
+        model = AdditionalInfo
+        fields = ()
 
 
+class PlacementChoiceForm(ModelForm):
+    placement_choice = ModelChoiceField(queryset=Placements.objects.all(),
+                                   empty_label="Выбрать из списка",
+                                   label='',
+                                   widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                                   required=False,
+                                   disabled=False)
+    class Meta:
+        model = Placements
+        fields = ()
 
 
-class DatesChoisesForm(ModelForm):
+class NationalityChoiceForm(ModelForm):
+    nationality_choice = ModelChoiceField(queryset=Nationality.objects.all(),
+                                   empty_label="Выбрать из списка",
+                                   label='Гражданства',
+                                   widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                                   required=False,
+                                   disabled=False)
+    class Meta:
+        model = Nationality
+        fields = ()
+
+
+class OrganizationChoiceForm(ModelForm):
+    organization_choice = ModelChoiceField(queryset=Organizations.objects.all(),
+                empty_label="Выбрать из списка",
+                label='',
+                widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                required=False,
+                disabled=False,
+                                           )
+    class Meta:
+        model = Organizations
+        fields = ()
+
+
+class RoutChoiceForm(ModelForm):
+    rout_choice = ModelChoiceField(queryset=Routs.objects.all(),
+                                   empty_label="Выбрать из списка",
+                                   label='',
+                                   widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                                   required=False,
+                                   disabled=False)
+    class Meta:
+        model = Routs
+        fields = ()
+
+
+class ShipsChoiceForm(ModelForm):
+    ship_choice = ModelChoiceField(queryset=Ships.objects.all(),
+                                   empty_label="Выбрать из списка",
+                                   label='Корабли из списка',
+                                   widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                                   required=False,
+                                   disabled=False)
+    class Meta:
+        model = Ships
+        fields = ()
+
+
+class DatesChoiceForm(ModelForm):
     date_choice = ModelChoiceField(queryset=Dates.objects.all(),
                                    empty_label="Выбрать из списка",
                                    label='Даты из списка',
                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm choice_action'}),
-                                   required=False,disabled=True)
+                                   required=False,
+                                   disabled=False)
     class Meta:
         model = Dates
-        fields = ('date_choice',)
+        fields = ()
 
 
 
@@ -99,18 +169,15 @@ class ModelForm1(ModelForm):
     def __init__(self,*args, **kwargs):
         super(ModelForm1,self).__init__(*args,**kwargs)
         self.fields['confirmation'].required = False
+        # self.fields['rout_choice'].queryset =
 
-    rout_choice = ModelChoiceField(queryset=Routs.objects, empty_label="Маршруты",
-                                       widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),required=False)
+    rout_choice = ModelChoiceField(queryset=Routs.objects,
+                                   empty_label="Маршруты",
+                                   widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                                   required=False)
 
     info_choice = ModelChoiceField(queryset=AdditionalInfo.objects, empty_label='Доп. инф.',
                                     widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),required=False)
-
-    date_choice = ModelChoiceField(queryset=Dates.objects,
-                                   empty_label="Выбрать из списка",
-                                   label='Даты из списка',
-                                   widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
-                                   required=False)
 
     nationality_choice = ModelChoiceField(queryset=Nationality.objects, empty_label="Выбрать из списка", label='Гражданство',
                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),required=False)
@@ -120,9 +187,6 @@ class ModelForm1(ModelForm):
 
     placement_choice = ModelChoiceField(queryset=Placements.objects, empty_label="Размещения", label='Размещения',
                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),required=False)
-
-    ships_choise = ModelChoiceField(queryset=Ships.objects, empty_label='Корабли', label='Корабли',
-                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),required=False)
 
 
     class Meta:

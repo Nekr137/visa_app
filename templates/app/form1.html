@@ -9,66 +9,34 @@
 <div class="form-row" style="margin-top: 2rem">
     {% for field in form %}
         {% if forloop.counter <= 10 %}
-            <div class="form-group col-md-2">
-            {{ field.label_tag}}{{field}}
-            </div>
+            <div class="form-group col-md-2">{{ field.label_tag}}{{field}}</div>
         {%endif%}
     {% endfor %}
     <div class="form-group col-md-2"></div>
-    <div class="form-group col-md-2">
-        {{ form.confirmation.label_tag}}{{form.confirmation}}
-    </div>
+    <div class="form-group col-md-2">{{ form.confirmation.label_tag}}{{form.confirmation}}</div>
 </div>
 
 
 <div class="form-row" style="margin-bottom:2rem;">
-    <div class="form-group col-md-2">
-        {{ form.ships_choise.label_tag}}{{form.ships_choise}}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.entry.label_tag}}{{form.entry}}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.departure.label_tag}}{{form.departure}}
-    </div>
-    <div id="date_choice_div_id" class="form-group col-md-2">
-        {{ form.date_choice.label_tag}}{{form.date_choice}}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.nationality.label_tag}}{{form.nationality}}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.nationality_choice.label_tag}}{{form.nationality_choice}}
-    </div>
+    <div class="form-group col-md-2">{{ship_choice}}</div>
+    <div class="form-group col-md-2">{{ form.entry.label_tag}}{{form.entry}}</div>
+    <div class="form-group col-md-2">{{ form.departure.label_tag}}{{form.departure}}</div>
+    <div id="date_choice_div_id" class="form-group col-md-2">{{date_choice}}</div>
+    <div class="form-group col-md-2">{{ form.nationality.label_tag}}{{form.nationality}}</div>
+    <div class="form-group col-md-2">{{ nationality_choice }}</div>
 </div>
 
 
 
 <div class="form-row">
-    <div class="form-group col-md-10">
-        {{ form.label_tag.placement }}{{ form.placement }}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.placement_choice }}
-    </div>
-    <div class="form-group col-md-10">
-        {{ form.label_tag.rout }}{{ form.rout }}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.rout_choice }}
-    </div>
-    <div class="form-group col-md-10">
-        {{ form.label_tag.hostorganization }}{{ form.hostorganization }}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.organization_choice }}
-    </div>
-    <div class="form-group col-md-10">
-        {{ form.label_tag.additionalinfo}}{{ form.additionalinfo }}
-    </div>
-    <div class="form-group col-md-2">
-        {{ form.info_choice }}
-    </div>
+    <div class="form-group col-md-10">{{ form.label_tag.placement }}{{ form.placement }}</div>
+    <div class="form-group col-md-2">{{ placement_choice }}</div>
+    <div class="form-group col-md-10">{{ form.label_tag.rout }}{{ form.rout }}</div>
+    <div class="form-group col-md-2">{{ rout_choice }}</div>
+    <div class="form-group col-md-10">{{ form.label_tag.hostorganization }}{{ form.hostorganization }}</div>
+    <div class="form-group col-md-2">{{ organization_choice }}</div>
+    <div class="form-group col-md-10">{{ form.label_tag.additionalinfo}}{{ form.additionalinfo }}</div>
+    <div class="form-group col-md-2">{{ info_choice }}</div>
 </div>
 
 
@@ -82,31 +50,44 @@
 
 
 <script>
-    $('#id_date_choice').prop("disabled", true);
-
+    function FromChoiceToInput(id_from,id_to){
+        var s = $(id_from + ' option:selected').text()
+        $(id_to).val(s);		
+	}
+	// Если это не редактирование формы, а её создание, то применяем значения по умолчанию. 
+	if('{{view}}' != 'edit'){
+		FromChoiceToInput('#id_nationality_choice','#id_nationality')
+		FromChoiceToInput('#id_placement_choice','#id_placement')
+		FromChoiceToInput('#id_rout_choice','#id_rout')	
+		FromChoiceToInput('#id_organization_choice','#id_hostorganization')
+		FromChoiceToInput('#id_info_choice','#id_additionalinfo')
+	}	
+	
     $('#id_nationality_choice').on('change',function(){
-        var s = $('#id_nationality_choice option:selected').text()
-        $('#id_nationality').val(s);
+		FromChoiceToInput('#id_nationality_choice','#id_nationality')
     });
     $('#id_placement_choice').on('change',function(){
-        var s = $('#id_placement_choice option:selected').text()
-        $('#id_placement').val(s);
+		FromChoiceToInput('#id_placement_choice','#id_placement')
     });
     $('#id_rout_choice').on('change',function(){
-        var s = $('#id_rout_choice option:selected').text()
-        $('#id_rout').val(s);
+		FromChoiceToInput('#id_rout_choice','#id_rout')
     });
     $('#id_organization_choice').on('change',function(){
-        var s = $('#id_organization_choice option:selected').text()
-        $('#id_hostorganization').val(s);
+		FromChoiceToInput('#id_organization_choice','#id_hostorganization')
     });
     $('#id_info_choice').on('change',function(){
-        var s = $('#id_info_choice option:selected').text()
-        $('#id_additionalinfo').val(s);
+		FromChoiceToInput('#id_info_choice','#id_additionalinfo')
+    });
+	
+    $('.choice_action').on('change', function(){
+        var s = $('.choice_action option:selected').text().split('/');
+        $('#id_entry').val(s[0]);
+        $('#id_departure').val(s[1]);
     });
 
-    $('#id_ships_choise').on('change',function(){
-        var ship_id = $('#id_ships_choise option:selected').val()
+    $('#id_ship_choice').on('change',function(){
+        var ship_id = $('#id_ship_choice option:selected').val()
+		console.log('id_ship_choice');
         $.ajax({
             url: '/rewrite_dates_in_form',
             type: 'post',
@@ -118,7 +99,6 @@
             {
                 console.log(resp)
                 $("#date_choice_div_id")[0].innerHTML = resp;
-                $('#id_date_choice').prop("disabled", false);
 
                 $('.choice_action').on('change', function(){
                     var s = $('.choice_action option:selected').text().split('/');
