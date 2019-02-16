@@ -37,14 +37,14 @@ AppModelforms = {
 def edit_form2(request,id):
     # model
     model = Form2.objects.get(id=id)
-    form = ModelForm2(prefix='0', instance=model)
+    form = ModelForm2(instance=model)
 
     # members
     instance = GroupMembers.objects.filter(form2=model.id)
 
     if request.method == "POST":
         NUM = int(request.POST.get('NUM'))
-        form = ModelForm2(request.POST,prefix='0',instance=model)
+        form = ModelForm2(request.POST, instance=model)
 
         # Разбираемся со старыми записями
         for i,inst in enumerate(instance):
@@ -67,11 +67,24 @@ def edit_form2(request,id):
             return redirect('/')
     else:
         member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
+        date_choice = DatesChoiceForm()
+        date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
         return render(request, "app/form2.html", {
             "form": form,
             "member_forms": member_forms,
             'NUM':len(instance),
             "title":"Редактирование формы групповой визы",
+
+            "view": "edit",
+            "date_choice": date_choice,
+            "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
+            "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
+            "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
+            "organization_choice": OrganizationChoiceForm(
+                initial={'organization_choice': get_default_object(Organizations)}),
+            "nationality_choice": NationalityChoiceForm(
+                initial={'nationality_choice': get_default_object(Nationality)}),
+            "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
         })
 
 def edit_form1(request,id):
@@ -85,7 +98,7 @@ def edit_form1(request,id):
 
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(
-                                            ship_id=str(Ships.objects.get(default=1).id))
+                                            ship_id=str(get_default_object(Ships)))
 
         return render(request, "app/form1.html", {
             "form": ModelForm1(instance=model),
@@ -99,8 +112,6 @@ def edit_form1(request,id):
             "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
             "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
         })
-
-
 
 
 def default(request,type,id):
@@ -131,7 +142,6 @@ def del_item(request,type,id):
     else:
         resp = HttpResponse('error')
     return resp
-
 
 
 def add_item(request,type):
@@ -216,7 +226,7 @@ def form1(request):
 
 def form2(request):
     if request.method == "POST":
-        form = ModelForm2(request.POST,prefix='0')
+        form = ModelForm2(request.POST)
         if form.is_valid():
             f = form.save()
             f.save()
@@ -233,8 +243,9 @@ def form2(request):
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
         return render(request, "app/form2.html", {
-            "form": ModelForm2(prefix='0'),
+            "form": ModelForm2(),
             "view": "form1",
+            "NUM" : 1,
             "title":"Форма для групповой визы",
             "date_choice": date_choice,
             "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
@@ -245,7 +256,6 @@ def form2(request):
             "nationality_choice": NationalityChoiceForm(
                 initial={'nationality_choice': get_default_object(Nationality)}),
             "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
-
         })
 
 

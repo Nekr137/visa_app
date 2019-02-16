@@ -134,15 +134,16 @@ class Form2(models.Model):
     goal = models.CharField(max_length=30)
     birthday = models.DateField()
     passport = models.TextField()
+    multiplicity = models.TextField()
+    date = models.DateField()
+    confirmation = models.TextField()
+    nationality = models.TextField()
     entry = models.DateField()
     departure = models.DateField()
-    nationality = models.TextField()
-    multiplicity = models.TextField()
-    confirmation = models.TextField()
-    date = models.DateField()
     placement = models.TextField()
     rout = models.TextField()
     hostorganization = models.TextField()
+    additionalinfo = models.TextField()
 
     def __str__(self):
         return 'Familyname: ' + self.familyname + ' Name: ' + self.name + ' '

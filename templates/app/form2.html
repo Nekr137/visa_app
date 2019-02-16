@@ -1,37 +1,42 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block content%}
+
 <div class="container" style="margin-top: 10px;">
     <h1>{{title}}</h1>
     <form method="post" style="margin-bottom: 3rem;">
         {% csrf_token %}
-        <div class="form-row" style="margin-bottom: 1rem; margin-top: 2rem">
-        {% for field in form %}
-            {% if forloop.counter <= 6 %}
-                <div class="form-group col-md-2">
-                {{ field.label_tag}}{{field}}
-                </div>
-            {%elif forloop.counter <= 14%}
-                <div class="form-group col-md-3">
-                {{ field.label_tag}}{{field}}
-                </div>
-            {%endif%}
-        {% endfor %}
+        <div class="form-row" style="margin-top: 2rem">
+            {% for field in form %}
+                {% if forloop.counter <= 10 %}
+                    <div class="form-group col-md-2">{{ field.label_tag}}{{field}}</div>
+                {%endif%}
+            {% endfor %}
+            <div class="form-group col-md-2"></div>
+            <div class="form-group col-md-2">{{ form.confirmation.label_tag}}{{form.confirmation}}</div>
         </div>
-            {% include "app/choose_sheeps.html" %}
+
+        <div class="form-row" style="margin-bottom:2rem;">
+            <div class="form-group col-md-2">{{ship_choice}}</div>
+            <div class="form-group col-md-2">{{ form.entry.label_tag}}{{form.entry}}</div>
+            <div class="form-group col-md-2">{{ form.departure.label_tag}}{{form.departure}}</div>
+            <div id="date_choice_div_id" class="form-group col-md-2">{{date_choice}}</div>
+            <div class="form-group col-md-2">{{ form.nationality.label_tag}}{{form.nationality}}</div>
+            <div class="form-group col-md-2">{{ nationality_choice }}</div>
+        </div>
+
         <div class="form-row">
-            <div class="form-group col-md-12">
-            {{ form.label_tag.placement }}{{ form.placement }}
-            </div>
-            <div class="form-group col-md-12">
-            {{ form.label_tag.rout }}{{ form.rout }}
-            </div>
-            <div class="form-group col-md-12">
-            {{ form.label_tag.hostorganization }}{{ form.hostorganization }}
-            </div>
+            <div class="form-group col-md-10">{{ form.label_tag.placement }}{{ form.placement }}</div>
+            <div class="form-group col-md-2">{{ placement_choice }}</div>
+            <div class="form-group col-md-10">{{ form.label_tag.rout }}{{ form.rout }}</div>
+            <div class="form-group col-md-2">{{ rout_choice }}</div>
+            <div class="form-group col-md-10">{{ form.label_tag.hostorganization }}{{ form.hostorganization }}</div>
+            <div class="form-group col-md-2">{{ organization_choice }}</div>
+            <div class="form-group col-md-10">{{ form.label_tag.additionalinfo}}{{ form.additionalinfo }}</div>
+            <div class="form-group col-md-2">{{ info_choice }}</div>
         </div>
 
-
+        <!-- Save form -->
         <div class="form-row align-items-center">
             <div class="col-auto">
                 <button type="submit" class="btn btn-outline-secondary btn-sm">Сохранить</button>
@@ -52,17 +57,25 @@
             {% endfor %}
         </div>
 
-        <!-- Место для всявки членов группы-->
-        <div id="members" style="">
-        </div>
+        <!-- Место для вставки членов группы-->
+        <div id="members" style=""></div>
+
         <input type="hidden" name="NUM" value="1" id="NUM">
         <button type="button" id="add_member" class="btn btn-outline-secondary btn-sm input-xs" onclick="add_m()">+</button>
     </form>
 </div>
 
-
 <script>
-NUM = {{NUM}}
+    window['csrf_token'] = '{{csrf_token}}'
+</script>
+
+<script src="{% static '/js/form-default.js'%}" type="text/javascript"></script>
+{% if view != 'edit' %}
+    <script src="{% static '/js/form-eval-default.js'%}" type="text/javascript"></script>
+{% endif %}
+<script>
+
+NUM = {{ NUM }}
 var m = document.getElementById('members');
 function add_m()
 {
