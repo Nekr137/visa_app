@@ -168,19 +168,19 @@ def add_item(request,type):
 def lists(request):
     """ Вывод всех списков """
     return render(request,"app/lists.html",{
-        'ships':Ships.objects.all(),
+        'ships':Ships.objects.order_by('id'),
         'ships_mf':ShipsForm(),
-        'infos':AdditionalInfo.objects.all(),
+        'infos':AdditionalInfo.objects.order_by('id'),
         'infos_mf':AdditionalInfoForm(),
-        'routs':Routs.objects.all(),
+        'routs':Routs.objects.order_by('id'),
         'routs_mf':RoutsForm(),
-        'nationality':Nationality.objects.all(),
+        'nationality':Nationality.objects.order_by('id'),
         'nationality_mf':NationalityForm(),
-        'dates':Dates.objects.all(),
+        'dates':Dates.objects.order_by('id'),
         'dates_mf':DatesForm(),
-        'placements':Placements.objects.all(),
+        'placements':Placements.objects.order_by('id'),
         'placements_mf':PlacementForm(),
-        'organizations':Organizations.objects.all(),
+        'organizations':Organizations.objects.order_by('id'),
         'organizations_mf':OrganizationForm()
     })
 

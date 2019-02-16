@@ -267,22 +267,8 @@ class MembersForm(ModelForm):
             'passport',
             'nationality'
         )
-        # labels = {
-        #     'familyname': p[0],
-        #     'firstname': p[1],
-        #     'name': p[2],
-        #     'lastname': p[3],
-        #     'birthday': p[4],
-        #     'passport': p[5],
-        #     'nationality': p[6],
-        # }
 
     def __init__(self,*args, **kwargs):
         super(MembersForm,self).__init__(*args,**kwargs)
         for field in self.fields:
             self.fields[field].required = True
-        #
-        # self.fields['familyname'].required = True
-        # self.fields['firstname'].required = True
-        # self.fields['name'].required = True
-
