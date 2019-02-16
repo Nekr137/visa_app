@@ -20,6 +20,10 @@ def SplitOrganization(o):
     """Разбивает поле организации так, чтобы текст равномерно разместился в двух ячейках"""
     return o[:50],o[50:]
 
+def SplitInfo(i):
+    """Разбивает поле дополнительная информация на 4 ячейки"""
+    return i[0:25],i[25:75],i[75:125],i[125:175]
+
 
 class AdditionalInfo(models.Model):
     info = models.TextField()
@@ -97,11 +101,14 @@ class Form1(models.Model):
 
     def GenerateXlsx(self,fin,fout):
         self.fname = fin
-        self.wb = openpyxl.Workbook()
+        #self.wb = openpyxl.Workbook()
         self.wb = openpyxl.load_workbook(filename=self.fname)
 
-        sheet1 = self.wb.get_sheet_by_name("Лист1")
-        sheet1['F2'] = self.confirmation
+        sheet1 = self.wb["Лист1"]
+
+        if self.confirmation:
+            sheet1['F2'] = '0011 - AUS  06/07'
+        sheet1['B5'] = 'визовое приглашение № 0047'
         sheet1['D5'] = self.multiplicity
         sheet1['D7'] = self.nationality
         sheet1['C9'] = self.entry
@@ -117,6 +124,12 @@ class Form1(models.Model):
         sheet1['D24'] = self.placement
         sheet1['B26'],sheet1['B27'] = SplitOrganization(self.hostorganization)
         sheet1['F21'],sheet1['B22'] = SplitRout(self.rout)
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitInfo(self.additionalinfo)
+
+        img = openpyxl.drawing.image.Image('static/xlsx/pe.png')
+        #img.anchor(sheet1.cell('A33'))
+        img.anchor(sheet1.cell('F28'))
+        sheet1.add_image(img)
 
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename='+fout
