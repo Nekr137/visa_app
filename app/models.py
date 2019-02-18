@@ -188,6 +188,7 @@ class Form2(models.Model):
         sheet1['K6'] = 'визовое приглашение № 0307'
         sheet1['D8'] = self.multiplicity
         sheet1['H16'] = self.nationality
+        sheet1['D10'] = self.nationality
         sheet1['C12'] = self.entry
         sheet1['L12'] = self.entry
         sheet1['F12'] = self.departure
@@ -207,9 +208,16 @@ class Form2(models.Model):
         sheet1['F23'],sheet1['B24'] = SplitRout(self.rout)
         sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitInfo(self.additionalinfo)
 
-        #for i,g in enumerate(GroupMembers.objects.get(form2=self)):
-            #sheet1.
-
+        # Внесение членов группы
+        for i,g in enumerate(GroupMembers.objects.filter(form2=self)):
+            for col in [0,9]:
+                sheet1.cell(column=2+col,row=50+i*2).value = str(g.familyname).upper() + '/'
+                sheet1.cell(column=2+col,row=51+i*2).value = str(g.name).upper()
+                sheet1.cell(column=4+col,row=50+i*2).value = str(g.firstname).upper() + '/'
+                sheet1.cell(column=4+col,row=51+i*2).value = str(g.lastname).upper()
+                sheet1.cell(column=6+col,row=50+i*2).value = date_format(g.birthday)
+                sheet1.cell(column=7+col,row=50+i*2).value = g.passport
+                sheet1.cell(column=8+col,row=50+i*2).value = g.nationality
 
 
         ulr = openpyxl.styles.Border(
