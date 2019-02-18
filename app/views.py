@@ -1,11 +1,8 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
-from .modelform import ModelForm1, ModelForm2, MembersForm, DatesForm, ShipsForm, AdditionalInfoForm, RoutsForm, \
-    NationalityForm, DatesChoiceForm, PlacementForm, OrganizationForm,\
-    ShipsChoiceForm, InfoChoiceForm, PlacementChoiceForm, NationalityChoiceForm,\
-    OrganizationChoiceForm,RoutChoiceForm
-from .models import Form1, Form2, GroupMembers, Ships, Dates, AdditionalInfo, Nationality, Routs, Placements, Organizations
+from .modelform import *
+from .models import *
 from django.core.paginator import Paginator
 from django import forms
 from django.forms import modelformset_factory
@@ -69,6 +66,9 @@ def edit_form2(request,id):
         member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
+
+        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+
         return render(request, "app/form2.html", {
             "form": form,
             "member_forms": member_forms,
@@ -100,8 +100,11 @@ def edit_form1(request,id):
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(
                                             ship_id=str(get_default_object(Ships)))
 
+        form = ModelForm1(instance=model)
+        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+
         return render(request, "app/form1.html", {
-            "form": ModelForm1(instance=model),
+            "form": form,
             "title":"Редактирование формы одиночной визы",
             "view" : "edit",
             "date_choice": date_choice,
@@ -167,6 +170,11 @@ def add_item(request,type):
 
 def lists(request):
     """ Вывод всех списков """
+    try:
+        visa_number_form = VisaNumberForm(instance=VisaNumber.objects.get(id=1))
+    except:
+        visa_number_form = VisaNumberForm()
+
     return render(request,"app/lists.html",{
         'ships':Ships.objects.order_by('id'),
         'ships_mf':ShipsForm(),
@@ -181,15 +189,38 @@ def lists(request):
         'placements':Placements.objects.order_by('id'),
         'placements_mf':PlacementForm(),
         'organizations':Organizations.objects.order_by('id'),
-        'organizations_mf':OrganizationForm()
+        'organizations_mf':OrganizationForm(),
+        'visa_mf':visa_number_form,
     })
+
+
+def rewrite_visanumber(request):
+    if request.method == "GET":
+        try:
+            v = VisaNumberForm(request.GET, instance=VisaNumber.objects.get(id=1))
+        except:
+            v = VisaNumberForm(request.GET)
+        v.save()
+        return HttpResponseRedirect("/lists")
+
+def increment_visanumber(request):
+    try:
+        obj = VisaNumber.objects.get(id=1)
+        obj.visanumber += 1
+        obj.save()
+    except:
+        v = VisaNumber()
+        v.visanumber = 1
+        v.save()
+    return 1
 
 
 def form1_xlsx(request):
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form1.objects.get(id=id)
-        response = note.GenerateXlsx(fin='static/xlsx/1.xlsx',fout='DATA.xlsx')
+        note.FormXlsx(fin='static/xlsx/1.xlsx')
+        response = note.GenerateXlsx(fout='DATA.xlsx')
         return response
 
 
@@ -197,9 +228,26 @@ def form2_xlsx(request):
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form2.objects.get(id=id)
-        note.GenerateXlsx()
-        return redirect('/')
+        note.FormXlsx(fin='static/xlsx/2.xlsx')
+        response = note.GenerateXlsx(fout='DATA.xlsx')
+        return response
 
+
+def form1_pdf(request):
+    if request.method == "GET":
+        id = request.GET.get('id')
+        note = Form1.objects.get(id=id)
+        note.FormXlsx(fin='static/xlsx/1.xlsx')
+        response = note.GeneratePdf(fout='DATA.pdf')
+        return response
+
+def form2_pdf(request):
+    if request.method == "GET":
+        id = request.GET.get('id')
+        note = Form1.objects.get(id=id)
+        note.FormXlsx(fin='static/xlsx/1.xlsx')
+        response = note.GeneratePdf(fout='DATA.pdf')
+        return response
 
 def form1(request):
     if request.method == "POST":
@@ -210,8 +258,11 @@ def form1(request):
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
+        form = ModelForm1()
+        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+
         resp =  render(request, "app/form1.html", {
-            "form": ModelForm1(),
+            "form": form,
             "title":"Форма для одиночной визы",
             "view": "form1",
             "date_choice": date_choice,
@@ -242,9 +293,13 @@ def form2(request):
     else:
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
+
+        form = ModelForm2()
+        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+
         return render(request, "app/form2.html", {
-            "form": ModelForm2(),
-            "view": "form1",
+            "form": form,
+            "view": "form2",
             "NUM" : 1,
             "title":"Форма для групповой визы",
             "date_choice": date_choice,

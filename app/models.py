@@ -25,6 +25,11 @@ def SplitInfo(i):
     return i[0:25],i[25:75],i[75:125],i[125:175]
 
 
+class VisaNumber(models.Model):
+    visanumber = models.IntegerField()
+    def __str__(self):
+        return str(self.visanumber)
+
 class AdditionalInfo(models.Model):
     info = models.TextField()
     default = models.BooleanField(default=False)
@@ -92,45 +97,54 @@ class Form1(models.Model):
     hostorganization = models.TextField()
     additionalinfo = models.TextField()
 
-    P = ['Фамилия', 'First name', 'Имя, Отчество', 'Last name', 'Пол', 'Цель поездки',
-    'Дата рождения', 'Номер паспорта', 'Въезд с', 'Выезд до', 'Гражданство', 'Кратность визы',
-    'Подтверждение №', 'Дата документа', 'Размещение', 'Маршрушт', 'Принимающая организация']
-
     def __str__(self):
         return self.familyname
 
-    def GenerateXlsx(self,fin,fout):
+    def FormXlsx(self,fin):
         self.fname = fin
-        #self.wb = openpyxl.Workbook()
+        self.wb = openpyxl.Workbook()
         self.wb = openpyxl.load_workbook(filename=self.fname)
-
-        sheet1 = self.wb["Лист1"]
-
-        if self.confirmation:
-            sheet1['F2'] = '0011 - AUS  06/07'
+        #sheet1 = self.wb["Лист1"]
+        sheet1 = self.wb.active
+        sheet1['F2'] = '0011 - AUS  06/07'
         sheet1['B5'] = 'визовое приглашение № 0047'
-        sheet1['D5'] = self.multiplicity
-        sheet1['D7'] = self.nationality
-        sheet1['C9'] = self.entry
-        sheet1['F9'] = self.departure
-        sheet1['C11'] = str(self.lastname) + '/' + str(self.familyname)
-        sheet1['E13'] = str(self.firstname) + '/' + str(self.name)
-        sheet1['D15'] = date_format(self.birthday)
-        sheet1['G15'] = self.sex
-        sheet1['D17'] = self.passport
-        sheet1['D19'] = self.goal
-        sheet1['D40'] = self.date
-        sheet1['M40'] = self.date
-        sheet1['D24'] = self.placement
-        sheet1['B26'],sheet1['B27'] = SplitOrganization(self.hostorganization)
-        sheet1['F21'],sheet1['B22'] = SplitRout(self.rout)
+        sheet1['D7'] = self.multiplicity
+        sheet1['D9'] = self.nationality
+        sheet1['C11'] = self.entry
+        sheet1['L11'] = self.entry
+        sheet1['F11'] = self.departure
+        sheet1['O11'] = self.departure
+        sheet1['C13'] = str(self.familyname).upper() + '/' + str(self.firstname).upper()
+        sheet1['E15'] = str(self.name).upper() + '/' + str(self.lastname).upper()
+        sheet1['D17'] = date_format(self.birthday)
+        sheet1['G17'] = str(self.sex).upper()
+        sheet1['D19'] = self.passport
+        sheet1['D21'] = str(self.goal).upper()
+        #sheet1['D40'] = self.date
+        #sheet1['M40'] = self.date
+        sheet1['D25'] = self.placement
+        sheet1['B27'],sheet1['B28'] = SplitOrganization(self.hostorganization)
+        sheet1['F23'],sheet1['B24'] = SplitRout(self.rout)
         sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitInfo(self.additionalinfo)
 
-        img = openpyxl.drawing.image.Image('static/xlsx/pe.png')
-        #img.anchor(sheet1.cell('A33'))
-        img.anchor(sheet1.cell('F28'))
-        sheet1.add_image(img)
+        pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        pod = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        sheet1.add_image(pech, 'A34')
+        sheet1.add_image(pech2,'K34')
+        sheet1.add_image(pod, 'C34')
+        sheet1.add_image(pod2,'M34')
 
+
+    def GenerateXlsx(self,fout):
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename='+fout
+        self.wb.save(response)
+        #self.wb.save(filename='test.xlsx')
+        return response
+
+    def GeneratePdf(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename='+fout
         self.wb.save(response)
@@ -159,7 +173,138 @@ class Form2(models.Model):
     additionalinfo = models.TextField()
 
     def __str__(self):
-        return 'Familyname: ' + self.familyname + ' Name: ' + self.name + ' '
+        return 'Familyname: ' + self.familyname + ' Name: ' + self.name
+
+
+    def FormXlsx(self,fin):
+        self.fname = fin
+        self.wb = openpyxl.Workbook()
+        self.wb = openpyxl.load_workbook(filename=self.fname)
+
+        #sheet1 = self.wb["Лист1"]
+        sheet1 = self.wb.active
+        sheet1['F2'] = '0011 - AUS  06/07'
+        sheet1['B6'] = 'визовое приглашение № 0307'
+        sheet1['K6'] = 'визовое приглашение № 0307'
+        sheet1['D8'] = self.multiplicity
+        sheet1['H16'] = self.nationality
+        sheet1['C12'] = self.entry
+        sheet1['L12'] = self.entry
+        sheet1['F12'] = self.departure
+        sheet1['O12'] = self.departure
+        sheet1['B16'] = str(self.familyname).upper() + '/'
+        sheet1['B19'] = str(self.firstname).upper()
+        sheet1['D16'] = str(self.name).upper() + '/'
+        sheet1['D19'] = str(self.lastname).upper()
+        sheet1['F16'] = date_format(self.birthday)
+        sheet1['G17'] = str(self.sex).upper()
+        sheet1['G16'] = self.passport
+        sheet1['D21'] = str(self.goal).upper()
+        #sheet1['D40'] = self.date
+        #sheet1['M40'] = self.date
+        sheet1['D25'] = self.placement
+        sheet1['B27'],sheet1['B28'] = SplitOrganization(self.hostorganization)
+        sheet1['F23'],sheet1['B24'] = SplitRout(self.rout)
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitInfo(self.additionalinfo)
+
+        #for i,g in enumerate(GroupMembers.objects.get(form2=self)):
+            #sheet1.
+
+
+
+        ulr = openpyxl.styles.Border(
+            top=openpyxl.styles.Side(style='thin'),
+            left=openpyxl.styles.Side(style='thin'),
+            right=openpyxl.styles.Side(style='thin'),
+        )
+
+        blr = openpyxl.styles.Border(
+            bottom=openpyxl.styles.Side(style='thin'),
+            left=openpyxl.styles.Side(style='thin'),
+            right=openpyxl.styles.Side(style='thin'),
+        )
+
+        b = openpyxl.styles.Border(
+            bottom=openpyxl.styles.Side(style='thin'),
+        )
+
+        t = openpyxl.styles.Border(
+            top=openpyxl.styles.Side(style='thin'),
+        )
+
+        tlrb = openpyxl.styles.Border(
+            top=openpyxl.styles.Side(style='thin'),
+            left=openpyxl.styles.Side(style='thin'),
+            right=openpyxl.styles.Side(style='thin'),
+            bottom = openpyxl.styles.Side(style='thin')
+        )
+
+        for r in [14]+list(range(48, 70, 2)):
+            for c in range(2,9):
+                sheet1.cell(column=c,row = r).border = ulr
+            for c in range(11, 18):
+                sheet1.cell(column=c, row=r).border = ulr
+
+        for r in [15] + list(range(49, 71, 2)):
+            for c in range(2, 9):
+                sheet1.cell(column=c, row=r).border = blr
+            for c in range(11, 18):
+                sheet1.cell(column=c, row=r).border = blr
+
+        for r in [16,19,17,18]:
+            for c in range(2,9):
+                sheet1.cell(column=c, row=r).border = tlrb
+            for c in range(11, 18):
+                sheet1.cell(column=c, row=r).border = tlrb
+
+        for r in [25]:
+            for c in range(2,9):
+                sheet1.cell(column=c, row=r).border = b
+            for c in range(11, 18):
+                sheet1.cell(column=c, row=r).border = b
+
+        for r in [4,5]:
+            for c in [72,74,39,41]:
+                sheet1.cell(column=r, row=c).border = b
+
+        for r in [13,14]:
+            for c in [72,74,39,41]:
+                sheet1.cell(column=r, row=c).border = b
+
+        for c in range(2,18):
+            sheet1.cell(column=45,row=c).border = t
+
+        pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        sheet1.add_image(pech, 'B35')
+        pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        sheet1.add_image(pech2, 'K35')
+        pod = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        sheet1.add_image(pod, 'D35')
+        pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        sheet1.add_image(pod2,'M35')
+
+        pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        sheet1.add_image(pech, 'B67')
+        pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        sheet1.add_image(pech2, 'K67')
+        pod = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        sheet1.add_image(pod, 'D67')
+        pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        sheet1.add_image(pod2,'M67')
+
+    def GenerateXlsx(self,fout):
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename='+fout
+        self.wb.save(response)
+        #self.wb.save(filename='test.xlsx')
+        return response
+
+    def GeneratePdf(self,fout):
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename='+fout
+        self.wb.save(response)
+        return response
+
 
 
 class GroupMembers(models.Model):

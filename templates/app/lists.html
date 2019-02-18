@@ -182,5 +182,24 @@
             </div>
         </form>
     </div>
+
+    <h4>Нумерация</h4>
+    <div class="container" style="margin-left: 4rem">
+        {% for v in visa_number %}
+            {{ v.visanumber }}
+        {% endfor %}
+        <form method="get" action="rewrite_visanumber" id="rewrite_visanumber">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    {{ visa_mf.visanumber }}
+                </div>
+                <div class="form-group col-md-1">
+                    <button form="rewrite_visanumber" type="submit" class=" input-xs btn btn-outline-secondary btn-sm">Изменить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
 </div>
 {% endblock %}

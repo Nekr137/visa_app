@@ -1,14 +1,14 @@
 
 
-from django.forms import ModelForm, Textarea, TextInput, DateField, DateInput, RadioSelect,CheckboxSelectMultiple, \
-    Textarea, ModelChoiceField, Select, ChoiceField, SelectDateWidget,CheckboxInput, BooleanField
-from .models import Form1,Form2,GroupMembers, Dates, Ships, Routs, Nationality, \
-    AdditionalInfo, Organizations, Placements
+from django.forms import *
+from .models import *
+
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.forms.models import BaseInlineFormSet
 
 bootstrap_class = 'form-control form-control-sm'
 bootstrap_class_input_xs = 'form-control form-control-sm input-xs'
+
 
 class InfoChoiceForm(ModelForm):
     info_choice = ModelChoiceField(queryset=AdditionalInfo.objects.all(),
@@ -81,6 +81,16 @@ class DatesChoiceForm(ModelForm):
     class Meta:
         model = Dates
         fields = ()
+
+class VisaNumberForm(ModelForm):
+    class Meta:
+        model = VisaNumber
+        fields = ('visanumber',)
+        widgets = {
+            'visanumber' :  NumberInput()
+        }
+
+
 class NationalityForm(ModelForm):
     class Meta:
         model = Nationality
@@ -140,9 +150,9 @@ class DatesForm(ModelForm):
 
 class ModelForm1(ModelForm):
 
-    def __init__(self,*args, **kwargs):
-        super(ModelForm1,self).__init__(*args,**kwargs)
-        self.fields['confirmation'].required = False
+   #def __init__(self,*args, **kwargs):
+        #super(ModelForm1,self).__init__(*args,**kwargs)
+        #self.fields['confirmation'].required = False
 
     class Meta:
         model = Form1
@@ -163,7 +173,8 @@ class ModelForm1(ModelForm):
             'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
             'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
-            'confirmation': CheckboxInput(attrs={"class": bootstrap_class}),
+            #'confirmation': CheckboxInput(attrs={"class": bootstrap_class}),
+            'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
             'date': DateInput(attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
             'placement' : TextInput(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
             'rout': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),

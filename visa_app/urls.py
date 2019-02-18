@@ -12,6 +12,8 @@ urlpatterns = [
     re_path(r'^form2_db',views.form2_db),
     re_path(r'^form1_xlsx', views.form1_xlsx),
     re_path(r'^form2_xlsx', views.form2_xlsx),
+    re_path(r'^form1_pdf', views.form1_pdf),
+    re_path(r'^form2_pdf', views.form2_pdf),
     re_path(r'^form1', views.form1),
     re_path(r'^form2', views.form2),
     re_path(r'^lists',views.lists),
@@ -20,5 +22,7 @@ urlpatterns = [
     re_path(r'^add_item/(?P<type>\w+)/',views.add_item),
     re_path(r'^del_item/(?P<type>\w+)/(?P<id>\d+)/',views.del_item),
     re_path(r'^default/(?P<type>\w+)/(?P<id>\d+)/',views.default),
+    re_path(r'^rewrite_visanumber',views.rewrite_visanumber),
+    re_path(r'^increment_visanumber',views.increment_visanumber),
     path(r'', views.index),
 ]
