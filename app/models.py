@@ -187,7 +187,7 @@ class Form2(models.Model):
         sheet1['B6'] = 'визовое приглашение № 0307'
         sheet1['K6'] = 'визовое приглашение № 0307'
         sheet1['D8'] = self.multiplicity
-        sheet1['H16'] = self.nationality
+        #sheet1['H16'] = self.nationality
         sheet1['D10'] = self.nationality
         sheet1['C12'] = self.entry
         sheet1['L12'] = self.entry
@@ -197,9 +197,9 @@ class Form2(models.Model):
         sheet1['B19'] = str(self.firstname).upper()
         sheet1['D16'] = str(self.name).upper() + '/'
         sheet1['D19'] = str(self.lastname).upper()
-        sheet1['F16'] = date_format(self.birthday)
-        sheet1['G17'] = str(self.sex).upper()
-        sheet1['G16'] = self.passport
+        #sheet1['F16'] = date_format(self.birthday)
+        #sheet1['G17'] = 'stes'#str(self.sex).upper()
+        #sheet1['G16'] = self.passport
         sheet1['D21'] = str(self.goal).upper()
         #sheet1['D40'] = self.date
         #sheet1['M40'] = self.date
@@ -303,6 +303,7 @@ class Form2(models.Model):
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename='+fout
+        print('RESPONCE + ',response)
         self.wb.save(response)
         #self.wb.save(filename='test.xlsx')
         return response
