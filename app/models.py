@@ -4,6 +4,7 @@ import openpyxl,re
 from django.http import HttpResponseRedirect,HttpResponse, FileResponse
 from openpyxl.writer.excel import save_virtual_workbook
 from django.forms import ModelChoiceField
+from transliterate import translit
 
 def date_format(d):
     """Дата в формате dd.mm.yyyy"""
