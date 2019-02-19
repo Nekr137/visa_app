@@ -259,7 +259,10 @@ def form1(request):
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
         form = ModelForm1()
-        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+        try:
+            form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+        except:
+            pass
 
         resp =  render(request, "app/form1.html", {
             "form": form,
@@ -295,7 +298,10 @@ def form2(request):
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
         form = ModelForm2()
-        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+        try:
+            form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+        except:
+            pass
 
         return render(request, "app/form2.html", {
             "form": form,
