@@ -31,6 +31,9 @@ AppModelforms = {
     'form2':ModelForm2,
 }
 
+def statistic(request):
+    return HttpResponse('statistic')
+
 def edit_form2(request,id):
     # model
     model = Form2.objects.get(id=id)
@@ -244,7 +247,7 @@ def form1_pdf(request):
 def form2_pdf(request):
     if request.method == "GET":
         id = request.GET.get('id')
-        note = Form1.objects.get(id=id)
+        note = Form2.objects.get(id=id)
         note.FormXlsx(fin='static/xlsx/1.xlsx')
         response = note.GeneratePdf(fout='DATA.pdf')
         return response

@@ -1,9 +1,10 @@
 from django.db import models
 import datetime
-import openpyxl,re
+import openpyxl,re,os
 from django.http import HttpResponseRedirect,HttpResponse, FileResponse
 from openpyxl.writer.excel import save_virtual_workbook
 from django.forms import ModelChoiceField
+
 
 def date_format(d):
     """Дата в формате dd.mm.yyyy"""
@@ -309,9 +310,13 @@ class Form2(models.Model):
         return response
 
     def GeneratePdf(self,fout):
-        response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename='+fout
-        self.wb.save(response)
+        self.wb.save('tmp2.xlsx')
+        os.system('libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir pdf/ tmp2.xlsx')
+
+        with open('pdf/tmp2.pdf', 'rb') as pdf:
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+
         return response
 
 
