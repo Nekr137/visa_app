@@ -146,10 +146,14 @@ class Form1(models.Model):
         return response
 
     def GeneratePdf(self,fout):
-        response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename='+fout
-        self.wb.save(response)
+        self.wb.save('tmp1.xlsx')
+        os.system('libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir pdf/ tmp1.xlsx')
+
+        with open('pdf/tmp1.pdf', 'rb') as pdf:
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
+
 
 
 
@@ -316,7 +320,6 @@ class Form2(models.Model):
         with open('pdf/tmp2.pdf', 'rb') as pdf:
             response = HttpResponse(pdf.read(), content_type='application/pdf')
             response['Content-Disposition'] = 'inline;filename=some_file.pdf'
-
         return response
 
 

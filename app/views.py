@@ -248,7 +248,7 @@ def form2_pdf(request):
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form2.objects.get(id=id)
-        note.FormXlsx(fin='static/xlsx/1.xlsx')
+        note.FormXlsx(fin='static/xlsx/2.xlsx')
         response = note.GeneratePdf(fout='DATA.pdf')
         return response
 
