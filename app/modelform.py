@@ -171,9 +171,9 @@ class ModelForm1(ModelForm):
                    'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
                    'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
         widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
-            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
-            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
+            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
+            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
+            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
             'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
             #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
             'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
@@ -191,10 +191,10 @@ class ModelForm1(ModelForm):
             'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]})
             }
         labels = {
-            'familyname': "Фамилия (ru)",
-            'firstname': "Фамилия (eng)",
-            'name': "Имя (ru)",
-            'lastname': "Имя (eng)",
+            'familyname': p[0],
+            'firstname': p[1],
+            'name': p[2],
+            'lastname': p[3],
             'sex' :p[4],
             'goal': p[5],
             'birthday' : p[6],
@@ -226,10 +226,10 @@ class ModelForm2(ModelForm):
                    'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
                    'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
         widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class,"placeholder": p[0]}),
-            'familyname': TextInput(attrs={"class": bootstrap_class,"placeholder": p[1]}),
-            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
-            'lastname': TextInput(attrs={"class": bootstrap_class,"placeholder": p[3]}),
+            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
+            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
+            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
+            'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
             #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
             'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
@@ -246,10 +246,10 @@ class ModelForm2(ModelForm):
             'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]})
         }
         labels = {
-            'familyname': "Фамилия (ru)",
-            'firstname': "Фамилия (eng)",
-            'name': "Имя (ru)",
-            'lastname': "Имя (eng)",
+            'familyname': p[0],
+            'firstname': p[1],
+            'name': p[2],
+            'lastname': p[3],
             'sex' :p[4],
             'goal': p[5],
             'birthday' : p[6],
