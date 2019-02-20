@@ -12,8 +12,8 @@
                     <div class="form-group col-md-2">{{ field.label_tag}}{{field}}</div>
                 {%endif%}
             {% endfor %}
-            <div class="form-group col-md-2"></div>
             <div class="form-group col-md-2">{{ form.confirmation.label_tag}}{{form.confirmation}}</div>
+            <div class="form-group col-md-2">{{ form.invitation_number.label_tag}}{{form.invitation_number}}</div>
         </div>
 
         <div class="form-row" style="margin-bottom:2rem;">
@@ -87,6 +87,7 @@ function add_m()
         data: {'NUM':NUM,'csrfmiddlewaretoken': '{{csrf_token}}'},
         success: function(resp)
         {
+            //console.log(resp)
             $("#members").append(resp);
             $('#NUM').val(NUM)
         },

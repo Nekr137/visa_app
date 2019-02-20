@@ -6,6 +6,7 @@ from .models import *
 from django.core.paginator import Paginator
 from django import forms
 from django.forms import modelformset_factory
+from datetime import date
 
 AppModels = {
     'ship': Ships,
@@ -31,6 +32,9 @@ AppModelforms = {
     'form2':ModelForm2,
 }
 
+def statistic(request):
+    return HttpResponse('statistic')
+
 def edit_form2(request,id):
     # model
     model = Form2.objects.get(id=id)
@@ -55,6 +59,7 @@ def edit_form2(request,id):
         if form.is_valid():
             f = form.save()
             f.save()
+            increment_visanumber()
             for k in range(1,NUM+1):
                 member_form = MembersForm(request.POST,prefix=str(k))
                 if member_form.is_valid():
@@ -92,7 +97,9 @@ def edit_form1(request,id):
     model = Form1.objects.get(id=id)
     if request.method == "POST":
         form = ModelForm1(request.POST, instance=model)
-        form.save()
+        if form.is_valid():
+            form.save()
+            increment_visanumber()
         return redirect('/')
     else:
 
@@ -203,7 +210,7 @@ def rewrite_visanumber(request):
         v.save()
         return HttpResponseRedirect("/lists")
 
-def increment_visanumber(request):
+def increment_visanumber():
     try:
         obj = VisaNumber.objects.get(id=1)
         obj.visanumber += 1
@@ -219,8 +226,9 @@ def form1_xlsx(request):
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form1.objects.get(id=id)
+        fname = note.firstname + '_' + note.lastname + '.xlsx'
         note.FormXlsx(fin='static/xlsx/1.xlsx')
-        response = note.GenerateXlsx(fout='DATA.xlsx')
+        response = note.GenerateXlsx(fout=fname)
         return response
 
 
@@ -228,8 +236,9 @@ def form2_xlsx(request):
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form2.objects.get(id=id)
+        fname = note.firstname + '_' + note.lastname + '.xlsx'
         note.FormXlsx(fin='static/xlsx/2.xlsx')
-        response = note.GenerateXlsx(fout='DATA.xlsx')
+        response = note.GenerateXlsx(fout=fname)
         return response
 
 
@@ -237,32 +246,38 @@ def form1_pdf(request):
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form1.objects.get(id=id)
+        fname = note.firstname + '_' + note.lastname + '.pdf'
         note.FormXlsx(fin='static/xlsx/1.xlsx')
-        response = note.GeneratePdf(fout='DATA.pdf')
+        response = note.GeneratePdf(fout=fname)
         return response
 
 def form2_pdf(request):
     if request.method == "GET":
         id = request.GET.get('id')
-        note = Form1.objects.get(id=id)
-        note.FormXlsx(fin='static/xlsx/1.xlsx')
-        response = note.GeneratePdf(fout='DATA.pdf')
+        note = Form2.objects.get(id=id)
+        fname = note.firstname + '_' + note.lastname + '.pdf'
+        note.FormXlsx(fin='static/xlsx/2.xlsx')
+        response = note.GeneratePdf(fout=fname)
         return response
 
 def form1(request):
     if request.method == "POST":
         form = ModelForm1(request.POST)
-        form.save()
+        if form.is_valid():
+            form.save()
+            increment_visanumber()
+
         resp = redirect('/')
     else:
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
-        form = ModelForm1()
+        def_data = {'confirmation':date.today().strftime("%d/%m")}
         try:
-            form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+            def_data['invitation_number'] = VisaNumber.objects.get(id=1)
         except:
             pass
+        form = ModelForm1(def_data)
 
         resp =  render(request, "app/form1.html", {
             "form": form,
@@ -284,6 +299,7 @@ def form2(request):
         if form.is_valid():
             f = form.save()
             f.save()
+            increment_visanumber()
             for k in range(1,int(request.POST.get('NUM'))+1):
                 member_form = MembersForm(request.POST,prefix=str(k))
                 if member_form.is_valid():
@@ -297,11 +313,14 @@ def form2(request):
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
-        form = ModelForm2()
+        def_data = {'confirmation':date.today().strftime("%d/%m")}
         try:
-            form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+            #form.fields['invitation_number'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+            def_data['invitation_number'] = VisaNumber.objects.get(id=1)
         except:
             pass
+
+        form = ModelForm2(def_data)
 
         return render(request, "app/form2.html", {
             "form": form,

@@ -20,35 +20,39 @@ transliterate = (
 		}
 	}
 )();
-//var txt = "Съешь ещё этих мягких французских булок, да выпей же чаю!";
-//alert(transliterate(txt));
-//alert(transliterate(transliterate(txt), true));
 
+// Изменение в имени
+$('#id_firstname').on('change',function(){
+    $('#id_familyname').val(transliterate($('#id_firstname').val(),true));
+})
+$('#id_lastname').on('change',function(){
+    $('#id_name').val(transliterate($('#id_lastname').val(),true));
+})
 
-
-$('#id_nationality_choice').on('change',function(){
+// Изменения в choice элементах
+$('#id_nationality_choice').on('click',function(){
     FromChoiceToInput('#id_nationality_choice','#id_nationality')
 });
-$('#id_placement_choice').on('change',function(){
+$('#id_placement_choice').on('click',function(){
     FromChoiceToInput('#id_placement_choice','#id_placement')
 });
-$('#id_rout_choice').on('change',function(){
+$('#id_rout_choice').on('click',function(){
     FromChoiceToInput('#id_rout_choice','#id_rout')
 });
-$('#id_organization_choice').on('change',function(){
+$('#id_organization_choice').on('click',function(){
     FromChoiceToInput('#id_organization_choice','#id_hostorganization')
 });
-$('#id_info_choice').on('change',function(){
+$('#id_info_choice').on('click',function(){
     FromChoiceToInput('#id_info_choice','#id_additionalinfo')
 });
 
-$('.choice_action').on('change', function(){
+$('.choice_action').on('click', function(){
     var s = $('.choice_action option:selected').text().split('/');
     $('#id_entry').val(s[0]);
     $('#id_departure').val(s[1]);
 });
 
-$('#id_ship_choice').on('change',function(){
+$('#id_ship_choice').on('click',function(){
     var ship_id = $('#id_ship_choice option:selected').val()
     console.log('id_ship_choice');
     console.log(csrf_token)
@@ -61,10 +65,10 @@ $('#id_ship_choice').on('change',function(){
             },
         success: function(resp)
         {
-            console.log(resp)
+            //console.log(resp)
             $("#date_choice_div_id")[0].innerHTML = resp;
 
-            $('.choice_action').on('change', function(){
+            $('.choice_action').on('click', function(){
                 var s = $('.choice_action option:selected').text().split('/');
                 $('#id_entry').val(s[0]);
                 $('#id_departure').val(s[1]);
@@ -72,5 +76,3 @@ $('#id_ship_choice').on('change',function(){
         },
     });
 });
-
-

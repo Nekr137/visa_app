@@ -1,10 +1,43 @@
 from django.db import models
 import datetime
-import openpyxl,re
+import openpyxl,re,os
 from django.http import HttpResponseRedirect,HttpResponse, FileResponse
 from openpyxl.writer.excel import save_virtual_workbook
 from django.forms import ModelChoiceField
 from transliterate import translit
+
+ulr = openpyxl.styles.Border(
+    top=openpyxl.styles.Side(style='thin'),
+    left=openpyxl.styles.Side(style='thin'),
+    right=openpyxl.styles.Side(style='thin'),
+)
+
+blr = openpyxl.styles.Border(
+    bottom=openpyxl.styles.Side(style='thin'),
+    left=openpyxl.styles.Side(style='thin'),
+    right=openpyxl.styles.Side(style='thin'),
+)
+
+br = openpyxl.styles.Border(
+    bottom=openpyxl.styles.Side(style='thin'),
+    right=openpyxl.styles.Side(style='thin'),
+)
+
+b = openpyxl.styles.Border(
+    bottom=openpyxl.styles.Side(style='thin'),
+)
+
+t = openpyxl.styles.Border(
+    top=openpyxl.styles.Side(style='thin'),
+)
+
+tlrb = openpyxl.styles.Border(
+    top=openpyxl.styles.Side(style='thin'),
+    left=openpyxl.styles.Side(style='thin'),
+    right=openpyxl.styles.Side(style='thin'),
+    bottom=openpyxl.styles.Side(style='thin')
+)
+
 
 def date_format(d):
     """Дата в формате dd.mm.yyyy"""
@@ -79,10 +112,10 @@ class Dates(models.Model):
 
 
 class Form1(models.Model):
-    familyname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
+    familyname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
     sex = models.CharField(max_length=10)
     goal = models.CharField(max_length=30)
     birthday = models.DateField()
@@ -90,6 +123,7 @@ class Form1(models.Model):
     multiplicity = models.TextField()
     date = models.DateField()
     confirmation = models.TextField()
+    invitation_number = models.TextField()
     nationality = models.TextField()
     entry = models.DateField()
     departure = models.DateField()
@@ -107,8 +141,9 @@ class Form1(models.Model):
         self.wb = openpyxl.load_workbook(filename=self.fname)
         #sheet1 = self.wb["Лист1"]
         sheet1 = self.wb.active
-        sheet1['F2'] = '0011 - AUS  06/07'
-        sheet1['B5'] = 'визовое приглашение № 0047'
+        sheet1['F2'] = '0011 - AUS  ' + str(self.confirmation)
+        sheet1['B5'] = 'визовое приглашение № ' + str(self.invitation_number)
+        #sheet1['K5'] = 'визовое приглашение № ' + str(self.invitation_number)
         sheet1['D7'] = self.multiplicity
         sheet1['D9'] = self.nationality
         sheet1['C11'] = self.entry
@@ -137,6 +172,14 @@ class Form1(models.Model):
         sheet1.add_image(pod, 'C34')
         sheet1.add_image(pod2,'M34')
 
+        for c in range(1,18):
+            sheet1.cell(column=c,row=25).border = b
+
+        sheet1['H25'].border = br
+        sheet1['E41'].border = b
+        sheet1['E39'].border = b
+        sheet1['N41'].border = b
+        sheet1['N39'].border = b
 
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
@@ -146,18 +189,22 @@ class Form1(models.Model):
         return response
 
     def GeneratePdf(self,fout):
-        response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename='+fout
-        self.wb.save(response)
+        self.wb.save('tmp1.xlsx')
+        os.system('libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir pdf/ tmp1.xlsx')
+
+        with open('pdf/tmp1.pdf', 'rb') as pdf:
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
 
 
 
+
 class Form2(models.Model):
-    familyname = models.CharField(max_length=30)
     firstname = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
+    familyname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
     sex = models.CharField(max_length=10)
     goal = models.CharField(max_length=30)
     birthday = models.DateField()
@@ -165,6 +212,7 @@ class Form2(models.Model):
     multiplicity = models.TextField()
     date = models.DateField()
     confirmation = models.TextField()
+    invitation_number = models.TextField()
     nationality = models.TextField()
     entry = models.DateField()
     departure = models.DateField()
@@ -184,11 +232,11 @@ class Form2(models.Model):
 
         #sheet1 = self.wb["Лист1"]
         sheet1 = self.wb.active
-        sheet1['F2'] = '0011 - AUS  06/07'
-        sheet1['B6'] = 'визовое приглашение № 0307'
-        sheet1['K6'] = 'визовое приглашение № 0307'
+        #sheet1['F2'] = '0011 - AUS  ' + str(self.confirmation)
+        sheet1['B6'] = 'визовое приглашение № ' + str(self.invitation_number)
+        sheet1['K6'] = 'визовое приглашение № ' + str(self.invitation_number)
         sheet1['D8'] = self.multiplicity
-        sheet1['H16'] = self.nationality
+        #sheet1['H16'] = self.nationality
         sheet1['D10'] = self.nationality
         sheet1['C12'] = self.entry
         sheet1['L12'] = self.entry
@@ -198,9 +246,9 @@ class Form2(models.Model):
         sheet1['B19'] = str(self.firstname).upper()
         sheet1['D16'] = str(self.name).upper() + '/'
         sheet1['D19'] = str(self.lastname).upper()
-        sheet1['F16'] = date_format(self.birthday)
-        sheet1['G17'] = str(self.sex).upper()
-        sheet1['G16'] = self.passport
+        #sheet1['F16'] = date_format(self.birthday)
+        #sheet1['G17'] = 'stes'#str(self.sex).upper()
+        #sheet1['G16'] = self.passport
         sheet1['D21'] = str(self.goal).upper()
         #sheet1['D40'] = self.date
         #sheet1['M40'] = self.date
@@ -220,33 +268,6 @@ class Form2(models.Model):
                 sheet1.cell(column=7+col,row=50+i*2).value = g.passport
                 sheet1.cell(column=8+col,row=50+i*2).value = g.nationality
 
-
-        ulr = openpyxl.styles.Border(
-            top=openpyxl.styles.Side(style='thin'),
-            left=openpyxl.styles.Side(style='thin'),
-            right=openpyxl.styles.Side(style='thin'),
-        )
-
-        blr = openpyxl.styles.Border(
-            bottom=openpyxl.styles.Side(style='thin'),
-            left=openpyxl.styles.Side(style='thin'),
-            right=openpyxl.styles.Side(style='thin'),
-        )
-
-        b = openpyxl.styles.Border(
-            bottom=openpyxl.styles.Side(style='thin'),
-        )
-
-        t = openpyxl.styles.Border(
-            top=openpyxl.styles.Side(style='thin'),
-        )
-
-        tlrb = openpyxl.styles.Border(
-            top=openpyxl.styles.Side(style='thin'),
-            left=openpyxl.styles.Side(style='thin'),
-            right=openpyxl.styles.Side(style='thin'),
-            bottom = openpyxl.styles.Side(style='thin')
-        )
 
         for r in [14]+list(range(48, 70, 2)):
             for c in range(2,9):
@@ -304,24 +325,28 @@ class Form2(models.Model):
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename='+fout
+        print('RESPONCE + ',response)
         self.wb.save(response)
         #self.wb.save(filename='test.xlsx')
         return response
 
     def GeneratePdf(self,fout):
-        response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename='+fout
-        self.wb.save(response)
+        self.wb.save('tmp2.xlsx')
+        os.system('libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir pdf/ tmp2.xlsx')
+
+        with open('pdf/tmp2.pdf', 'rb') as pdf:
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
 
 
 
 class GroupMembers(models.Model):
     form2 = models.ForeignKey(Form2,on_delete=models.CASCADE)
-    familyname = models.CharField(max_length=30,default='')
     firstname = models.CharField(max_length=30,default='')
-    name = models.CharField(max_length=30,default='')
+    familyname = models.CharField(max_length=30, default='')
     lastname = models.CharField(max_length=30,default='')
+    name = models.CharField(max_length=30, default='')
     birthday = models.DateField(default='')
     passport = models.TextField(default='')
     nationality = models.TextField(default='')

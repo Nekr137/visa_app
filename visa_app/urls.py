@@ -24,5 +24,6 @@ urlpatterns = [
     re_path(r'^default/(?P<type>\w+)/(?P<id>\d+)/',views.default),
     re_path(r'^rewrite_visanumber',views.rewrite_visanumber),
     re_path(r'^increment_visanumber',views.increment_visanumber),
+    re_path(r'^statistic',views.statistic),
     path(r'', views.index),
 ]
