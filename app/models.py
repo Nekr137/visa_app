@@ -149,8 +149,8 @@ class Form1(models.Model):
         sheet1['L11'] = self.entry
         sheet1['F11'] = self.departure
         sheet1['O11'] = self.departure
-        sheet1['C13'] = str(self.familyname).upper() + '/' + str(self.firstname).upper()
-        sheet1['E15'] = str(self.name).upper() + '/' + str(self.lastname).upper()
+        sheet1['C13'] = str(self.familyname).upper() + '/' + str(self.lastname).upper()
+        sheet1['E15'] = str(self.name).upper() + '/' + str(self.firstname).upper()
         sheet1['D17'] = date_format(self.birthday)
         sheet1['G17'] = str(self.sex).upper()
         sheet1['D19'] = self.passport

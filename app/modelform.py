@@ -6,6 +6,11 @@ from .models import *
 bootstrap_class = 'form-control form-control-sm'
 bootstrap_class_input_xs = 'form-control form-control-sm input-xs'
 
+p = ['Фамилия (ru)', 'Фамилия (eng)', 'Имя, Отчество(ru)', 'Имя (eng)', 'Пол', 'Цель поездки',
+     'Дата рождения', 'Номер паспорта', 'Въезд с', 'Выезд до', 'Гражданство', 'Кратность визы',
+     'Подтверждение', 'Дата документа', 'Размещение', 'Маршрушт', 'Принимающая организация',
+     'Дополнительная информация']
+
 sex_choices = (
     ('мужской', 'мужской'),
     ('женский', 'женский'),
@@ -167,9 +172,7 @@ class ModelForm1(ModelForm):
    class Meta:
         model = Form1
         exclude = ('order',)
-        p = ['Фамилия (ru)','Фамилия (eng)','Имя, Отчество(ru)','Имя (eng)','Пол','Цель поездки',
-                   'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
-                   'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
+
         widgets = {
             'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
             'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
@@ -222,9 +225,7 @@ class ModelForm2(ModelForm):
     class Meta:
         model = Form2
         exclude = ('order',)
-        p = ['Фамилия (ru)','Фамилия (eng)','Имя, Отчество(ru)','Имя (eng)','Пол','Цель поездки',
-                   'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
-                   'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
+
         widgets = {
             'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
             'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),

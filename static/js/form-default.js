@@ -7,8 +7,8 @@ function FromChoiceToInput(id_from,id_to){
 transliterate = (
 	function() {
 		var
-			rus = "щ   ш  ч  ц  ю  я  ё  ж  ъ  ы  э  а б в г д е з и й к л м н о п р с т у ф х ь".split(/ +/g),
-			eng = "shh sh ch cz yu ya yo zh `` y' e` a b v g d e z i j k l m n o p r s t u f h `".split(/ +/g)
+			rus = "щ  Щ  ш  Ш  ч  Ч  ц  ю  Ю  я  Я  ё  ж  ъ  ы  э  а б в г д е з и й к л м н о п р с т у ф х ь".split(/ +/g),
+			eng = "shh Shh sh Sh ch Ch cz yu  Yu  ya Ya yo zh `` y' e` a b v g d e z i j k l m n o p r s t u f h `".split(/ +/g)
 		;
 		return function(text, engToRus) {
 			var x;
