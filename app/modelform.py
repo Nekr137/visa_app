@@ -167,14 +167,14 @@ class ModelForm1(ModelForm):
    class Meta:
         model = Form1
         exclude = ('order',)
-        p = ['Фамилия','First name','Имя, Отчество','Last name','Пол','Цель поездки',
-            'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
-            'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
+        p = ['Фамилия (ru)','Фамилия (eng)','Имя, Отчество(ru)','Имя (eng)','Пол','Цель поездки',
+                   'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
+                   'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
         widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
-            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder":p[0]}),
-            'firstname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[1]}),
-            'lastname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[3]}),
+            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
+            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
+            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
+            'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
             #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
             'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
@@ -222,14 +222,14 @@ class ModelForm2(ModelForm):
     class Meta:
         model = Form2
         exclude = ('order',)
-        p = ['Фамилия','First name','Имя, Отчество','Last name','Пол','Цель поездки',
+        p = ['Фамилия (ru)','Фамилия (eng)','Имя, Отчество(ru)','Имя (eng)','Пол','Цель поездки',
                    'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
                    'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
         widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class}),
-            'familyname': TextInput(attrs={"class": bootstrap_class}),
-            'firstname': TextInput(attrs={"class": bootstrap_class}),
-            'lastname': TextInput(attrs={"class": bootstrap_class}),
+            'name': TextInput(attrs={"class": bootstrap_class,"placeholder": p[0]}),
+            'familyname': TextInput(attrs={"class": bootstrap_class,"placeholder": p[1]}),
+            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
+            'lastname': TextInput(attrs={"class": bootstrap_class,"placeholder": p[3]}),
             #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
             'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
