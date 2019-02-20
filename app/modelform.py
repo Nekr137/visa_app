@@ -10,6 +10,10 @@ sex_choices = (
     ('мужской', 'мужской'),
     ('женский', 'женский'),
 )
+goal_choices = (
+    ('туризм', 'туризм'),
+)
+
 
 class InfoChoiceForm(ModelForm):
     info_choice = ModelChoiceField(queryset=AdditionalInfo.objects.all(),
@@ -158,6 +162,7 @@ class ModelForm1(ModelForm):
         # self.fields['confirmation'].required = False
         #self.fields['sex'].choices = sex_choices
    sex = ChoiceField(label="Пол",choices=sex_choices,widget=Select(attrs={"class":bootstrap_class}))
+   goal = ChoiceField(label="Цель поездки", choices=goal_choices, widget=Select(attrs={"class": bootstrap_class}))
 
    class Meta:
         model = Form1
@@ -170,12 +175,12 @@ class ModelForm1(ModelForm):
             'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder":p[0]}),
             'firstname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[1]}),
             'lastname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[3]}),
-            'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
+            #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
             'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
             'entry': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
-            'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
+            'nationality': TextInput(attrs={"type":"hidden","class": bootstrap_class, "placeholder": p[10]}),
             'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
             'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
             'invitation_number': TextInput(attrs={"class": bootstrap_class}),
@@ -186,10 +191,10 @@ class ModelForm1(ModelForm):
             'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]})
             }
         labels = {
-            'familyname': p[0],
-            'firstname': p[1],
-            'name': p[2],
-            'lastname': p[3],
+            'familyname': "Фамилия (ru)",
+            'firstname': "Фамилия (eng)",
+            'name': "Имя (ru)",
+            'lastname': "Имя (eng)",
             'sex' :p[4],
             'goal': p[5],
             'birthday' : p[6],
@@ -213,7 +218,7 @@ class ModelForm2(ModelForm):
         self.fields['confirmation'].required = False
 
     sex = ChoiceField(label="Пол",choices=sex_choices, widget=Select(attrs={"class": bootstrap_class}))
-
+    goal = ChoiceField(label="Цель поездки", choices=goal_choices, widget=Select(attrs={"class": bootstrap_class}))
     class Meta:
         model = Form2
         exclude = ('order',)
@@ -221,16 +226,16 @@ class ModelForm2(ModelForm):
                    'Дата рождения','Номер паспорта','Въезд с','Выезд до','Гражданство','Кратность визы',
                    'Подтверждение','Дата документа','Размещение','Маршрушт','Принимающая организация','Дополнительная информация']
         widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
-            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder":p[0]}),
-            'firstname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[1]}),
-            'lastname': TextInput(attrs={"class": bootstrap_class,"placeholder":p[3]}),
-            'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
+            'name': TextInput(attrs={"class": bootstrap_class}),
+            'familyname': TextInput(attrs={"class": bootstrap_class}),
+            'firstname': TextInput(attrs={"class": bootstrap_class}),
+            'lastname': TextInput(attrs={"class": bootstrap_class}),
+            #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
             'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
             'entry': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
-            'nationality': TextInput(attrs={"class": bootstrap_class, "placeholder": p[10]}),
+            'nationality': TextInput(attrs={"type":"hidden","class": bootstrap_class, "placeholder": p[10]}),
             'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
             'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
             'invitation_number': TextInput(attrs={"class": bootstrap_class}),
@@ -241,10 +246,10 @@ class ModelForm2(ModelForm):
             'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]})
         }
         labels = {
-            'familyname': p[0],
-            'firstname': p[1],
-            'name': p[2],
-            'lastname': p[3],
+            'familyname': "Фамилия (ru)",
+            'firstname': "Фамилия (eng)",
+            'name': "Имя (ru)",
+            'lastname': "Имя (eng)",
             'sex' :p[4],
             'goal': p[5],
             'birthday' : p[6],
@@ -266,7 +271,7 @@ class MembersForm(ModelForm):
         model = GroupMembers
         bootstrap_class = 'form-control form-control-sm input-xs'
         exclude = ('order',)
-        p = ['Фамилия', 'First name', 'Имя, отчество', 'Last name',
+        p = ['Фамилия (ru)', 'Фамилия (eng)', 'Имя (ru)', 'Имя (eng)',
              'Дата р-я', '№ паспорта','Гражданство']
         widgets = {
             'familyname': TextInput(attrs={"class": bootstrap_class+' familyname_class', "placeholder": p[0]}),

@@ -4,7 +4,6 @@ import openpyxl,re,os
 from django.http import HttpResponseRedirect,HttpResponse, FileResponse
 from openpyxl.writer.excel import save_virtual_workbook
 from django.forms import ModelChoiceField
-from transliterate import translit
 
 ulr = openpyxl.styles.Border(
     top=openpyxl.styles.Side(style='thin'),
