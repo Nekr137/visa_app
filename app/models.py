@@ -44,18 +44,34 @@ def date_format(d):
     d.reverse()
     return '.'.join(d)
 
-def SplitRout(r):
-    """Разбивает поле маршрут так, чтобы текст равномерно разместился в двух ячейках"""
-    return r[:25],r[25:]
-
-
-def SplitOrganization(o):
-    """Разбивает поле организации так, чтобы текст равномерно разместился в двух ячейках"""
-    return o[:50],o[50:]
-
-def SplitInfo(i):
-    """Разбивает поле дополнительная информация на 4 ячейки"""
-    return i[0:25],i[25:75],i[75:125],i[125:175]
+def SplitText(t,lengths,max):
+    """
+    Делит строку на список строк заданной длины. lengths = [10,6,7,...]
+    Возвращает n+1 строку, если len(t) > sum(lengths)
+    :param t:   текстовая строка
+    :param lengths:   список длин строк
+    :return:    список строк
+    """
+    i = 0                               # индекс для букав
+    l = 0                               # индекс для массива длин строк
+    strings = []                        # список строк
+    string = ''                         # строка
+    for w in t.split():                # для каждого слова
+        i+=len(w)
+        if l<len(lengths):              # проверяем, не вышли ли за пределы списка длин строк
+            if i>lengths[l]:            # не вышли ли за пределы длины строки
+                l+=1
+                strings.append(string)
+                i = 0
+                string = ''             # строка
+        string += w + ' '
+    strings.append(string)
+    for i,s in enumerate(strings):
+        if not s:
+            strings[i] = ''
+    for i in range(max-len(strings)):
+        strings.append('')
+    return strings
 
 
 class VisaNumber(models.Model):
@@ -158,9 +174,9 @@ class Form1(models.Model):
         #sheet1['D40'] = self.date
         #sheet1['M40'] = self.date
         sheet1['D25'] = self.placement
-        sheet1['B27'],sheet1['B28'] = SplitOrganization(self.hostorganization)
-        sheet1['F23'],sheet1['B24'] = SplitRout(self.rout)
-        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitInfo(self.additionalinfo)
+        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50],2)
+        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25],2)
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50],4)
 
         pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
         pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
@@ -252,9 +268,11 @@ class Form2(models.Model):
         #sheet1['D40'] = self.date
         #sheet1['M40'] = self.date
         sheet1['D25'] = self.placement
-        sheet1['B27'],sheet1['B28'] = SplitOrganization(self.hostorganization)
-        sheet1['F23'],sheet1['B24'] = SplitRout(self.rout)
-        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitInfo(self.additionalinfo)
+
+        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50],2)
+        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25],2)
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50],4)
+
 
         # Внесение членов группы
         for i,g in enumerate(GroupMembers.objects.filter(form2=self)):
