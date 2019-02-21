@@ -44,33 +44,26 @@ def date_format(d):
     d.reverse()
     return '.'.join(d)
 
-def SplitText(t,lengths,max):
+def SplitText(t,lengths):
     """
     Делит строку на список строк заданной длины. lengths = [10,6,7,...]
-    Возвращает n+1 строку, если len(t) > sum(lengths)
     :param t:   текстовая строка
     :param lengths:   список длин строк
     :return:    список строк
     """
-    i = 0                               # индекс для букав
-    l = 0                               # индекс для массива длин строк
-    strings = []                        # список строк
-    string = ''                         # строка
+    # сформировали список пустых строк
+    strings = []
+    for k in range(len(lengths)):   strings.append('')
+
+    # индекс для букав и индекс для массива длин строк
+    i = l = 0
+
     for w in t.split():                # для каждого слова
         i+=len(w)
-        if l<len(lengths):              # проверяем, не вышли ли за пределы списка длин строк
-            if i>lengths[l]:            # не вышли ли за пределы длины строки
-                l+=1
-                strings.append(string)
-                i = 0
-                string = ''             # строка
-        string += w + ' '
-    strings.append(string)
-    for i,s in enumerate(strings):
-        if not s:
-            strings[i] = ''
-    for i in range(max-len(strings)):
-        strings.append('')
+        if i>lengths[l]:            # не вышли ли за пределы длины строки
+            l+=1
+            i = 0
+        strings[l] += w + ' '
     return strings
 
 
@@ -165,8 +158,8 @@ class Form1(models.Model):
         sheet1['L11'] = self.entry
         sheet1['F11'] = self.departure
         sheet1['O11'] = self.departure
-        sheet1['C13'] = str(self.familyname).upper() + '/' + str(self.lastname).upper()
-        sheet1['E15'] = str(self.name).upper() + '/' + str(self.firstname).upper()
+        sheet1['C13'] = str(self.familyname).upper() + '/' + str(self.firstname).upper()
+        sheet1['E15'] = str(self.name).upper() + '/' + str(self.lastname).upper()
         sheet1['D17'] = date_format(self.birthday)
         sheet1['G17'] = str(self.sex).upper()
         sheet1['D19'] = self.passport
@@ -174,9 +167,9 @@ class Form1(models.Model):
         #sheet1['D40'] = self.date
         #sheet1['M40'] = self.date
         sheet1['D25'] = self.placement
-        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50],2)
-        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25],2)
-        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50],4)
+        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50,1000])
+        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25,1000])
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50,1000])
 
         pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
         pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
@@ -269,10 +262,9 @@ class Form2(models.Model):
         #sheet1['M40'] = self.date
         sheet1['D25'] = self.placement
 
-        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50],2)
-        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25],2)
-        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50],4)
-
+        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50,1000])
+        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25,1000])
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50,1000])
 
         # Внесение членов группы
         for i,g in enumerate(GroupMembers.objects.filter(form2=self)):
