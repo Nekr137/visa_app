@@ -183,6 +183,34 @@
         </form>
     </div>
 
+
+    <h4>Партнеры</h4>
+    <div class="container" style="margin-left: 4rem">
+        {% for i in partners %}
+            <div>
+                {% if i.default == True %}
+                    <span style="color: red"> (default)</span>
+                {% endif %}
+                {{i.partner}}
+                <a href="/default/partner/{{i.id}}">Default</a>
+                <a href="/del_item/partner/{{i.id}}">Удалить</a>
+            </div>
+        {% endfor %}
+        <form method="get" action="add_item/partner" id="add_partner">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-9">
+                    {{ partners_mf.partner }}
+                </div>
+                <div class="form-group col-md-1">
+                    <button form="add_partner" type="submit" class=" input-xs btn btn-outline-secondary btn-sm">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
     <h4>Нумерация</h4>
     <div class="container" style="margin-left: 4rem">
         {% for v in visa_number %}

@@ -18,6 +18,7 @@ AppModels = {
     'organization': Organizations,
     'form1':Form1,
     'form2':Form2,
+    'partner':Partners,
 }
 
 AppModelforms = {
@@ -30,6 +31,7 @@ AppModelforms = {
     'organization': OrganizationForm,
     'form1':ModelForm1,
     'form2':ModelForm2,
+    'partner':PartnerForm,
 }
 
 def statistic(request):
@@ -72,7 +74,7 @@ def edit_form2(request,id):
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
-        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+        #form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
 
         return render(request, "app/form2.html", {
             "form": form,
@@ -90,10 +92,10 @@ def edit_form2(request,id):
             "nationality_choice": NationalityChoiceForm(
                 initial={'nationality_choice': get_default_object(Nationality)}),
             "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
+            "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
         })
 
 def edit_form1(request,id):
-    print('EDIT 1')
     model = Form1.objects.get(id=id)
     if request.method == "POST":
         form = ModelForm1(request.POST, instance=model)
@@ -104,11 +106,10 @@ def edit_form1(request,id):
     else:
 
         date_choice = DatesChoiceForm()
-        date_choice.fields['date_choice'].queryset = Dates.objects.filter(
-                                            ship_id=str(get_default_object(Ships)))
+        date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=str(get_default_object(Ships)))
 
         form = ModelForm1(instance=model)
-        form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
+        #form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
 
         return render(request, "app/form1.html", {
             "form": form,
@@ -121,6 +122,7 @@ def edit_form1(request,id):
             "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
             "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
             "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
+            "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
         })
 
 
@@ -146,7 +148,7 @@ def del_item(request,type,id):
         if type == 'form1':
             resp = HttpResponseRedirect('/form1_db')
         elif type == 'form2':
-            resp = HttpResponseRedirect('/form1_db')
+            resp = HttpResponseRedirect('/form2_db')
         else:
             resp = HttpResponseRedirect('/lists')
     else:
@@ -198,6 +200,8 @@ def lists(request):
         'organizations':Organizations.objects.order_by('id'),
         'organizations_mf':OrganizationForm(),
         'visa_mf':visa_number_form,
+        'partners':Partners.objects.order_by('id'),
+        'partners_mf':PartnerForm(),
     })
 
 
@@ -266,13 +270,16 @@ def form1(request):
         if form.is_valid():
             form.save()
             increment_visanumber()
+            resp = redirect('/')
+        else:
+            resp = HttpResponse('error')
 
-        resp = redirect('/')
+
     else:
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
-        def_data = {'confirmation':date.today().strftime("%d/%m")}
+        def_data = {'date':date.today().strftime("%Y-%m-%d")}
         try:
             def_data['invitation_number'] = VisaNumber.objects.get(id=1)
         except:
@@ -290,6 +297,7 @@ def form1(request):
             "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
             "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
             "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
+            "partner_choice":PartnerChoiceForm(initial={'partner_choice':get_default_object(Partners)}),
         })
     return resp
 
@@ -313,7 +321,7 @@ def form2(request):
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
-        def_data = {'confirmation':date.today().strftime("%d/%m")}
+        def_data = {'date': date.today().strftime("%Y-%m-%d")}
         try:
             #form.fields['invitation_number'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
             def_data['invitation_number'] = VisaNumber.objects.get(id=1)
@@ -336,6 +344,7 @@ def form2(request):
             "nationality_choice": NationalityChoiceForm(
                 initial={'nationality_choice': get_default_object(Nationality)}),
             "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
+            "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
         })
 
 

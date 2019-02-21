@@ -1,6 +1,6 @@
 from django.db import models
 import datetime
-import openpyxl,re,os
+import openpyxl,re,os,datetime
 from django.http import HttpResponseRedirect,HttpResponse, FileResponse
 from openpyxl.writer.excel import save_virtual_workbook
 from django.forms import ModelChoiceField
@@ -42,7 +42,7 @@ def date_format(d):
     """Дата в формате dd.mm.yyyy"""
     d = re.findall(r'\d+', str(d))
     d.reverse()
-    return '.'.join(d)
+    return '/'.join(d)
 
 def SplitText(t,lengths):
     """
@@ -58,7 +58,7 @@ def SplitText(t,lengths):
     # индекс для букав и индекс для массива длин строк
     i = l = 0
 
-    for w in t.split():                # для каждого слова
+    for w in t.split():              # для каждого слова
         i+=len(w)
         if i>lengths[l]:            # не вышли ли за пределы длины строки
             l+=1
@@ -66,6 +66,12 @@ def SplitText(t,lengths):
         strings[l] += w + ' '
     return strings
 
+
+class Partners(models.Model):
+    partner = models.TextField()
+    default = models.BooleanField(default=False)
+    def __str__(self):
+        return self.partner
 
 class VisaNumber(models.Model):
     visanumber = models.IntegerField()
@@ -129,8 +135,8 @@ class Form1(models.Model):
     birthday = models.DateField()
     passport = models.TextField()
     multiplicity = models.TextField()
-    date = models.DateField()
-    confirmation = models.TextField()
+    #confirmation = models.TextField()
+    partner = models.TextField()
     invitation_number = models.TextField()
     nationality = models.TextField()
     entry = models.DateField()
@@ -139,6 +145,7 @@ class Form1(models.Model):
     rout = models.TextField()
     hostorganization = models.TextField()
     additionalinfo = models.TextField()
+    date = models.DateField()                   #document date (hidden)
 
     def __str__(self):
         return self.familyname
@@ -149,15 +156,16 @@ class Form1(models.Model):
         self.wb = openpyxl.load_workbook(filename=self.fname)
         #sheet1 = self.wb["Лист1"]
         sheet1 = self.wb.active
-        sheet1['F2'] = '0011 - AUS  ' + str(self.confirmation)
+
+        if str(self.partner).lower() == 'genvisa':
+            sheet1['F2'] = '130319 -                USA ' + \
+            datetime.datetime.strptime(str(self.entry), '%Y-%m-%d').date().strftime("%d/%m")
+
         sheet1['B5'] = 'визовое приглашение № ' + str(self.invitation_number)
-        #sheet1['K5'] = 'визовое приглашение № ' + str(self.invitation_number)
         sheet1['D7'] = self.multiplicity
         sheet1['D9'] = self.nationality
-        sheet1['C11'] = self.entry
-        sheet1['L11'] = self.entry
-        sheet1['F11'] = self.departure
-        sheet1['O11'] = self.departure
+        sheet1['C11'], sheet1['L11'] = [date_format(self.entry)]*2
+        sheet1['F11'], sheet1['O11'] = [date_format(self.departure)]*2
         sheet1['C13'] = str(self.familyname).upper() + '/' + str(self.firstname).upper()
         sheet1['E15'] = str(self.name).upper() + '/' + str(self.lastname).upper()
         sheet1['D17'] = date_format(self.birthday)
@@ -218,8 +226,8 @@ class Form2(models.Model):
     birthday = models.DateField()
     passport = models.TextField()
     multiplicity = models.TextField()
-    date = models.DateField()
-    confirmation = models.TextField()
+    #confirmation = models.TextField()
+    partner = models.TextField()
     invitation_number = models.TextField()
     nationality = models.TextField()
     entry = models.DateField()
@@ -228,6 +236,7 @@ class Form2(models.Model):
     rout = models.TextField()
     hostorganization = models.TextField()
     additionalinfo = models.TextField()
+    date = models.DateField()  # document date (hidden)
 
     def __str__(self):
         return 'Familyname: ' + self.familyname + ' Name: ' + self.name
@@ -240,16 +249,17 @@ class Form2(models.Model):
 
         #sheet1 = self.wb["Лист1"]
         sheet1 = self.wb.active
-        #sheet1['F2'] = '0011 - AUS  ' + str(self.confirmation)
+        if str(self.partner).lower() == 'genvisa':
+            sheet1['F2'] = '130319 -                USA ' + \
+            datetime.datetime.strptime(str(self.entry), '%Y-%m-%d').date().strftime("%d/%m")
+
         sheet1['B6'] = 'визовое приглашение № ' + str(self.invitation_number)
         sheet1['K6'] = 'визовое приглашение № ' + str(self.invitation_number)
         sheet1['D8'] = self.multiplicity
         #sheet1['H16'] = self.nationality
         sheet1['D10'] = self.nationality
-        sheet1['C12'] = self.entry
-        sheet1['L12'] = self.entry
-        sheet1['F12'] = self.departure
-        sheet1['O12'] = self.departure
+        sheet1['C12'], sheet1['L12'] = [date_format(self.entry)]*2
+        sheet1['F12'], sheet1['O12'] = [date_format(self.departure)]*2
         sheet1['B16'] = str(self.familyname).upper() + '/'
         sheet1['B19'] = str(self.firstname).upper()
         sheet1['D16'] = str(self.name).upper() + '/'

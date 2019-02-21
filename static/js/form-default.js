@@ -30,6 +30,9 @@ $('#id_lastname').on('change',function(){
 })
 
 // Изменения в choice элементах
+$('#id_partner_choice').on('click',function(){
+    FromChoiceToInput('#id_partner_choice','#id_partner')
+});
 $('#id_nationality_choice').on('click',function(){
     FromChoiceToInput('#id_nationality_choice','#id_nationality')
 });

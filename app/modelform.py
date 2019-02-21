@@ -18,7 +18,21 @@ sex_choices = (
 goal_choices = (
     ('туризм', 'туризм'),
 )
+multiplicity_choices = (
+    ('однократная','однократная'),
+    ('многократная','многократная')
+)
 
+class PartnerChoiceForm(ModelForm):
+    partner_choice = ModelChoiceField(queryset=Partners.objects.all(),
+                                    empty_label="Выбрать партнера",
+                                    label="Партнер",
+                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
+                                    required=False,
+                                    disabled=False)
+    class Meta:
+        model = Partners
+        fields = ()
 
 class InfoChoiceForm(ModelForm):
     info_choice = ModelChoiceField(queryset=AdditionalInfo.objects.all(),
@@ -94,6 +108,16 @@ class DatesChoiceForm(ModelForm):
         model = Dates
         fields = ()
 
+
+class PartnerForm(ModelForm):
+    class Meta:
+        model = Partners
+        fields = ('partner',)
+        widgets = {
+            'partner': TextInput(attrs={"class": bootstrap_class_input_xs, "placeholder": "Добавить партнера"}),
+        }
+
+
 class VisaNumberForm(ModelForm):
     class Meta:
         model = VisaNumber
@@ -168,7 +192,8 @@ class ModelForm1(ModelForm):
         #self.fields['sex'].choices = sex_choices
    sex = ChoiceField(label="Пол",choices=sex_choices,widget=Select(attrs={"class":bootstrap_class}))
    goal = ChoiceField(label="Цель поездки", choices=goal_choices, widget=Select(attrs={"class": bootstrap_class}))
-
+   multiplicity = ChoiceField(label="Кратность визы", choices=multiplicity_choices,
+                              widget=Select(attrs={"class": bootstrap_class}))
    class Meta:
         model = Form1
         exclude = ('order',)
@@ -184,14 +209,15 @@ class ModelForm1(ModelForm):
             'entry': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'nationality': TextInput(attrs={"type":"hidden","class": bootstrap_class, "placeholder": p[10]}),
-            'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
-            'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
+            #'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
+            #'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
             'invitation_number': TextInput(attrs={"class": bootstrap_class}),
-            'date': DateInput(attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
+            'date': DateInput(attrs={'type':'hidden'}),
             'placement' : TextInput(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
             'rout': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),
             'hostorganization': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[16]}),
-            'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]})
+            'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]}),
+            'partner': TextInput(attrs={'type': 'hidden'}),
             }
         labels = {
             'familyname': p[0],
@@ -216,12 +242,13 @@ class ModelForm1(ModelForm):
     }
 
 class ModelForm2(ModelForm):
-    def __init__(self,*args, **kwargs):
-        super(ModelForm2,self).__init__(*args,**kwargs)
-        self.fields['confirmation'].required = False
+    #def __init__(self,*args, **kwargs):
+        #super(ModelForm2,self).__init__(*args,**kwargs)
+        #self.fields['confirmation'].required = False
 
     sex = ChoiceField(label="Пол",choices=sex_choices, widget=Select(attrs={"class": bootstrap_class}))
     goal = ChoiceField(label="Цель поездки", choices=goal_choices, widget=Select(attrs={"class": bootstrap_class}))
+    multiplicity = ChoiceField(label="Кратность визы",choices=multiplicity_choices,widget=Select(attrs={"class": bootstrap_class}))
     class Meta:
         model = Form2
         exclude = ('order',)
@@ -237,14 +264,15 @@ class ModelForm2(ModelForm):
             'entry': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
             'nationality': TextInput(attrs={"type":"hidden","class": bootstrap_class, "placeholder": p[10]}),
-            'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
-            'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
+            #'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
+            #'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
             'invitation_number': TextInput(attrs={"class": bootstrap_class}),
-            'date': DateInput(attrs={'class': bootstrap_class,'type':'date','placeholder':p[13]}),
+            'date': DateInput(attrs={'type':'hidden'}),
             'placement' : TextInput(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
             'rout': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),
             'hostorganization': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[16]}),
-            'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]})
+            'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]}),
+            'partner': TextInput(attrs={'type':'hidden'}),
         }
         labels = {
             'familyname': p[0],
