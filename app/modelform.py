@@ -45,7 +45,7 @@ class PlacementChoiceForm(ModelForm):
 class NationalityChoiceForm(ModelForm):
     nationality_choice = ModelChoiceField(queryset=Nationality.objects.all(),
                                    empty_label="Выбрать из списка",
-                                   label='Гражданства',
+                                   label='Гражданство',
                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
                                    required=False,
                                    disabled=False)
