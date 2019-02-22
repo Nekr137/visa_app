@@ -196,7 +196,7 @@ class ModelForm1(ModelForm):
                               widget=Select(attrs={"class": bootstrap_class}))
    class Meta:
         model = Form1
-        exclude = ('order',)
+        exclude = ('visa_type',)
 
         widgets = {
             'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
@@ -251,7 +251,7 @@ class ModelForm2(ModelForm):
     multiplicity = ChoiceField(label="Кратность визы",choices=multiplicity_choices,widget=Select(attrs={"class": bootstrap_class}))
     class Meta:
         model = Form2
-        exclude = ('order',)
+        exclude = ('visa_type',)
 
         widgets = {
             'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),

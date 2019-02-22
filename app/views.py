@@ -37,64 +37,6 @@ AppModelforms = {
 def statistic(request):
     return HttpResponse('statistic')
 
-def edit_form2(request,id):
-    # model
-    model = Form2.objects.get(id=id)
-    form = ModelForm2(instance=model)
-
-    # members
-    instance = GroupMembers.objects.filter(form2=model.id)
-
-    if request.method == "POST":
-        NUM = int(request.POST.get('NUM'))
-        form = ModelForm2(request.POST, instance=model)
-
-        # Разбираемся со старыми записями
-        for i,inst in enumerate(instance):
-            fm = MembersForm(request.POST, instance=inst, prefix="MEMBERFORM"+str(i))
-            if fm.is_valid():
-                fm.save()           # Обновляем
-            else:
-                inst.delete()       # Если не прошла валидацию, значит была удалена, значит удаляем из базы
-
-        # Разбираемся со вновь добавленными записями (через ajax)
-        if form.is_valid():
-            f = form.save()
-            f.save()
-            increment_visanumber()
-            for k in range(1,NUM+1):
-                member_form = MembersForm(request.POST,prefix=str(k))
-                if member_form.is_valid():
-                    m = member_form.save(commit=False)
-                    m.form2_id = f.id
-                    m.save()
-            return redirect('/')
-    else:
-        member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
-        date_choice = DatesChoiceForm()
-        date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
-
-        #form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
-
-        return render(request, "app/form2.html", {
-            "form": form,
-            "member_forms": member_forms,
-            'NUM':len(instance),
-            "title":"Редактирование формы групповой визы",
-
-            "view": "edit",
-            "date_choice": date_choice,
-            "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
-            "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
-            "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
-            "organization_choice": OrganizationChoiceForm(
-                initial={'organization_choice': get_default_object(Organizations)}),
-            "nationality_choice": NationalityChoiceForm(
-                initial={'nationality_choice': get_default_object(Nationality)}),
-            "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
-            "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
-        })
-
 def edit_form1(request,id):
     model = Form1.objects.get(id=id)
     if request.method == "POST":
@@ -301,33 +243,44 @@ def form1(request):
         })
     return resp
 
-def form2(request):
+def form2(request,visa_type):
     if request.method == "POST":
         form = ModelForm2(request.POST)
         if form.is_valid():
-            f = form.save()
-            f.save()
+            f = form.save(commit=False)
+            if visa_type == 'group':
+                f.visa_type = 'групповая'
+                f.save()
+                for k in range(1,int(request.POST.get('NUM'))+1):
+                    print("POST",request.POST)
+                    print('K = ',k)
+                    member_form = MembersForm(request.POST,prefix=str(k))
+                    if member_form.is_valid():
+                        m = member_form.save(commit=False)
+                        m.form2_id = f.id
+                        m.save()
+            else:
+                f.visa_type = 'одиночная'
+                f.save()
+
             increment_visanumber()
-            for k in range(1,int(request.POST.get('NUM'))+1):
-                member_form = MembersForm(request.POST,prefix=str(k))
-                if member_form.is_valid():
-                    m = member_form.save(commit=False)
-                    m.form2_id = f.id
-                    m.save()
             return redirect('/')
         else:
-            return HttpResponse('DATA INVALID')
+            return HttpResponse('person data invalid')
+
     else:
+        # get list of dates
         date_choice = DatesChoiceForm()
         date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
+        # set default values
         def_data = {'date': date.today().strftime("%Y-%m-%d")}
         try:
-            #form.fields['invitation_number'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
             def_data['invitation_number'] = VisaNumber.objects.get(id=1)
         except:
             pass
 
+        # load modelform
         form = ModelForm2(def_data)
 
         return render(request, "app/form2.html", {
@@ -339,14 +292,69 @@ def form2(request):
             "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
             "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
             "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
-            "organization_choice": OrganizationChoiceForm(
-                initial={'organization_choice': get_default_object(Organizations)}),
-            "nationality_choice": NationalityChoiceForm(
-                initial={'nationality_choice': get_default_object(Nationality)}),
+            "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
+            "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
+            "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
+            "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
+            "visa_type":visa_type,
+        })
+
+def edit_form2(request,id):
+    # person
+    model = Form2.objects.get(id=id)
+    form = ModelForm2(instance=model)
+
+    # members
+    instance = GroupMembers.objects.filter(form2=model.id)
+
+    visa_type = 'group' if model.visa_type == 'групповая' else 'single'
+
+    if request.method == "POST":
+        form = ModelForm2(request.POST, instance=model)
+
+        if form.is_valid():
+            f = form.save()
+            f.save()
+            #increment_visanumber() ???
+
+            if visa_type == 'group':
+            # Dealing with old group_members
+                for i, inst in enumerate(instance):
+                    fm = MembersForm(request.POST, instance=inst, prefix="MEMBERFORM" + str(i))
+                    if fm.is_valid():
+                        fm.save()  # update
+                    else:
+                        inst.delete()  # if not validated = was deleted
+
+            # Dealing with just added (via ajax) group members
+                for k in range(1,int(request.POST.get('NUM'))+1):
+                    member_form = MembersForm(request.POST,prefix=str(k))
+                    if member_form.is_valid():
+                        m = member_form.save(commit=False)
+                        m.form2_id = f.id
+                        m.save()
+            return redirect('/')
+    else:
+        member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
+        date_choice = DatesChoiceForm()
+        date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
+
+        return render(request, "app/form2.html", {
+            "form": form,
+            "member_forms": member_forms,
+            'NUM':len(instance),
+            'visa_type': visa_type,
+            "title" : 'Редактирование формы групповой визы' if visa_type=='group' else 'Редактирование формы одиночной визы',
+            "view": "edit",
+            "date_choice": date_choice,
+            "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
+            "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
+            "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
+            "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
+            "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
             "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
             "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
         })
-
 
 def get_default_object(Model):
     """ Отдает id объекта "списков", значение default которого True. Если такого нет, отдает 0 """

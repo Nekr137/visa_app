@@ -15,7 +15,7 @@ urlpatterns = [
     re_path(r'^form1_pdf', views.form1_pdf),
     re_path(r'^form2_pdf', views.form2_pdf),
     re_path(r'^form1', views.form1),
-    re_path(r'^form2', views.form2),
+    re_path(r'^form2/(?P<visa_type>\w+)/', views.form2),
     re_path(r'^lists',views.lists),
     re_path(r'^all_forms', views.all_forms),
     re_path(r'^add_member', views.add_member),

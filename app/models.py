@@ -135,7 +135,6 @@ class Form1(models.Model):
     birthday = models.DateField()
     passport = models.TextField()
     multiplicity = models.TextField()
-    #confirmation = models.TextField()
     partner = models.TextField()
     invitation_number = models.TextField()
     nationality = models.TextField()
@@ -226,7 +225,6 @@ class Form2(models.Model):
     birthday = models.DateField()
     passport = models.TextField()
     multiplicity = models.TextField()
-    #confirmation = models.TextField()
     partner = models.TextField()
     invitation_number = models.TextField()
     nationality = models.TextField()
@@ -237,6 +235,7 @@ class Form2(models.Model):
     hostorganization = models.TextField()
     additionalinfo = models.TextField()
     date = models.DateField()  # document date (hidden)
+    visa_type = models.TextField()  # type of visa (single, group). Hidden
 
     def __str__(self):
         return 'Familyname: ' + self.familyname + ' Name: ' + self.name
@@ -256,7 +255,6 @@ class Form2(models.Model):
         sheet1['B6'] = 'визовое приглашение № ' + str(self.invitation_number)
         sheet1['K6'] = 'визовое приглашение № ' + str(self.invitation_number)
         sheet1['D8'] = self.multiplicity
-        #sheet1['H16'] = self.nationality
         sheet1['D10'] = self.nationality
         sheet1['C12'], sheet1['L12'] = [date_format(self.entry)]*2
         sheet1['F12'], sheet1['O12'] = [date_format(self.departure)]*2
