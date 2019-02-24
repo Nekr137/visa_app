@@ -29,7 +29,6 @@ AppModelforms = {
     'info': AdditionalInfoForm,
     'placement': PlacementForm,
     'organization': OrganizationForm,
-    'form1':ModelForm1,
     'form2':ModelForm2,
     'partner':PartnerForm,
 }
@@ -37,35 +36,6 @@ AppModelforms = {
 def statistic(request):
     return HttpResponse('statistic')
 
-def edit_form1(request,id):
-    model = Form1.objects.get(id=id)
-    if request.method == "POST":
-        form = ModelForm1(request.POST, instance=model)
-        if form.is_valid():
-            form.save()
-            increment_visanumber()
-        return redirect('/')
-    else:
-
-        date_choice = DatesChoiceForm()
-        date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=str(get_default_object(Ships)))
-
-        form = ModelForm1(instance=model)
-        #form.fields['confirmation'].widget.attrs['placeholder'] = VisaNumber.objects.get(id=1)
-
-        return render(request, "app/form1.html", {
-            "form": form,
-            "title":"Редактирование формы одиночной визы",
-            "view" : "edit",
-            "date_choice": date_choice,
-            "ship_choice": ShipsChoiceForm(initial={'ship_choice':get_default_object(Ships)}),
-            "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
-            "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
-            "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
-            "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
-            "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
-            "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
-        })
 
 
 def default(request,type,id):
@@ -183,65 +153,27 @@ def form2_xlsx(request):
         id = request.GET.get('id')
         note = Form2.objects.get(id=id)
         fname = note.firstname + '_' + note.lastname + '.xlsx'
-        note.FormXlsx(fin='static/xlsx/2.xlsx')
+        if note.visa_type == 'групповая':
+            note.FormXlsx_group(fin='static/xlsx/2.xlsx')
+        elif note.visa_type == 'одиночная':
+            note.FormXlsx_single(fin='static/xlsx/1.xlsx')
+
         response = note.GenerateXlsx(fout=fname)
         return response
 
-
-def form1_pdf(request):
-    if request.method == "GET":
-        id = request.GET.get('id')
-        note = Form1.objects.get(id=id)
-        fname = note.firstname + '_' + note.lastname + '.pdf'
-        note.FormXlsx(fin='static/xlsx/1.xlsx')
-        response = note.GeneratePdf(fout=fname)
-        return response
 
 def form2_pdf(request):
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form2.objects.get(id=id)
         fname = note.firstname + '_' + note.lastname + '.pdf'
-        note.FormXlsx(fin='static/xlsx/2.xlsx')
+        if note.visa_type == 'групповая':
+            note.FormXlsx_group(fin='static/xlsx/2.xlsx')
+        elif note.visa_type == 'одиночная':
+            note.FormXlsx_single(fin='static/xlsx/1.xlsx')
         response = note.GeneratePdf(fout=fname)
         return response
 
-def form1(request):
-    if request.method == "POST":
-        form = ModelForm1(request.POST)
-        if form.is_valid():
-            form.save()
-            increment_visanumber()
-            resp = redirect('/')
-        else:
-            resp = HttpResponse('error')
-
-
-    else:
-        date_choice = DatesChoiceForm()
-        date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
-
-        def_data = {'date':date.today().strftime("%Y-%m-%d")}
-        try:
-            def_data['invitation_number'] = VisaNumber.objects.get(id=1)
-        except:
-            pass
-        form = ModelForm1(def_data)
-
-        resp =  render(request, "app/form1.html", {
-            "form": form,
-            "title":"Форма для одиночной визы",
-            "view": "form1",
-            "date_choice": date_choice,
-            "ship_choice": ShipsChoiceForm(initial={'ship_choice':get_default_object(Ships)}),
-            "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
-            "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
-            "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
-            "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
-            "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
-            "partner_choice":PartnerChoiceForm(initial={'partner_choice':get_default_object(Partners)}),
-        })
-    return resp
 
 def form2(request,visa_type):
     if request.method == "POST":

@@ -241,7 +241,7 @@ class Form2(models.Model):
         return 'Familyname: ' + self.familyname + ' Name: ' + self.name
 
 
-    def FormXlsx(self,fin):
+    def FormXlsx_group(self,fin):
         self.fname = fin
         self.wb = openpyxl.Workbook()
         self.wb = openpyxl.load_workbook(filename=self.fname)
@@ -339,22 +339,73 @@ class Form2(models.Model):
         pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
         sheet1.add_image(pod2,'M67')
 
+
+
+    def FormXlsx_single(self,fin):
+        self.fname = fin
+        self.wb = openpyxl.Workbook()
+        self.wb = openpyxl.load_workbook(filename=self.fname)
+        #sheet1 = self.wb["Лист1"]
+        sheet1 = self.wb.active
+
+        if str(self.partner).lower() == 'genvisa':
+            sheet1['F2'] = '130319 -                USA ' + \
+            datetime.datetime.strptime(str(self.entry), '%Y-%m-%d').date().strftime("%d/%m")
+
+        sheet1['B5'] = 'визовое приглашение № ' + str(self.invitation_number)
+        sheet1['D7'] = self.multiplicity
+        sheet1['D9'] = self.nationality
+        sheet1['C11'], sheet1['L11'] = [date_format(self.entry)]*2
+        sheet1['F11'], sheet1['O11'] = [date_format(self.departure)]*2
+        sheet1['C13'] = str(self.familyname).upper() + '/' + str(self.firstname).upper()
+        sheet1['E15'] = str(self.name).upper() + '/' + str(self.lastname).upper()
+        sheet1['D17'] = date_format(self.birthday)
+        sheet1['G17'] = str(self.sex).upper()
+        sheet1['D19'] = self.passport
+        sheet1['D21'] = str(self.goal).upper()
+        #sheet1['D40'] = self.date
+        #sheet1['M40'] = self.date
+        sheet1['D25'] = self.placement
+        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50,1000])
+        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25,1000])
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50,1000])
+
+        pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
+        pod = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
+        sheet1.add_image(pech, 'A34')
+        sheet1.add_image(pech2,'K34')
+        sheet1.add_image(pod, 'C34')
+        sheet1.add_image(pod2,'M34')
+
+        for c in range(1,18):
+            sheet1.cell(column=c,row=25).border = b
+
+        sheet1['H25'].border = br
+        sheet1['E41'].border = b
+        sheet1['E39'].border = b
+        sheet1['N41'].border = b
+        sheet1['N39'].border = b
+
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename='+fout
-        print('RESPONCE + ',response)
         self.wb.save(response)
         #self.wb.save(filename='test.xlsx')
         return response
 
     def GeneratePdf(self,fout):
-        self.wb.save('tmp2.xlsx')
-        os.system('libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir pdf/ tmp2.xlsx')
+        self.wb.save('tmp1.xlsx')
+        os.system('libreoffice --headless --convert-to pdf:calc_pdf_Export --outdir pdf/ tmp1.xlsx')
 
-        with open('pdf/tmp2.pdf', 'rb') as pdf:
+        with open('pdf/tmp1.pdf', 'rb') as pdf:
             response = HttpResponse(pdf.read(), content_type='application/pdf')
             response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
+
+
+
 
 
 

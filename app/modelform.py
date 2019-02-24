@@ -37,7 +37,7 @@ class PartnerChoiceForm(ModelForm):
 class InfoChoiceForm(ModelForm):
     info_choice = ModelChoiceField(queryset=AdditionalInfo.objects.all(),
                                    empty_label="Выбрать из списка",
-                                   label='',
+                                   label='Выбрать из списка',
                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
                                    required=False,
                                    disabled=False)
@@ -49,7 +49,7 @@ class InfoChoiceForm(ModelForm):
 class PlacementChoiceForm(ModelForm):
     placement_choice = ModelChoiceField(queryset=Placements.objects.all(),
                                    empty_label="Выбрать из списка",
-                                   label='',
+                                   label='Выбрать из списка',
                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
                                    required=False,
                                    disabled=False)
@@ -69,7 +69,7 @@ class NationalityChoiceForm(ModelForm):
 class OrganizationChoiceForm(ModelForm):
     organization_choice = ModelChoiceField(queryset=Organizations.objects.all(),
                 empty_label="Выбрать из списка",
-                label='',
+                                           label='Выбрать из списка',
                 widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
                 required=False,
                 disabled=False,
@@ -80,7 +80,7 @@ class OrganizationChoiceForm(ModelForm):
 class RoutChoiceForm(ModelForm):
     rout_choice = ModelChoiceField(queryset=Routs.objects.all(),
                                    empty_label="Выбрать из списка",
-                                   label='',
+                                   label='Выбрать из списка',
                                    widget=Select(attrs={'class': 'dropdown form-control form-control-sm'}),
                                    required=False,
                                    disabled=False)
@@ -183,63 +183,6 @@ class DatesForm(ModelForm):
             'departure': DateInput(attrs={'class': bootstrap_class_input_xs,'type':'date'}),
         }
 
-
-class ModelForm1(ModelForm):
-
-   #def __init__(self,*args, **kwargs):
-   #     super(ModelForm1,self).__init__(*args,**kwargs)
-        # self.fields['confirmation'].required = False
-        #self.fields['sex'].choices = sex_choices
-   sex = ChoiceField(label="Пол",choices=sex_choices,widget=Select(attrs={"class":bootstrap_class}))
-   goal = ChoiceField(label="Цель поездки", choices=goal_choices, widget=Select(attrs={"class": bootstrap_class}))
-   multiplicity = ChoiceField(label="Кратность визы", choices=multiplicity_choices,
-                              widget=Select(attrs={"class": bootstrap_class}))
-   class Meta:
-        model = Form1
-        exclude = ('visa_type',)
-
-        widgets = {
-            'name': TextInput(attrs={"class": bootstrap_class, "placeholder": p[2]}),
-            'familyname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[0]}),
-            'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
-            'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
-            #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
-            'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
-            'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
-            'entry': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
-            'departure': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
-            'nationality': TextInput(attrs={"type":"hidden","class": bootstrap_class, "placeholder": p[10]}),
-            #'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
-            #'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
-            'invitation_number': TextInput(attrs={"class": bootstrap_class}),
-            'date': DateInput(attrs={'type':'hidden'}),
-            'placement' : TextInput(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
-            'rout': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[15]}),
-            'hostorganization': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm","placeholder": p[16]}),
-            'additionalinfo': TextInput(attrs={'rows': 2, "class": "form-control form-control-sm", "placeholder": p[17]}),
-            'partner': TextInput(attrs={'type': 'hidden'}),
-            }
-        labels = {
-            'familyname': p[0],
-            'firstname': p[1],
-            'name': p[2],
-            'lastname': p[3],
-            'sex' :p[4],
-            'goal': p[5],
-            'birthday' : p[6],
-            'passport' : p[7],
-            'entry' : p[8],
-            'departure' : p[9],
-            'nationality' : p[10],
-            'multiplicity' : p[11],
-            'confirmation' : p[12],
-            'date' : p[13],
-            'placement':p[14],
-            'rout':p[15],
-            'hostorganization':p[16],
-            'additionalinfo':p[17],
-            'invitation_number':'Приглашение №'
-    }
 
 class ModelForm2(ModelForm):
     #def __init__(self,*args, **kwargs):
