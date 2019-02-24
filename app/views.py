@@ -16,7 +16,6 @@ AppModels = {
     'info': AdditionalInfo,
     'placement': Placements,
     'organization': Organizations,
-    'form1':Form1,
     'form2':Form2,
     'partner':Partners,
 }
@@ -136,16 +135,6 @@ def increment_visanumber():
         v.visanumber = 1
         v.save()
     return 1
-
-
-def form1_xlsx(request):
-    if request.method == "GET":
-        id = request.GET.get('id')
-        note = Form1.objects.get(id=id)
-        fname = note.firstname + '_' + note.lastname + '.xlsx'
-        note.FormXlsx(fin='static/xlsx/1.xlsx')
-        response = note.GenerateXlsx(fout=fname)
-        return response
 
 
 def form2_xlsx(request):
@@ -318,22 +307,13 @@ def all_forms(request):
     return render(request,"app/all_forms.html")
 
 
-def form1_db(request):
-    """ Просмотр записей форм для одиночных виз (переход из all_forms) """
-    list = Form1.objects.all()
+
+def form2_db(request,sort_item):
+    list = Form2.objects.order_by(sort_item)
     paginator = Paginator(list, 10)
     page = request.GET.get('page') if request.method == "GET" else 1
     notes = paginator.get_page(page)
-    return render(request,"app/form1_db.html",{'notes': notes,'list':list})
-
-
-def form2_db(request):
-    """ Просмотр записей форм для групповых виз (переход из all_forms) """
-    list = Form2.objects.all()
-    paginator = Paginator(list, 10)
-    page = request.GET.get('page') if request.method == "GET" else 1
-    notes = paginator.get_page(page)
-    return render(request,"app/form2_db.html",{'notes': notes,'list':list})
+    return render(request,"app/form2_db.html",{'notes': notes})
 
 
 def index(request):

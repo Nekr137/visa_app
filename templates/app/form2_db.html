@@ -6,22 +6,30 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Фамилия</th>
-            <th>Имя</th>
-            <th>Дата рождения</th>
-            <th>Национальность</th>
-            <th>Человек в группе</th>
-            <th>Действие</th>
+            <th><a href="/form2_db/invitation_number"> Приглашение № </a></th>
+            <th><a href="/form2_db/date"> Дата создания </a></th>
+            <th><a href="/form2_db/partner"> Партнер </a></th>
+            <th><a href="/form2_db/placement"> Корабль </a></th>
+            <th><a href="/form2_db/entry"> Въезд с </a></th>
+            <th><a href="/form2_db/firstname"> Фамилия </a></th>
+            <th><a href="/form2_db/lastname"> Имя </a></th>
+            <th><a href="/form2_db/nationality"> Гражданство </a></th>
+            <th><a href="/form2_db/visa_type"> Тип визы </a></th>
         </tr>
     </thead>
     <tbody>
     {% for note in notes %}
     <tr>
         <th scope="row">{{note.id}}</th>
-        <td>{{note.familyname}}</td>
-        <td>{{note.name}}</td>
-        <td>{{note.birthday}}</td>
+        <td>{{note.invitation_number}}</td>
+        <td>{{note.date}}</td>
+        <td>{{note.partner}}</td>
+        <td>{{note.placement}}</td>
+        <td>{{note.entry}}</td>
+        <td>{{note.firstname}}</td>
+        <td>{{note.lastname}}</td>
         <td>{{note.nationality}}</td>
+        <td>{{note.visa_type}}</td>
         <td>?</td>
         <td>
             <a href="form2_xlsx?id={{note.id}}">Xlsx</a> /

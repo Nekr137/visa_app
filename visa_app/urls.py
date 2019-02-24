@@ -7,7 +7,8 @@ urlpatterns = [
     #path('edit/<int:id>/', views.edit),
     re_path(r'^edit_form2/(?P<id>\d+)/', views.edit_form2),
     re_path(r'^rewrite_dates_in_form', views.rewrite_dates_in_form),
-    re_path(r'^form2_db',views.form2_db),
+
+    re_path(r'^form2_db/(?P<sort_item>\w+)/',views.form2_db),
     re_path(r'^form2_xlsx', views.form2_xlsx),
     re_path(r'^form2_pdf', views.form2_pdf),
     re_path(r'^form2/(?P<visa_type>\w+)/', views.form2),
