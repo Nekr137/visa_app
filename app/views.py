@@ -138,9 +138,11 @@ def increment_visanumber():
 
 
 def form2_xlsx(request):
+    print('GET')
     if request.method == "GET":
         id = request.GET.get('id')
         note = Form2.objects.get(id=id)
+        print('ID = ',id)
         fname = note.firstname + '_' + note.lastname + '.xlsx'
         if note.visa_type == 'групповая':
             note.FormXlsx_group(fin='static/xlsx/2.xlsx')
@@ -185,7 +187,7 @@ def form2(request,visa_type):
                 f.save()
 
             increment_visanumber()
-            return redirect('/')
+            return redirect('/form2_db/id')
         else:
             return HttpResponse('person data invalid')
 
@@ -254,7 +256,7 @@ def edit_form2(request,id):
                         m = member_form.save(commit=False)
                         m.form2_id = f.id
                         m.save()
-            return redirect('/')
+            return redirect('/form2_db/id')
     else:
         member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
         date_choice = DatesChoiceForm()

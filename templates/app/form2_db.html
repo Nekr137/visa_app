@@ -30,12 +30,11 @@
         <td>{{note.lastname}}</td>
         <td>{{note.nationality}}</td>
         <td>{{note.visa_type}}</td>
-        <td>?</td>
         <td>
-            <a href="form2_xlsx?id={{note.id}}">Xlsx</a> /
-            <a href="form2_pdf?id={{note.id}}">Pdf</a> /
-            <a href="edit_form2/{{note.id}}">Изменить</a>  /
-            <a href="del_item/form2/{{note.id}}">Удалить</a>
+            <a href="/form2_xlsx?id={{note.id}}">Xlsx</a> /
+            <a href="/form2_pdf?id={{note.id}}">Pdf</a> /
+            <a href="/edit_form2/{{note.id}}">Изменить</a>  /
+            <a href="/del_item/form2/{{note.id}}">Удалить</a>
         </td>
     </tr>
     {% endfor %}
