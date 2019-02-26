@@ -324,6 +324,8 @@ class Form2(models.Model):
         sheet1['N39'].border = b
         sheet1['A25'].border = r
         sheet1['Q29'].border = b_thick
+        sheet1['J25'].border = l
+        sheet1['']
 
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
