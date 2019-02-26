@@ -26,6 +26,12 @@ b = openpyxl.styles.Border(
     bottom=openpyxl.styles.Side(style='thin'),
 )
 
+b_thick = openpyxl.styles.Border(
+    bottom=openpyxl.styles.Side(style='medium'),
+    right=openpyxl.styles.Side(style='thin'),
+)
+
+
 t = openpyxl.styles.Border(
     top=openpyxl.styles.Side(style='thin'),
 )
@@ -306,6 +312,8 @@ class Form2(models.Model):
 
         sheet1['Q1'].border = r
         sheet1['H25'].border = br
+        sheet1['D25'].border = br
+        sheet1['N1'].border = r
         sheet1['Q25'].border = br
         sheet1['Q28'].border = br
         sheet1['Q29'].border = br
@@ -314,7 +322,8 @@ class Form2(models.Model):
         sheet1['E39'].border = b
         sheet1['N41'].border = b
         sheet1['N39'].border = b
-        sheet1['A25'].border = l
+        sheet1['A25'].border = r
+        sheet1['Q29'].border = b_thick
 
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
