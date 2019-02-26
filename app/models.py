@@ -17,6 +17,12 @@ blr = openpyxl.styles.Border(
     right=openpyxl.styles.Side(style='thin'),
 )
 
+bl = openpyxl.styles.Border(
+    bottom=openpyxl.styles.Side(style='thin'),
+    left=openpyxl.styles.Side(style='thin'),
+)
+
+
 br = openpyxl.styles.Border(
     bottom=openpyxl.styles.Side(style='thin'),
     right=openpyxl.styles.Side(style='thin'),
@@ -304,6 +310,9 @@ class Form2(models.Model):
         sheet1.add_image(pod, 'C34')
         sheet1.add_image(pod2,'M34')
 
+        for k in range(1,18):
+            sheet1.cell(column=k, row=1).border = t
+
         for k in range(1,43):
             sheet1.cell(column=17, row=k).border = r
 
@@ -311,6 +320,7 @@ class Form2(models.Model):
             sheet1.cell(column=c,row=25).border = b
 
         sheet1['Q1'].border = r
+        sheet1['R1'].border = l
         sheet1['H25'].border = br
         sheet1['D25'].border = br
         sheet1['N1'].border = r
@@ -324,8 +334,8 @@ class Form2(models.Model):
         sheet1['N39'].border = b
         sheet1['A25'].border = r
         sheet1['Q29'].border = b_thick
-        sheet1['J25'].border = l
-        sheet1['']
+        sheet1['J25'].border = bl
+
 
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
