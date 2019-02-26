@@ -310,7 +310,7 @@ class Form2(models.Model):
         sheet1.add_image(pod, 'C34')
         sheet1.add_image(pod2,'M34')
 
-        for k in range(1,18):
+        for k in range(13,19):
             sheet1.cell(column=k, row=1).border = t
 
         for k in range(1,43):
@@ -320,7 +320,7 @@ class Form2(models.Model):
             sheet1.cell(column=c,row=25).border = b
 
         sheet1['Q1'].border = r
-        sheet1['R1'].border = l
+        #sheet1['R1'].border = l
         sheet1['H25'].border = br
         sheet1['D25'].border = br
         sheet1['N1'].border = r
