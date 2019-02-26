@@ -34,6 +34,10 @@ l = openpyxl.styles.Border(
     left=openpyxl.styles.Side(style='thin'),
 )
 
+r = openpyxl.styles.Border(
+    right=openpyxl.styles.Side(style='thin'),
+)
+
 tlrb = openpyxl.styles.Border(
     top=openpyxl.styles.Side(style='thin'),
     left=openpyxl.styles.Side(style='thin'),
@@ -201,37 +205,37 @@ class Form2(models.Model):
                 sheet1.cell(column=8+col,row=50+i*2).value = g.nationality
 
 
-        for r in [14]+list(range(48, 70, 2)):
+        for k in [14]+list(range(48, 70, 2)):
             for c in range(2,9):
-                sheet1.cell(column=c,row = r).border = ulr
+                sheet1.cell(column=c,row = k).border = ulr
             for c in range(11, 18):
-                sheet1.cell(column=c, row=r).border = ulr
+                sheet1.cell(column=c, row=k).border = ulr
 
-        for r in [15] + list(range(49, 71, 2)):
+        for k in [15] + list(range(49, 71, 2)):
             for c in range(2, 9):
-                sheet1.cell(column=c, row=r).border = blr
+                sheet1.cell(column=c, row=k).border = blr
             for c in range(11, 18):
-                sheet1.cell(column=c, row=r).border = blr
+                sheet1.cell(column=c, row=k).border = blr
 
-        for r in [16,19,17,18]:
+        for k in [16,19,17,18]:
             for c in range(2,9):
-                sheet1.cell(column=c, row=r).border = tlrb
+                sheet1.cell(column=c, row=k).border = tlrb
             for c in range(11, 18):
-                sheet1.cell(column=c, row=r).border = tlrb
+                sheet1.cell(column=c, row=k).border = tlrb
 
-        for r in [25]:
+        for k in [25]:
             for c in range(2,9):
-                sheet1.cell(column=c, row=r).border = b
+                sheet1.cell(column=c, row=k).border = b
             for c in range(11, 18):
-                sheet1.cell(column=c, row=r).border = b
+                sheet1.cell(column=c, row=k).border = b
 
-        for r in [4,5]:
+        for k in [4,5]:
             for c in [72,74,39,41]:
-                sheet1.cell(column=r, row=c).border = b
+                sheet1.cell(column=k, row=c).border = b
 
-        for r in [13,14]:
+        for k in [13,14]:
             for c in [72,74,39,41]:
-                sheet1.cell(column=r, row=c).border = b
+                sheet1.cell(column=k, row=c).border = b
 
         for c in range(2,18):
             sheet1.cell(column=45,row=c).border = t
@@ -294,10 +298,18 @@ class Form2(models.Model):
         sheet1.add_image(pod, 'C34')
         sheet1.add_image(pod2,'M34')
 
+        for k in range(1,43):
+            sheet1.cell(column=17, row=k).border = r
+
         for c in range(1,18):
             sheet1.cell(column=c,row=25).border = b
 
+        sheet1['Q1'].border = r
         sheet1['H25'].border = br
+        sheet1['Q25'].border = br
+        sheet1['Q28'].border = br
+        sheet1['Q29'].border = br
+        sheet1['Q42'].border = br
         sheet1['E41'].border = b
         sheet1['E39'].border = b
         sheet1['N41'].border = b
