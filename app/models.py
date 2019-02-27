@@ -327,7 +327,7 @@ class Form2(models.Model):
         #sheet1['R1'].border = l
         sheet1['H25'].border = br
         sheet1['D25'].border = br
-        sheet1['N1'].border = r
+        #sheet1['N1'].border = r
         sheet1['Q25'].border = br
         sheet1['Q28'].border = br
         sheet1['Q29'].border = br
