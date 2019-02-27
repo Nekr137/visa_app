@@ -184,7 +184,7 @@ class Form2(models.Model):
         #sheet1 = self.wb["Лист1"]
         sheet1 = self.wb.active
         if str(self.partner).lower() == 'genvisa':
-            sheet1['F2'] = '130319 -                USA ' + \
+            sheet1['F3'] = '130319 -                USA ' + \
             datetime.datetime.strptime(str(self.entry), '%Y-%m-%d').date().strftime("%d/%m")
 
         sheet1['B6'] = 'визовое приглашение № ' + str(self.invitation_number)
