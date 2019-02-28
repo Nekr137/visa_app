@@ -207,8 +207,6 @@ class ModelForm2(ModelForm):
             'entry': DateInput(attrs={'class': bootstrap_class,'type':'date','max':'9999-12-30'}),
             'departure': DateInput(attrs={'class': bootstrap_class,'type':'date','max':'9999-12-30'}),
             'nationality': TextInput(attrs={"type":"hidden","class": bootstrap_class, "placeholder": p[10]}),
-            #'multiplicity': TextInput(attrs={"class": bootstrap_class, "placeholder": p[11]}),
-            #'confirmation': TextInput(attrs={"class": bootstrap_class, "placeholder": p[12]}),
             'invitation_number': TextInput(attrs={"class": bootstrap_class}),
             'date': DateInput(attrs={'type':'hidden'}),
             'placement' : TextInput(attrs={'rows':2,"class":"form-control form-control-sm","placeholder": p[14]}),
