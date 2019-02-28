@@ -202,7 +202,7 @@ class ModelForm2(ModelForm):
             'firstname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[1]}),
             'lastname': TextInput(attrs={"class": bootstrap_class, "placeholder": p[3]}),
             #'goal' : TextInput(attrs={"class": bootstrap_class,"placeholder":p[5]}),
-            'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date'}),
+            'birthday': DateInput(attrs={'class': bootstrap_class,'type':'date','max':'9999-12-30'}),
             'passport': TextInput(attrs={"class": bootstrap_class, "placeholder": p[7]}),
             'entry': DateInput(attrs={'class': bootstrap_class,'type':'date','max':'9999-12-30'}),
             'departure': DateInput(attrs={'class': bootstrap_class,'type':'date','max':'9999-12-30'}),

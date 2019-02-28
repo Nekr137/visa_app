@@ -8,8 +8,10 @@ from django import forms
 from django.forms import modelformset_factory
 from datetime import date
 from django.template import Context
-from django.template.loader import get_template
-from xhtml2pdf import pisa
+from django.template.loader import get_template, render_to_string
+#from xhtml2pdf import pisa
+#import weasyprint
+import pdfkit
 
 AppModels = {
     'ship': Ships,
@@ -170,28 +172,20 @@ def form2_pdf(request):
 
 def form2_html(request):
     return render(request,'app/form2_html.html')
-    # if request.method == "GET":
-    #     id = request.GET.get('id')
-    #     note = Form2.objects.get(id=id)
-    #     fname = note.firstname + '_' + note.lastname + '.pdf'
-    #     if note.visa_type == 'групповая':
-    #         note.FormXlsx_group(fin='static/xlsx/2.xlsx')
-    #     elif note.visa_type == 'одиночная':
-    #         note.FormXlsx_single(fin='static/xlsx/1.xlsx')
-    #     response = note.GeneratePdf(fout=fname)
-    #     return response
+
 
 def render_pdf_view(request):
-    template_path = 'user_printer.html'
-    context = {'myvar': 'this is your template context'}# Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="report.pdf"'# find the template and render it.
     template = get_template('app/form2_html.html')
-    html = template.render(context)
-    pisaStatus = pisa.CreatePDF(html,dest=response)
-    #pisaStatus = pisa.CreatePDF(html, dest=response, link_callback=link_callback)# if error then show some funy view
-    if pisaStatus.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    html = template.render({'a':'b'})
+    options = {
+        'page-size': 'A4',
+        'encoding': "UTF-8",
+        'orientation' : 'Landscape',
+    }
+    pdf = pdfkit.from_string(html, False, options)
+    response = HttpResponse(pdf, content_type='application/pdf')
     return response
 
 
@@ -334,7 +328,7 @@ def add_member(request):
         return render(request, "app/members_form.html", {"member": member, 'NUM':NUM})
 
 
-def form2_db(request, sort_item, reverse):
+def form2_db(request, sort_item='id', reverse='False'):
     """
     Show single and group visa forms
     :param request:
