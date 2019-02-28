@@ -5,22 +5,22 @@
 <table class="table table-inverse table-sm" style="font-size: 80%;">
     <thead>
         <tr>
-            <th>#</th>
-            <th><a href="/form2_db/invitation_number"> Приглашение № </a></th>
-            <th><a href="/form2_db/date"> Дата создания </a></th>
-            <th><a href="/form2_db/partner"> Партнер </a></th>
-            <th><a href="/form2_db/placement"> Корабль </a></th>
-            <th><a href="/form2_db/entry"> Въезд с </a></th>
-            <th><a href="/form2_db/firstname"> Фамилия </a></th>
-            <th><a href="/form2_db/lastname"> Имя </a></th>
-            <th><a href="/form2_db/nationality"> Гражданство </a></th>
-            <th><a href="/form2_db/visa_type"> Тип визы </a></th>
+            <!--<th>#</th>-->
+            <th><a href="/form2_db/invitation_number/{{reverse}}"> Приглашение № </a></th>
+            <th><a href="/form2_db/date/{{reverse}}"> Дата создания </a></th>
+            <th><a href="/form2_db/partner/{{reverse}}"> Партнер </a></th>
+            <th><a href="/form2_db/placement/{{reverse}}"> Корабль </a></th>
+            <th><a href="/form2_db/entry/{{reverse}}"> Въезд с </a></th>
+            <th><a href="/form2_db/firstname/{{reverse}}"> Фамилия </a></th>
+            <th><a href="/form2_db/lastname/{{reverse}}"> Имя </a></th>
+            <th><a href="/form2_db/nationality/{{reverse}}"> Гражданство </a></th>
+            <th><a href="/form2_db/visa_type/{{reverse}}"> Тип визы </a></th>
         </tr>
     </thead>
     <tbody>
     {% for note in notes %}
     <tr>
-        <th scope="row">{{note.id}}</th>
+        <!--<th scope="row">{{note.id}}</th>-->
         <td>{{note.invitation_number}}</td>
         <td>{{note.date}}</td>
         <td>{{note.partner}}</td>

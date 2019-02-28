@@ -210,7 +210,7 @@ def form2(request,visa_type):
             "form": form,
             "view": "form2",
             "NUM" : 1,
-            "title":"Форма для групповой визы",
+            "title" : 'Редактирование формы групповой визы' if visa_type=='group' else 'Редактирование формы одиночной визы',
             "date_choice": date_choice,
             "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
             "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
@@ -304,22 +304,27 @@ def add_member(request):
         member = MembersForm(prefix=NUM)
         return render(request, "app/members_form.html", {"member": member, 'NUM':NUM})
 
-def all_forms(request):
-    """ Метод для выбора просмотра одиночных или групповых виз """
-    return render(request,"app/all_forms.html")
 
-
-
-def form2_db(request,sort_item):
-    list = Form2.objects.order_by(sort_item)
+def form2_db(request, sort_item, reverse):
+    """
+    Show single and group visa forms
+    :param request:
+    :param sort_item: the viriable by wich to sort
+    :param reverse: flag, signifying the direction ('True' or 'False')
+    :return:
+    """
+    list = Form2.objects.order_by(sort_item,'id')
+    list = list.reverse() if reverse=='True' else list
     paginator = Paginator(list, 10)
     page = request.GET.get('page') if request.method == "GET" else 1
     notes = paginator.get_page(page)
-    return render(request,"app/form2_db.html",{'notes': notes})
-
+    return render(request,"app/form2_db.html",{
+        'notes': notes,
+        'reverse': 'True' if reverse=='False' else 'False'
+    })
 
 def index(request):
-    """ Главная страница сайта """
+    """ Site main page """
     return render(request,"app/index.html")
 
 
