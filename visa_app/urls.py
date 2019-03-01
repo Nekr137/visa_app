@@ -23,4 +23,6 @@ urlpatterns = [
     re_path(r'^increment_visanumber',views.increment_visanumber),
     re_path(r'^statistic',views.statistic),
     path(r'', views.index),
+    path('pdf/', views.GeneratePdf.as_view()),
+    re_path(r'^html_to_pdf_view',views.html_to_pdf_view),
 ]

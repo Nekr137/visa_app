@@ -9,9 +9,55 @@ from django.forms import modelformset_factory
 from datetime import date
 from django.template import Context
 from django.template.loader import get_template, render_to_string
-#from xhtml2pdf import pisa
-#import weasyprint
 import pdfkit
+from io import BytesIO
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+from django.views.generic import View
+
+
+import weasyprint
+from django.template.loader import render_to_string
+
+# importing get_template from loader
+from django.template.loader import get_template
+
+
+# Creating our view, it is a class based view
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        # getting the template
+        pdf = render_to_pdf('app/index.html')
+
+        # rendering the template
+        return HttpResponse(pdf, content_type='application/pdf')
+
+def render_to_pdf(template_src, context_dict={'a':'b'}):
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+
+    # This part will create the pdf.
+    pdf = pisa.pisaDocument(BytesIO(html.encode("utf-8")), result, encoding='utf-8')
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+def html_to_pdf_view(request):
+    paragraphs = ['first paragraph', 'second paragraph', 'third paragraph']
+    html_string = render_to_string('app/form2_html.html', {'paragraphs': paragraphs})
+
+    html = weasyprint.HTML(string=html_string)
+    html.write_pdf(target='/tmp/mypdf.pdf')
+
+    fs = FileSystemStorage('/tmp')
+    with fs.open('mypdf.pdf') as pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+        return response
+
 
 AppModels = {
     'ship': Ships,
@@ -187,6 +233,7 @@ def render_pdf_view(request):
     pdf = pdfkit.from_string(html, False, options)
     response = HttpResponse(pdf, content_type='application/pdf')
     return response
+
 
 
 def form2(request,visa_type):
