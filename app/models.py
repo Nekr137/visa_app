@@ -309,10 +309,10 @@ class Form2(models.Model):
         pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
         pod = openpyxl.drawing.image.Image('static/xlsx/image853.png')
         pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
-        sheet1.add_image(pech, 'A34')
-        sheet1.add_image(pech2,'K34')
-        sheet1.add_image(pod, 'C34')
-        sheet1.add_image(pod2,'M34')
+        sheet1.add_image(pech, 'A37')
+        sheet1.add_image(pech2,'K37')
+        sheet1.add_image(pod, 'D37')
+        sheet1.add_image(pod2,'M37')
 
         for k in range(13,18):
             sheet1.cell(column=k, row=1).border = t
@@ -344,7 +344,7 @@ class Form2(models.Model):
 
     def GenerateXlsx(self,fout):
         response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename='+fout
+        response['Content-Disposition'] = 'inline; filename='+fout
         self.wb.save(response)
         #self.wb.save(filename='test.xlsx')
         return response

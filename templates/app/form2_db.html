@@ -31,9 +31,10 @@
         <td>{{note.nationality}}</td>
         <td>{{note.visa_type}}</td>
         <td>
+            {% if note.visa_type == 'одиночная' %}
             <a href="/form2_xlsx?id={{note.id}}">Xlsx</a> /
-            <a href="/form2_pdf?id={{note.id}}">Pdf</a> /
-            <a href="/html2pdf/{{note.id}}">Pdf2</a> /
+            {% endif %}
+            <a href="/html2pdf/{{note.id}}">Pdf</a> /
             <a href="/edit_form2/{{note.id}}">Изменить</a>  /
             <a href="/del_item/form2/{{note.id}}">Удалить</a>
         </td>

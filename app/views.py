@@ -42,28 +42,58 @@ def statistic(request):
 
 
 
-def html2pdf(request, id):
+def html2pdf(request,id):
+    """
+    Method for visa pdf creation
+    :param request:     request
+    :param id:          member id
+    :return:            response
+    """
     note = Form2.objects.get(id=id)
-    members = GroupMembers.objects.filter(form2=note)
+    if note.visa_type == 'групповая':
+        return form2_group_pdf(request, note)
+    else:
+        return form2_single_pdf(note)
 
+
+
+def form2_single_pdf(note):
+    """
+    Method for single visa pdf creation (via xlsx)
+    :param note: member (object)
+    :return: response
+    """
+    fname = note.firstname + '_' + note.lastname + '.pdf'
+    note.FormXlsx_single(fin='static/xlsx/1.xlsx')
+    response = note.GeneratePdf(fout=fname)
+    return response
+
+def form2_group_pdf(request,note):
+    """
+    Method for group visa pdf creation (via weasyprint)
+    :param request:     request
+    :param note:        member (object)
+    :return:            response
+    """
+    members = GroupMembers.objects.filter(form2=note)
     fname = note.firstname + '_' + note.lastname + '.pdf'
 
     html_string = render_to_string('app/form2_html.html', {
-        'obj':note,
-        'members':members,
-        'empty_strings_len': 12-len(members),
-        'date_now':datetime.now()
+        'obj': note,
+        'members': members,
+        'empty_strings_len': 12 - len(members),
+        'date_now': datetime.now()
     })
 
-    html = weasyprint.HTML(string=html_string,base_url=request.build_absolute_uri())
+    html = weasyprint.HTML(string=html_string, base_url=request.build_absolute_uri())
     html.write_pdf(target='/tmp/mypdf.pdf')
 
     fs = FileSystemStorage('/tmp')
-    with fs.open('mypdf.pdf') as pdf:
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="' + fname + '"'
+    with fs.open('mypdf.pdf','rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        # there one may choose attachment or inline!!!
+        response['Content-Disposition'] = 'inline; filename="' + fname + '"'
         return response
-
 
 
 def default(request,type,id):
@@ -176,19 +206,6 @@ def form2_xlsx(request):
             note.FormXlsx_single(fin='static/xlsx/1.xlsx')
 
         response = note.GenerateXlsx(fout=fname)
-        return response
-
-
-def form2_pdf(request):
-    if request.method == "GET":
-        id = request.GET.get('id')
-        note = Form2.objects.get(id=id)
-        fname = note.firstname + '_' + note.lastname + '.pdf'
-        if note.visa_type == 'групповая':
-            note.FormXlsx_group(fin='static/xlsx/2.xlsx')
-        elif note.visa_type == 'одиночная':
-            note.FormXlsx_single(fin='static/xlsx/1.xlsx')
-        response = note.GeneratePdf(fout=fname)
         return response
 
 

@@ -78,15 +78,15 @@ WSGI_APPLICATION = 'visa_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME' : 'django_db',
-        # 'USER' : 'visa',
-        # 'PASSWORD' : 'ubuntu2020',
+        'NAME' : 'django_db',
+        'USER' : 'visa',
+        'PASSWORD' : 'ubuntu2020',
         # 'NAME': 'testdb',
         # 'USER':'postgres',
         # 'PASSWORD':'denekra',
-        'NAME' : 'django_db',
-        'USER' : 'postgres',
-        'PASSWORD' : 'postgres',
+        # 'NAME' : 'django_db',
+        # 'USER' : 'postgres',
+        # 'PASSWORD' : 'postgres',
         'HOST':'127.0.0.1',
         'PORT':'5432',
     }

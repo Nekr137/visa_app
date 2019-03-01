@@ -10,7 +10,6 @@ urlpatterns = [
     re_path(r'^form2_html', views.form2_html),
     re_path(r'^form2_db/(?P<sort_item>\w+)/(?P<reverse>\w+)/',views.form2_db),
     re_path(r'^form2_xlsx', views.form2_xlsx),
-    re_path(r'^form2_pdf', views.form2_pdf),
     re_path(r'^render_pdf_view',views.render_pdf_view),
     re_path(r'^form2/(?P<visa_type>\w+)/', views.form2),
     re_path(r'^lists',views.lists),
