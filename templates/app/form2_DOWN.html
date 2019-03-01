@@ -1,3 +1,5 @@
+{% load static %}
+
 <table style="border-collapse: collapse;">
     <tr>
         <td class="col1">Фамилия</td>
@@ -6,24 +8,48 @@
         <td class="col1">№<br>паспорта</td>
         <td class="col1" style="border-right">Граж-во</td>
     </tr>
-    {% for i in i|rjust:10 %}
+    {% for m in members %}
         <tr>
-            <td class="col1" rowspan="1">test11</td>
-            <td class="col1" rowspan="1">test21</td>
-            <td class="col1" rowspan="2">tes3</td>
-            <td class="col1" rowspan="2">test4</td>
-            <td class="col1" rowspan="2">tst5</td>
+            <td class="col1" rowspan="1">{{m.familyname}}</td>
+            <td class="col1" rowspan="1">{{m.name}}</td>
+            <td class="col1" rowspan="2">{{m.birthday}}</td>
+            <td class="col1" rowspan="2">{{m.passport}}</td>
+            <td class="col1" rowspan="2">{{m.nationality}}</td>
         </tr>
         <tr>
-            <td class="col1" rowspan="1">test12</td>
-            <td class="col1" rowspan="1">test22</td>
+            <td class="col1" rowspan="1">{{m.firstname}}</td>
+            <td class="col1" rowspan="1">{{m.lastname}}</td>
+        </tr>
+    {% endfor %}
+    {% for i in i|rjust:empty_strings_len %}
+        <tr>
+            <td class="col1" rowspan="1"></td>
+            <td class="col1" rowspan="1"></td>
+            <td class="col1" rowspan="2"></td>
+            <td class="col1" rowspan="2"></td>
+            <td class="col1" rowspan="2"></td>
+        </tr>
+        <tr>
+            <td class="col1" rowspan="1"></td>
+            <td class="col1" rowspan="1"></td>
         </tr>
     {% endfor %}
 
 </table>
-    <br><br>
-    <div style="padding-left: 4rem;">
-        Подпись ______________ Васив Д.М. <span style="padding-left: 2rem;">(менеджер визового отдела)</span>
-    <br><br>
-        Дата	01.03.2019
-    </div>
+
+
+ <div style="position: absolute; top: 480px;">
+    <img width="45%;" src="{% static '/xlsx/image823.png' alt='Изображение Печать'%}">
+ </div>
+ <div style="position: absolute; top: 510px;">
+     <span style="padding-left: 7rem;">
+        <img width="5%;" src="{% static '/xlsx/image853.png' alt='Изображение Подпись'%}">
+     </span>
+ </div>
+<br><br><br><br>
+<div style="padding-left: 4rem;">
+    Подпись ______________ Васив Д.М. <span style="padding-left: 2rem;">(менеджер визового отдела)</span>
+<br><br>
+    Дата
+    <span>{{date_now|date:"d.m.Y"}}</span>
+</div>

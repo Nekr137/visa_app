@@ -4,30 +4,13 @@ from django.http import HttpResponseRedirect,HttpResponse,HttpResponseNotFound
 from .modelform import *
 from .models import *
 from django.core.paginator import Paginator
-from datetime import date
+from datetime import date,datetime
 from django.template.loader import get_template, render_to_string
-import pdfkit
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.views.generic import View
 import weasyprint
 from django.template.loader import render_to_string, get_template
-
-
-def html2pdf(request, id):
-    note = Form2.objects.get(id=id)
-    fname = note.firstname + '_' + note.lastname + '.pdf'
-
-    html_string = render_to_string('app/form2_html.html', {'obj':note})
-
-    html = weasyprint.HTML(string=html_string)
-    html.write_pdf(target='/tmp/mypdf.pdf')
-
-    fs = FileSystemStorage('/tmp')
-    with fs.open('mypdf.pdf') as pdf:
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="' + fname + '"'
-        return response
 
 
 AppModels = {
@@ -59,6 +42,30 @@ def statistic(request):
 
 
 
+def html2pdf(request, id):
+    note = Form2.objects.get(id=id)
+    members = GroupMembers.objects.filter(form2=note)
+
+    fname = note.firstname + '_' + note.lastname + '.pdf'
+
+    html_string = render_to_string('app/form2_html.html', {
+        'obj':note,
+        'members':members,
+        'empty_strings_len': 12-len(members),
+        'date_now':datetime.now()
+    })
+
+    html = weasyprint.HTML(string=html_string,base_url=request.build_absolute_uri())
+    html.write_pdf(target='/tmp/mypdf.pdf')
+
+    fs = FileSystemStorage('/tmp')
+    with fs.open('mypdf.pdf') as pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="' + fname + '"'
+        return response
+
+
+
 def default(request,type,id):
     """ метод для изменения атрибута default у списков """
     if request.method == "GET":
@@ -78,10 +85,8 @@ def del_item(request,type,id):
     if request.method == "GET" and Model:
         item = Model.objects.get(id=id)
         item.delete()
-        if type == 'form1':
-            resp = HttpResponseRedirect('/form1_db')
-        elif type == 'form2':
-            resp = HttpResponseRedirect('/form2_db')
+        if type == 'form2':
+            resp = HttpResponseRedirect('/form2_db/id/False')
         else:
             resp = HttpResponseRedirect('/lists')
     else:
@@ -228,7 +233,7 @@ def form2(request,visa_type):
                 f.save()
 
             increment_visanumber()
-            return redirect('/form2_db/id')
+            return redirect('/form2_db/id/False')
         else:
             return HttpResponse('person data invalid')
 
@@ -297,7 +302,7 @@ def edit_form2(request,id):
                         m = member_form.save(commit=False)
                         m.form2_id = f.id
                         m.save()
-            return redirect('/form2_db/id')
+            return redirect('/form2_db/id/False')
     else:
         member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
         date_choice = DatesChoiceForm()

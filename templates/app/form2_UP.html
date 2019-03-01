@@ -1,20 +1,35 @@
+{% load static %}
 <table style="border-collapse: collapse">
  <tr style="border-bottom: 1px solid">
   <td>
-    <div style="font-weight: bold; padding-left: 4rem; padding-top: 2rem;">
-        Подтверждение №: <br> о приеме группы иностранных туристов
+
+    <div style="font-weight: bold; padding-left: 4rem; padding-top: 1rem;">
+        Подтверждение №:
+        {% if obj.patner == genvisa %}
+            130319 - {{obj.nationality}} {{obj.entry|date:"d/m" }}
+        {% endif %}
+        <br>
+        о приеме группы иностранных туристов
+
     </div>
-    <div style="font-size: 13px; padding-top:0.5rem;">
+
+    <div style="font-size: 11px; padding-top:0.5rem;">
         Визовое приглашение №:
+        <span class="info">{{obj.invitation_number|upper}}</span>
     </div>
-    <div style="padding-top:1rem;">
+    <div style="padding-top:0.5rem;">
         Кратность визы:
+        <span class="info">{{obj.multiplicity|upper}}</span>
     </div>
-    <div style="padding-top:1rem;">
+    <div style="padding-top:0.5rem;">
         Гражданство
+        <span class="info">{{obj.nationality|upper}}</span>
     </div>
-    <div style="padding-top:1rem; padding-bottom: 1rem;">
-        <span>Въезд с</span>        <span style="padding-left: 5rem;">Выезд до</span>
+    <div style="padding-top:0.5rem; padding-bottom: 0.5rem;">
+        <span>Въезд с</span>
+        <span class="info">{{obj.entry|date:"d/m/Y"|upper}}</span>
+        <span style="padding-left: 5rem;">Выезд до</span>
+        <span class="info">{{obj.departure|date:"d/m/Y"|upper}}</span>
     </div>
 
 
@@ -29,7 +44,7 @@
         <tr>
             <td class="col1">{{ obj.familyname }} </td>
             <td class="col1">{{ obj.name }}</td>
-            <td class="col1">{{ obj.birthday }}</td>
+            <td class="col1">{{ obj.birthday|date:"d/m/Y" }}</td>
             <td class="col1">{{ obj.passport }}</td>
             <td class="col1">{{ obj.nationality }}</td>
         </tr>
@@ -47,12 +62,10 @@
         </tr>
 
       </table>
-
         <div style="padding-top:1rem;">
             Цель поездки
             <span class="info">{{obj.goal|upper}}</span>
         </div>
-
         <div style="padding-top:1rem;">
             Маршрут и места размещения город
             <span class="info">{{obj.rout|upper}}</span>
@@ -79,21 +92,27 @@
  <td>
      <div style="padding-top:1rem;">
          Дополнительные сведения:
-         <br>
-         <br>
-         <br>
+        <span class="info">{{ obj.additionalinfo }}</span>
      </div>
-     <div style="font-weight: bold; text-decoration: underline; padding-bottom: 1rem;">
+     <div style="position: absolute;">
+        <img width="45%;" src="{% static '/xlsx/image823.png' alt='Изображение Печать'%}">
+     </div>
+     <div style="position: absolute; top: 480px;">
+         <span style="padding-left: 7rem;">
+            <img width="5%;" src="{% static '/xlsx/image853.png' alt='Изображение Подпись'%}">
+         </span>
+     </div>
+     <div style="font-weight: bold; text-decoration: underline; padding-bottom: 1rem; padding-top: 1rem;">
          ВСЕ ВЫШЕПЕРЕЧИСЛЕННЫЕ УСЛУГИ ПОЛНОСТЬЮ ОПЛАЧЕНЫ <br> Ответственное лицо:
      </div>
       M.П.
      <div style="padding-left: 4rem;">
          Подпись ______________ Васив Д.М. <span style="padding-left: 2rem;">(менеджер визового отдела)</span>
           <br>
-         Дата	01.03.2019
+         Дата
+         <span>{{date_now|date:"d.m.Y"}}</span>
      </div>
      <br><br>
-
  </td>
 </tr>
 </table>
