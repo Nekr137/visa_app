@@ -2,17 +2,6 @@
 <table style="border-collapse: collapse">
  <tr style="border-bottom: 1px solid">
   <td>
-
-    <div style="font-weight: bold; padding-left: 4rem; padding-top: 1rem;">
-        Подтверждение №:
-        {% if obj.patner == genvisa %}
-            130319 - {{obj.nationality}} {{obj.entry|date:"d/m" }}
-        {% endif %}
-        <br>
-        о приеме группы иностранных туристов
-
-    </div>
-
     <div style="font-size: 11px; padding-top:0.5rem;">
         Визовое приглашение №:
         <span class="info">{{obj.invitation_number|upper}}</span>

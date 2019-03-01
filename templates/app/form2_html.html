@@ -34,6 +34,26 @@
                 <td style="border-right: 1px solid;"></td>
                 <td style="text-align: right; padding-right: 3rem;">КОНТРОЛЬНЫЙ ТАЛОН</td>
             </tr>
+                <td style="border-right: 1px solid;">
+                    <div style="font-weight: bold; padding-left: 4rem; padding-top: 1rem;">
+                    Подтверждение №:
+                    {% if obj.patner == genvisa %}
+                    130319 - {{obj.nationality}} {{obj.entry|date:"d/m" }}
+                    {% endif %}
+                    <br>
+                    о приеме группы иностранных туристов
+                    </div>
+                </td>
+                <td style="border-right: 1px solid;">
+                    <div style="font-weight: bold; padding-left: 4rem; padding-top: 1rem;">
+                    Ваучер №:
+                    {% if obj.patner == genvisa %}
+                    130319 - {{obj.nationality}} {{obj.entry|date:"d/m" }}
+                    {% endif %}
+                    <br>
+                    о приеме группы иностранных туристов
+                    </div>
+                </td>
             <tr>
                 <td style="border-right: 1px solid;">   {% include "app/form2_UP.html" %}   </td>
                 <td>{% include "app/form2_UP.html" %}</td>
