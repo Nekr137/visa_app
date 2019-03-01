@@ -7,11 +7,15 @@
         border: 1px solid black;
         height: 1rem;
         text-align: center;
-        width: 1%;
+        width: 2%;
     }
     @page {
       size: 297mm 210mm;
     }
+    .info{
+        font-weight: bold;
+        text-decoration: underline;
+        }
 </style>
 
 <html lang="en">
@@ -35,6 +39,27 @@
     </div>
 </div>
 
+
+
+
+<div style="border: 1px solid black;">
+    <div>
+        <table style="border-collapse: collapse;">
+            <tr>
+                <td style="border-right: 1px solid;"></td>
+                <td style="text-align: right; padding-right: 3rem;">Контрольный талон</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold; border-right: 1px solid;">СПИСОК ГРУППЫ К ПОДТВЕРЖДЕНИЮ №</td>
+                <td style="font-weight: bold;">СПИСОК ГРУППЫ К ВАУЧЕРУ - VOUCHER №</td>
+            </tr>
+            <tr>
+                <td style="border-right: 1px solid;">   {% include "app/form2_DOWN.html" %}   </td>
+                <td>{% include "app/form2_DOWN.html" %}</td>
+            </tr>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>

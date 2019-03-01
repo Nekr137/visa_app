@@ -1,0 +1,29 @@
+<table style="border-collapse: collapse;">
+    <tr>
+        <td class="col1">Фамилия</td>
+        <td class="col1">Имя</td>
+        <td class="col1">Дата<br>рождения</td>
+        <td class="col1">№<br>паспорта</td>
+        <td class="col1" style="border-right">Граж-во</td>
+    </tr>
+    {% for i in i|rjust:10 %}
+        <tr>
+            <td class="col1" rowspan="1">test11</td>
+            <td class="col1" rowspan="1">test21</td>
+            <td class="col1" rowspan="2">tes3</td>
+            <td class="col1" rowspan="2">test4</td>
+            <td class="col1" rowspan="2">tst5</td>
+        </tr>
+        <tr>
+            <td class="col1" rowspan="1">test12</td>
+            <td class="col1" rowspan="1">test22</td>
+        </tr>
+    {% endfor %}
+
+</table>
+    <br><br>
+    <div style="padding-left: 4rem;">
+        Подпись ______________ Васив Д.М. <span style="padding-left: 2rem;">(менеджер визового отдела)</span>
+    <br><br>
+        Дата	01.03.2019
+    </div>

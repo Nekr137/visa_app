@@ -27,30 +27,40 @@
         <td class="col1" style="border-right">Граж-во</td>
        </tr>
         <tr>
-            <td class="col1"></td><td class="col1"></td><td class="col1"></td><td class="col1"></td><td class="col1"></td>
+            <td class="col1">{{ obj.familyname }} </td>
+            <td class="col1">{{ obj.name }}</td>
+            <td class="col1">{{ obj.birthday }}</td>
+            <td class="col1">{{ obj.passport }}</td>
+            <td class="col1">{{ obj.nationality }}</td>
         </tr>
-
         <tr>
             <td class="col1" style="font-weight: bold;" colspan="5" rowspan="1">
             СПИСОК ГРУППЫ ПРИЛАГАЕТСЯ
             </td>
         </tr>
         <tr>
-            <td class="col1" colspan="1" rowspan="1"></td><td class="col1"></td><td class="col1"></td><td class="col1"></td><td class="col1"></td>
+            <td class="col1">{{ obj.firstname }} </td>
+            <td class="col1">{{ obj.lastname }}</td>
+            <td class="col1"></td>
+            <td class="col1"></td>
+            <td class="col1"></td>
         </tr>
 
       </table>
 
         <div style="padding-top:1rem;">
             Цель поездки
+            <span class="info">{{obj.goal|upper}}</span>
         </div>
 
         <div style="padding-top:1rem;">
             Маршрут и места размещения город
+            <span class="info">{{obj.rout|upper}}</span>
         </div>
 
         <div style="padding-top:1rem;">
             Размещение
+            <span class="info">{{obj.placement|upper}}</span>
         </div>
     </td>
 </tr>
@@ -58,9 +68,7 @@
  <td>
   <div style="padding-top:1rem;">
     Принимающая организация, ее адрес, № референса
-    <br>
-    <br>
-    <br>
+    <span class="info">{{obj.hostorganization|upper}}</span>
     </div>
   <div style="font-weight: bold;">
     Реестровый номер
@@ -78,10 +86,10 @@
      <div style="font-weight: bold; text-decoration: underline; padding-bottom: 1rem;">
          ВСЕ ВЫШЕПЕРЕЧИСЛЕННЫЕ УСЛУГИ ПОЛНОСТЬЮ ОПЛАЧЕНЫ <br> Ответственное лицо:
      </div>
-
+      M.П.
      <div style="padding-left: 4rem;">
          Подпись ______________ Васив Д.М. <span style="padding-left: 2rem;">(менеджер визового отдела)</span>
-          <br><br>
+          <br>
          Дата	01.03.2019
      </div>
      <br><br>

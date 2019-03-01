@@ -9,7 +9,6 @@ urlpatterns = [
     re_path(r'^rewrite_dates_in_form', views.rewrite_dates_in_form),
     re_path(r'^form2_html', views.form2_html),
     re_path(r'^form2_db/(?P<sort_item>\w+)/(?P<reverse>\w+)/',views.form2_db),
-    re_path(r'^form2_db',views.form2_db),
     re_path(r'^form2_xlsx', views.form2_xlsx),
     re_path(r'^form2_pdf', views.form2_pdf),
     re_path(r'^render_pdf_view',views.render_pdf_view),
@@ -23,6 +22,5 @@ urlpatterns = [
     re_path(r'^increment_visanumber',views.increment_visanumber),
     re_path(r'^statistic',views.statistic),
     path(r'', views.index),
-    path('pdf/', views.GeneratePdf.as_view()),
-    re_path(r'^html_to_pdf_view',views.html_to_pdf_view),
+    re_path(r'^html2pdf/(?P<id>\w+)/',views.html2pdf),
 ]
