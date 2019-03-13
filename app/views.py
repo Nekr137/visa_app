@@ -300,9 +300,14 @@ def edit_form2(request,id):
     # members
     instance = GroupMembers.objects.filter(form2=model.id)
 
+    # visa type
     visa_type = 'group' if model.visa_type == 'групповая' else 'single'
 
+    # save type
+    save_type = request.GET.get('save_type')
+
     if request.method == "POST":
+
         form = ModelForm2(request.POST, instance=model)
 
         if form.is_valid():
@@ -326,28 +331,41 @@ def edit_form2(request,id):
                         m = member_form.save(commit=False)
                         m.form2_id = f.id
                         m.save()
-            return redirect('/form2_db/id/False')
-    else:
-        member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
-        date_choice = DatesChoiceForm()
-        date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
-        return render(request, "app/form2.html", {
-            "form": form,
-            "member_forms": member_forms,
-            'NUM':len(instance),
-            'visa_type': visa_type,
-            "title" : 'Редактирование формы групповой визы' if visa_type=='group' else 'Редактирование формы одиночной визы',
-            "view": "edit",
-            "date_choice": date_choice,
-            "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
-            "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
-            "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
-            "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
-            "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
-            "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
-            "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
-        })
+
+            if save_type == 'close':                        # переход в бд
+                return redirect('/form2_db/id/False')
+            elif save_type == 'reset':                      # в пусую форму
+                return redirect('/form2/' + visa_type)
+            elif save_type == 'remain':                     # опять мучаем форму
+                def_data = dict(zip(request.POST.keys(), request.POST.values()))
+                view = 'edit'
+                form = ModelForm2(def_data)
+
+
+        else:
+            return HttpResponse('person data invalid')
+
+    member_forms = [MembersForm(prefix='MEMBERFORM' + str(i), instance=m) for i, m in enumerate(instance)]
+    date_choice = DatesChoiceForm()
+    date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
+
+    return render(request, "app/form2.html", {
+        "form": form,
+        "member_forms": member_forms,
+        'NUM':len(instance),
+        'visa_type': visa_type,
+        "title" : 'Редактирование формы групповой визы' if visa_type=='group' else 'Редактирование формы одиночной визы',
+        "view": "edit",
+        "date_choice": date_choice,
+        "ship_choice": ShipsChoiceForm(initial={'ship_choice': get_default_object(Ships)}),
+        "info_choice": InfoChoiceForm(initial={'info_choice': get_default_object(AdditionalInfo)}),
+        "rout_choice": RoutChoiceForm(initial={'rout_choice': get_default_object(Routs)}),
+        "organization_choice": OrganizationChoiceForm(initial={'organization_choice': get_default_object(Organizations)}),
+        "nationality_choice": NationalityChoiceForm(initial={'nationality_choice': get_default_object(Nationality)}),
+        "placement_choice": PlacementChoiceForm(initial={'placement_choice': get_default_object(Placements)}),
+        "partner_choice": PartnerChoiceForm(initial={'partner_choice': get_default_object(Partners)}),
+    })
 
 def get_default_object(Model):
     """ Отдает id объекта "списков", значение default которого True. Если такого нет, отдает 0 """
