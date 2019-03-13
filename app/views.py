@@ -229,14 +229,12 @@ def render_pdf_view(request):
 
 
 
-def form2(request,visa_type):
+def save_form(request,visa_type):
     save_type = request.GET.get('save_type')
-    def_data = {}
-    view = 'form2'
     if request.method == "POST":
-        form = ModelForm2(request.POST)
-        if form.is_valid():
-            f = form.save(commit=False)
+        Form = ModelForm2(request.POST)
+        if Form.is_valid():
+            f = Form.save(commit=False)
             if visa_type == 'group':
                 f.visa_type = 'групповая'
                 f.save()
@@ -251,16 +249,23 @@ def form2(request,visa_type):
                 f.save()
 
             increment_visanumber()
+            print('DSAVE TEFE' , save_type)
             if save_type == 'close':
                 return redirect('/form2_db/id/False')
             elif save_type == 'reset':
-                return redirect('/form2/'+visa_type)
+                return redirect('/form/'+visa_type)
             elif save_type == 'remain':
                 def_data = dict(zip(request.POST.keys(), request.POST.values()))
-                view = 'edit'
-
+                resp = form(request=request,visa_type=visa_type,def_data=def_data,view='edit')
+                return resp
         else:
             return HttpResponse('person data invalid')
+
+
+
+def form(request,visa_type,def_data=None, view='form2'):
+    if not def_data:
+        def_data = {}
 
     # get list of dates
     date_choice = DatesChoiceForm()
@@ -278,6 +283,7 @@ def form2(request,visa_type):
 
     return render(request, "app/form2.html", {
         "form": form,
+        "formaction":"/save_form",
         "view": view,   # Применяется ли javascript для списков или нет, edit - нет, form2 - да
         "NUM" : 1,
         "title" : 'Редактирование формы групповой визы' if visa_type=='group' else 'Редактирование формы одиночной визы',
@@ -295,7 +301,7 @@ def form2(request,visa_type):
 def edit_form2(request,id):
     # person
     model = Form2.objects.get(id=id)
-    form = ModelForm2(instance=model)
+    Form = ModelForm2(instance=model)
 
     # members
     instance = GroupMembers.objects.filter(form2=model.id)
@@ -308,10 +314,10 @@ def edit_form2(request,id):
 
     if request.method == "POST":
 
-        form = ModelForm2(request.POST, instance=model)
+        Form = ModelForm2(request.POST, instance=model)
 
-        if form.is_valid():
-            f = form.save()
+        if Form.is_valid():
+            f = Form.save()
             f.save()
             #increment_visanumber() ???
 
@@ -336,11 +342,11 @@ def edit_form2(request,id):
             if save_type == 'close':                        # переход в бд
                 return redirect('/form2_db/id/False')
             elif save_type == 'reset':                      # в пусую форму
-                return redirect('/form2/' + visa_type)
+                return redirect('/form/' + visa_type)
             elif save_type == 'remain':                     # опять мучаем форму
                 def_data = dict(zip(request.POST.keys(), request.POST.values()))
-                view = 'edit'
-                form = ModelForm2(def_data)
+                resp = form(request=request,visa_type=visa_type,def_data=def_data,view='edit')
+                return resp
 
 
         else:
@@ -350,8 +356,9 @@ def edit_form2(request,id):
     date_choice = DatesChoiceForm()
     date_choice.fields['date_choice'].queryset = Dates.objects.filter(ship_id=get_default_object(Ships))
 
-    return render(request, "app/form2.html", {
-        "form": form,
+    return render(request, "app/form.html", {
+        "form": Form,
+        "formaction":"edit_form2",
         "member_forms": member_forms,
         'NUM':len(instance),
         'visa_type': visa_type,
