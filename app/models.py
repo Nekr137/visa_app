@@ -176,106 +176,6 @@ class Form2(models.Model):
         return 'Familyname: ' + self.familyname + ' Name: ' + self.name
 
 
-    def FormXlsx_group(self,fin):
-        self.fname = fin
-        self.wb = openpyxl.Workbook()
-        self.wb = openpyxl.load_workbook(filename=self.fname)
-
-        #sheet1 = self.wb["Лист1"]
-        sheet1 = self.wb.active
-        if str(self.partner).lower() == 'genvisa':
-            sheet1['F3'] = '130319 -                USA ' + \
-            datetime.datetime.strptime(str(self.entry), '%Y-%m-%d').date().strftime("%d/%m")
-
-        sheet1['B6'] = 'визовое приглашение № ' + str(self.invitation_number)
-        sheet1['K6'] = 'визовое приглашение № ' + str(self.invitation_number)
-        sheet1['D8'] = self.multiplicity
-        sheet1['D10'] = self.nationality
-        sheet1['C12'], sheet1['L12'] = [date_format(self.entry)]*2
-        sheet1['F12'], sheet1['O12'] = [date_format(self.departure)]*2
-        sheet1['B16'] = str(self.familyname).upper() + '/'
-        sheet1['B19'] = str(self.firstname).upper()
-        sheet1['D16'] = str(self.name).upper() + '/'
-        sheet1['D19'] = str(self.lastname).upper()
-        #sheet1['F16'] = date_format(self.birthday)
-        #sheet1['G17'] = 'stes'#str(self.sex).upper()
-        #sheet1['G16'] = self.passport
-        sheet1['D21'] = str(self.goal).upper()
-        #sheet1['D40'] = self.date
-        #sheet1['M40'] = self.date
-        sheet1['D25'] = self.placement
-
-        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50,1000])
-        sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25,1000])
-        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50,1000])
-
-        # Внесение членов группы
-        for i,g in enumerate(GroupMembers.objects.filter(form2=self)):
-            for col in [0,9]:
-                sheet1.cell(column=2+col,row=50+i*2).value = str(g.familyname).upper() + '/'
-                sheet1.cell(column=2+col,row=51+i*2).value = str(g.name).upper()
-                sheet1.cell(column=4+col,row=50+i*2).value = str(g.firstname).upper() + '/'
-                sheet1.cell(column=4+col,row=51+i*2).value = str(g.lastname).upper()
-                sheet1.cell(column=6+col,row=50+i*2).value = date_format(g.birthday)
-                sheet1.cell(column=7+col,row=50+i*2).value = g.passport
-                sheet1.cell(column=8+col,row=50+i*2).value = g.nationality
-
-
-        for k in [14]+list(range(48, 70, 2)):
-            for c in range(2,9):
-                sheet1.cell(column=c,row = k).border = ulr
-            for c in range(11, 18):
-                sheet1.cell(column=c, row=k).border = ulr
-
-        for k in [15] + list(range(49, 71, 2)):
-            for c in range(2, 9):
-                sheet1.cell(column=c, row=k).border = blr
-            for c in range(11, 18):
-                sheet1.cell(column=c, row=k).border = blr
-
-        for k in [16,19,17,18]:
-            for c in range(2,9):
-                sheet1.cell(column=c, row=k).border = tlrb
-            for c in range(11, 18):
-                sheet1.cell(column=c, row=k).border = tlrb
-
-        for k in [25]:
-            for c in range(2,9):
-                sheet1.cell(column=c, row=k).border = b
-            for c in range(11, 18):
-                sheet1.cell(column=c, row=k).border = b
-
-        for k in [4,5]:
-            for c in [72,74,39,41]:
-                sheet1.cell(column=k, row=c).border = b
-
-        for k in [13,14]:
-            for c in [72,74,39,41]:
-                sheet1.cell(column=k, row=c).border = b
-
-        for c in range(2,18):
-            sheet1.cell(column=45,row=c).border = t
-
-        pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
-        sheet1.add_image(pech, 'B35')
-        pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
-        sheet1.add_image(pech2, 'K35')
-        pod = openpyxl.drawing.image.Image('static/xlsx/image853.png')
-        sheet1.add_image(pod, 'D35')
-        pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
-        sheet1.add_image(pod2,'M35')
-
-        pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
-        sheet1.add_image(pech, 'B67')
-        pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
-        sheet1.add_image(pech2, 'K67')
-        pod = openpyxl.drawing.image.Image('static/xlsx/image853.png')
-        sheet1.add_image(pod, 'D67')
-        pod2 = openpyxl.drawing.image.Image('static/xlsx/image853.png')
-        sheet1.add_image(pod2,'M67')
-
-
-
     def FormXlsx_single(self,fin):
         self.fname = fin
         self.wb = openpyxl.Workbook()
@@ -301,9 +201,9 @@ class Form2(models.Model):
         #sheet1['D40'] = self.date
         #sheet1['M40'] = self.date
         sheet1['D25'] = self.placement
-        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[50,1000])
+        sheet1['B27'],sheet1['B28'] = SplitText(str(self.hostorganization),[40,1000])
         sheet1['F23'],sheet1['B24'] = SplitText(str(self.rout),[25,1000])
-        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,50,50,1000])
+        sheet1['E31'],sheet1['B32'],sheet1['B33'],sheet1['B34'] = SplitText(str(self.additionalinfo),[25,40,40,1000])
 
         pech = openpyxl.drawing.image.Image('static/xlsx/image823.png')
         pech2 = openpyxl.drawing.image.Image('static/xlsx/image823.png')
