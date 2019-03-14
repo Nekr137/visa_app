@@ -56,7 +56,6 @@ def html2pdf(request,id):
         return form2_single_pdf(note)
 
 
-
 def form2_single_pdf(note):
     """
     Method for single visa pdf creation (via xlsx)
@@ -81,7 +80,7 @@ def form2_group_pdf(request,note):
     html_string = render_to_string('app/form2_html.html', {
         'obj': note,
         'members': members,
-        'empty_strings_len': 12 - len(members),
+        'empty_strings_len': 16 - len(members),
         'date_now': datetime.now()
     })
 

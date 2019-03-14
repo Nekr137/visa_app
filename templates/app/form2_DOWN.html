@@ -10,26 +10,18 @@
     </tr>
     {% for m in members %}
         <tr>
-            <td class="col1" rowspan="1">{{m.familyname|upper}}</td>
-            <td class="col1" rowspan="1">{{m.name|upper}}</td>
-            <td class="col1" rowspan="2">{{m.birthday|date:"d/m/Y"}}</td>
-            <td class="col1" rowspan="2">{{m.passport|upper}}</td>
-            <td class="col1" rowspan="2">{{m.nationality|upper}}</td>
-        </tr>
-        <tr>
-            <td class="col1" rowspan="1">{{m.firstname|upper}}</td>
-            <td class="col1" rowspan="1">{{m.lastname|upper}}</td>
+            <td class="col1" rowspan="1">{{m.familyname|upper}} / <br> {{m.firstname|upper}}</td>
+            <td class="col1" rowspan="1">{{m.name|upper}} / <br> {{m.lastname|upper}}</td>
+            <td class="col1" rowspan="1">{{m.birthday|date:"d/m/Y"}}</td>
+            <td class="col1" rowspan="1">{{m.passport|upper}}</td>
+            <td class="col1" rowspan="1">{{m.nationality|upper}}</td>
         </tr>
     {% endfor %}
     {% for i in i|rjust:empty_strings_len %}
         <tr>
+            <td class="col1" rowspan="1"><br><br></td>
             <td class="col1" rowspan="1"></td>
             <td class="col1" rowspan="1"></td>
-            <td class="col1" rowspan="2"></td>
-            <td class="col1" rowspan="2"></td>
-            <td class="col1" rowspan="2"></td>
-        </tr>
-        <tr>
             <td class="col1" rowspan="1"></td>
             <td class="col1" rowspan="1"></td>
         </tr>
